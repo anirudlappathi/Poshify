@@ -1,6 +1,6 @@
 FROM node:18-alpine
 WORKDIR /app
 COPY . .
-#RUN npm install 
+RUN pip install pandas 
 CMD ["node", 'src/index.js']
-#EXPOSE 3000
+EXPOSE 5500
