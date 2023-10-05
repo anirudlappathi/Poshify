@@ -1,2 +1,11 @@
 # Poshify
-Gives you fits fast and makes you posh as hell
+Gives you outfits fast
+
+# Programmers:
+Jashu Dutalla
+Anirud Lappathi
+Ritam Nandi
+Vivek Narayana
+Laasya Rangu
+Himani Sharma
+Ved Tiwari
