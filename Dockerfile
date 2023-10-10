@@ -1,7 +1,32 @@
 FROM node:18-alpine
+
+COPY . /app
+
 WORKDIR /app
-COPY . .
-RUN pip install pandas 
-RUN pip install mysql-connector-python
-CMD ["node", 'src/index.js']
-EXPOSE 5500
+
+CMD npm RUN src/index.js 
+
+
+#RUN pip install pandas
+
+#RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+#RUN (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/anirud/.zprofile
+
+#RUN eval "$(/opt/homebrew/bin/brew shellenv)"
+
+#RUN brew install mongodb-atlas
+
+#RUN pip install mysql-connector-python
+
+#RUN xcode-select --install
+
+#ENV PORT = 5500
+
+
+#RUN npm install
+
+#EXPOSE 5500
+
+#CMD ["npm", 'start']
+
