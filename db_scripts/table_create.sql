@@ -1,1 +1,0 @@
-CREATE TABLE Users (name string, id number)
