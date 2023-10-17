@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Poshify</title>
+        
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <script src="flaskApp.py"></script>
+        
+
+    </head>
+    <body>
+        <div class ="sec" id="sec">
+            <h2>Poshify</h2>
+            
+            <form class = "grid" action = "/result" method = "POST">
+                
+                <center>
+                    
+                    {% if result %}
+                    <a href="#sec"></a>
+                    <h3 style="color: rgb(31, 236, 192)">Your Result:</h3>
+                    <p>
+                        {{result}}
+                    </p>
+                    {% endif %}
+                </center>
+                <label for="clothing_type">Clothing Type: </label>
+                <input name="clothes_type" id="clothes_type" type="text" required>
+                <label for="color">Color: </label>
+                <input name="color" id="color" type="text" required>
+                <label for="is_clean">Is it clean?: </label>
+                <input name="is_clean" id="is_clean" type="text" required>
+                <center><input type = "Submit" class = "file_submit"></center>
+                
+                
+            </form>
+        </div>
+    </body>
+</html>

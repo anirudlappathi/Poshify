@@ -1,0 +1,57 @@
+/* Reset default margin and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Add box-sizing for better layout control */
+}
+
+/* Apply a background color to the whole page */
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Style the form container with a background color, border radius, and padding */
+form {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the form header */
+h3 {
+    font-size: 24px;
+    color: rgb(31, 236, 192);
+    margin-bottom: 20px;
+}
+
+/* Style labels and input fields */
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style the submit button with a highlight animation */
+button.btn-highlight {
+    background-color: #1FECB9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.btn-highlight:hover {
+    background-color: #17D4A3; /* Change color on hover */
+}

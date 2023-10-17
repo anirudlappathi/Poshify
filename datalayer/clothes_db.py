@@ -30,10 +30,10 @@ def create_cloth(clothing_type, color, is_clean):
         session.add(new_cloth)
         session.commit()
         print(f"Added to Clothes DB: {clothing_type}, {color}, {is_clean}")
-        return True
+        return "WORKING"
     except Exception as e:
         print(f"Create Cloth Error: {e}")
-        return False
+        return "NOT WORKING"
 
 # Read (Select) Users
 # def get_all_users():
