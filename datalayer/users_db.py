@@ -1,80 +1,88 @@
-import mysql.connector
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
-import sys
 
-global cursor, conn
+Base = declarative_base()
 
-def create_connection():
-    # Establish Database Connection
+class User(Base):
+    __tablename__ = 'Users'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(255))
+    first_name = Column(String(255))
+    last_name = Column(String(255))
+    email = Column(String(255))
+    phone_number = Column(String(20))
+    user_photo_file_name = Column(String(255))
 
-    load_dotenv()
-    password = os.getenv("PASSWORD")
+load_dotenv()
+password = os.getenv("PASSWORD")
 
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password=password,
-        database="Poshify"
-    )
+DATABASE_URL = 'mysql+mysqlconnector://root:{password}@localhost/Poshify'
+engine = create_engine(DATABASE_URL, echo=True)
 
-    # Create a cursor
-    cursor = conn.cursor()
-    return (cursor, conn)
+Session = sessionmaker(bind=engine)
+session = Session()
 
-# Create (Insert) a New User
-def create_user(user_id, username, first_name, last_name, email, phone_number, user_photo_file_name):
+# INUSE
+# CREATED
+# ERROR
+
+def create_user(username, first_name, last_name, email, phone_number, user_photo_file_name):
     try:
-        insert_query = "INSERT INTO Users (username, first_name, last_name, email, phone_number, user_photo_file_name) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        data = (user_id, username, first_name, last_name, email, phone_number, user_photo_file_name)
-        cursor.execute(insert_query, data)
-        conn.commit()
-        print("User created successfully.")
-    except mysql.connector.Error as err:
-        print(f"Create User Error: {err}")
+        user = session.query(User).filter_by(email=email)
+        return 'INUSE'
+    except:
+        try:
+            print("Starting Function: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
+            new_user = User(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
+            session.add(new_user)
+            session.commit()
+            print(f"Added to Clothes DB: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
+            return 'CREATED'
+        except Exception as e:
+            print(f"Create User Error: {e}")
+            return 'ERROR'
 
-# Read (Select) Users
 def get_all_users():
     try:
-        select_query = "SELECT * FROM Users"
-        cursor.execute(select_query)
-        users = cursor.fetchall()
+        users = session.query(User).all()
         return users
-    except mysql.connector.Error as err:
-        print(f"Get All Users Error: {err}")
+    except Exception as e:
+        print(f"Get All Users Error: {e}")
         return None
 
 def get_user_by_id(user_id):
     try:
-        select_query = "SELECT * FROM Users WHERE id = %s"
-        cursor.execute(select_query, (user_id,))
-        user = cursor.fetchone()
+        user = session.query(User).filter_by(id=user_id).first()
         return user
-    except mysql.connector.Error as err:
-        print(f"Get User By ID Error: {err}")
+    except Exception as e:
+        print(f"Get User By ID Error: {e}")
         return None
 
-# Update User Information
 def update_user(user_id, new_username, new_first_name, new_last_name, new_email, new_phone_number, new_user_photo_file_name):
     try:
-        update_query = "UPDATE Users SET user_id = %s username = %s, first_name = %s, last_name = %s, email = %s, phone_number = %s, user_photo_file_name = %s WHERE id = %s"
-        data = (user_id, new_username, new_first_name, new_last_name, new_email, new_phone_number, new_user_photo_file_name, user_id)
-        cursor.execute(update_query, data)
-        conn.commit()
+        user = session.query(User).filter_by(id=user_id).first()
+        user.username = new_username
+        user.first_name = new_first_name
+        user.last_name = new_last_name
+        user.email = new_email
+        user.phone_number = new_phone_number
+        user.user_photo_file_name = new_user_photo_file_name
+        session.commit()
         print("User updated successfully.")
-    except mysql.connector.Error as err:
-        print(f"Update User Error: {err}")
+    except Exception as e:
+        print(f"Update User Error: {e}")
 
-# Delete User
 def delete_user(user_id):
     try:
-        delete_query = "DELETE FROM Users WHERE id = %s"
-        cursor.execute(delete_query, (user_id,))
-        conn.commit()
+        user = session.query(User).filter_by(id=user_id).first()
+        session.delete(user)
+        session.commit()
         print("User deleted successfully.")
-    except mysql.connector.Error as err:
-        print(f"Delete User Error: {err}")
+    except Exception as e:
+        print(f"Delete User Error: {e}")
 
 def close_connection():
-    cursor.close()
-    conn.close()
+    session.close()

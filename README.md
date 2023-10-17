@@ -6,11 +6,10 @@ Gives you outfits fast using machine learning. Utilizes Flask, Tensorflow, Dynam
 - Vivek Narayana (Buff and Smart)
 
 - Jashu Dutalla
+
 - Anirud Lappathi
 
 - Ritam Nandi
-
-
 
 - Laasya Rangu
 
