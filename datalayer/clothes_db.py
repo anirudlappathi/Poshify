@@ -25,6 +25,7 @@ session = Session()
 
 def create_cloth(clothing_type, color, is_clean):
     try:
+        print(f"Starting Function: {clothing_type}, {color}, {is_clean}")
         new_cloth = Clothes(clothing_type=clothing_type, color=color, is_clean=is_clean)
         session.add(new_cloth)
         session.commit()
@@ -32,6 +33,7 @@ def create_cloth(clothing_type, color, is_clean):
         return True
     except Exception as e:
         print(f"Create Cloth Error: {e}")
+        return False
 
 # Read (Select) Users
 # def get_all_users():

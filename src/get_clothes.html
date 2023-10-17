@@ -20,6 +20,9 @@
 
     <h1>Enter Clothes Data</h1>
     <form action="{{ url_for('put_clothes') }}" method="post">
+        {% if result %}
+        <p>{{ result }}</p>
+        {% endif %}
         <label for="clothing_type">Clothing Type: </label>
         <input name="clothes_type" id="clothes_type" type="text" required>
         <label for="color">Color: </label>
