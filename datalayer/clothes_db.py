@@ -28,20 +28,10 @@ def create_cloth(clothing_type, color, is_clean):
         new_cloth = Clothes(clothing_type=clothing_type, color=color, is_clean=is_clean)
         session.add(new_cloth)
         session.commit()
-        print("Cloth created successfully.")
+        print(f"Added to Clothes DB: {clothing_type}, {color}, {is_clean}")
+        return True
     except Exception as e:
         print(f"Create Cloth Error: {e}")
-
-# Create (Insert) a New User
-def create_cloth(clothing_type, color, is_clean):
-    try:
-        insert_query = "INSERT INTO clothes (clothes_id, clothing_type, color, is_clean) VALUES (%s, %s, %s, %s)"
-        data = (clothes_id, clothing_type, color, is_clean)
-        cursor.execute(insert_query, data)
-        conn.commit()
-        print("User created successfully.")
-    except mysql.connector.Error as err:
-        print(f"Create User Error: {err}")
 
 # Read (Select) Users
 def get_all_users():
