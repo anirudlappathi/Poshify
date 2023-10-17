@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import clothes_db
+from datalayer import clothes_db
 
 app = Flask(__name__)
 
@@ -13,5 +13,7 @@ def get_clothes():
         clothing_type = request.form['clothing_type']
         color = request.form['color']
         is_clean = request.form['is_clean']
-        
+        result = clothes_db.create_cloth(clothing_type, color, is_clean)
+        return render_template('result.html', result=result)
+
 
