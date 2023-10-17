@@ -3,5 +3,6 @@ CREATE TABLE Clothes (
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     clothing_type VARCHAR(255),
+    color VARCHAR(255),
     is_clean BOOLEAN
 );
