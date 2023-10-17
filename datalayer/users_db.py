@@ -1,13 +1,20 @@
 import mysql.connector
+from dotenv import load_dotenv
+import os
+import sys
 
 global cursor, conn
 
 def create_connection():
     # Establish Database Connection
+
+    load_dotenv()
+    password = os.getenv("PASSWORD")
+
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="anirudl",
+        password=password,
         database="Poshify"
     )
 
@@ -18,7 +25,7 @@ def create_connection():
 # Create (Insert) a New User
 def create_user(user_id, username, first_name, last_name, email, phone_number, user_photo_file_name):
     try:
-        insert_query = "INSERT INTO users (username, first_name, last_name, email, phone_number, user_photo_file_name) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        insert_query = "INSERT INTO Users (username, first_name, last_name, email, phone_number, user_photo_file_name) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         data = (user_id, username, first_name, last_name, email, phone_number, user_photo_file_name)
         cursor.execute(insert_query, data)
         conn.commit()
@@ -29,7 +36,7 @@ def create_user(user_id, username, first_name, last_name, email, phone_number, u
 # Read (Select) Users
 def get_all_users():
     try:
-        select_query = "SELECT * FROM users"
+        select_query = "SELECT * FROM Users"
         cursor.execute(select_query)
         users = cursor.fetchall()
         return users
@@ -39,7 +46,7 @@ def get_all_users():
 
 def get_user_by_id(user_id):
     try:
-        select_query = "SELECT * FROM users WHERE id = %s"
+        select_query = "SELECT * FROM Users WHERE id = %s"
         cursor.execute(select_query, (user_id,))
         user = cursor.fetchone()
         return user
@@ -50,7 +57,7 @@ def get_user_by_id(user_id):
 # Update User Information
 def update_user(user_id, new_username, new_first_name, new_last_name, new_email, new_phone_number, new_user_photo_file_name):
     try:
-        update_query = "UPDATE users SET user_id = %s username = %s, first_name = %s, last_name = %s, email = %s, phone_number = %s, user_photo_file_name = %s WHERE id = %s"
+        update_query = "UPDATE Users SET user_id = %s username = %s, first_name = %s, last_name = %s, email = %s, phone_number = %s, user_photo_file_name = %s WHERE id = %s"
         data = (user_id, new_username, new_first_name, new_last_name, new_email, new_phone_number, new_user_photo_file_name, user_id)
         cursor.execute(update_query, data)
         conn.commit()
@@ -61,7 +68,7 @@ def update_user(user_id, new_username, new_first_name, new_last_name, new_email,
 # Delete User
 def delete_user(user_id):
     try:
-        delete_query = "DELETE FROM users WHERE id = %s"
+        delete_query = "DELETE FROM Users WHERE id = %s"
         cursor.execute(delete_query, (user_id,))
         conn.commit()
         print("User deleted successfully.")
