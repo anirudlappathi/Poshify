@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from datalayer import clothes_db
 
 app = Flask(__name__)
@@ -7,13 +7,13 @@ app = Flask(__name__)
 def index():
     return render_template('src/home.html')
 
-@app.route('/home.html', methods=['POST'])
+@app.route('/get_clothes.html', methods=['POST'])
 def get_clothes():
     if request.method == 'POST':
-        clothing_type = request.form['clothing_type']
+        clothing_type = request.form['clothes_type']
         color = request.form['color']
         is_clean = request.form['is_clean']
         result = clothes_db.create_cloth(clothing_type, color, is_clean)
-        return redirect(url_for('index'))
+        return render_template('src/home.html')
 
 
