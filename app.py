@@ -1,19 +1,19 @@
 from flask import Flask, render_template, request
-from datalayer import clothes_db
+from datalayer import clothes_db, users_db
 
-Poshify = Flask(__name__)
+app = Flask(__name__)
 
 
-@Poshify.route("/")
-@Poshify.route("/home")
+@app.route("/")
+@app.route("/home")
 def home():
   return render_template("home.html")
 
-@Poshify.route("/clothes_page")
+@app.route("/clothes_page")
 def clothes_page():
    return render_template("clothes_page.html")
 
-@Poshify.route("/result", methods=['POST', "GET"])
+@app.route("/result", methods=['POST', "GET"])
 def result():
     result = ""
     if request.method == 'POST':
@@ -25,4 +25,4 @@ def result():
     return render_template("clothes_page.html", result=result)               
 
 
-Poshify.run(host='0.0.0.0', port=81)
+app.run(host='0.0.0.0', port=81)
