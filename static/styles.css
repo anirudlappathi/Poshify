@@ -1,5 +1,4 @@
 body {
-    font-family: 'Arial', sans-serif;
     background-color: #f2f2f2;
     margin: 0;
     display: flex;
@@ -10,6 +9,7 @@ body {
 }
 
 h1 {
+    font-family: 'Playfair Display', serif;
     text-align: center;
     color: #333;
     margin-bottom: 20px; /* Added margin for separation */
@@ -21,6 +21,7 @@ form {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
+    display: inline-block;
 }
 
 label {
@@ -39,14 +40,19 @@ input {
 }
 
 nav {
-    display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
     font-weight: bold;
+}
+
+nav:visited {
+    color: #fff;
+    font-style: normal;
 }
 
 .nav-links a {

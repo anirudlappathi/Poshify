@@ -1,34 +1,32 @@
 <!doctype html>
 <html>
     <head>
-        <title>Poshify</title>
-        
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
         <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
         </script>
         <script src="app.py"></script>
         
+        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
 
     </head>
     <body>
+        <header>
+            <nav>
+              <ul>
+                <div class="logo">Poshify</div>
+                <li><a class="login" href="login">Login</a></li>
+                <li><a class="signup" href="create_user">Sign Up</a></li>
+              </ul>
+            </nav>
+        </header>
         <div class ="sec" id="sec">
-            <h2>Create User</h2>
-            
-            <!--
-                CREATE TABLE Users (
-                user_id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(255),
-                first_name VARCHAR(255),
-                last_name VARCHAR(255),
-                email VARCHAR(255),
-                phone_number VARCHAR(15),
-                user_photo_file_name VARCHAR(255)
-                );
-            -->
+            <h2>Login using username [TEST TO RETRIEVE USER ID TO GLOBAL CACHE]</h2>
 
-
-            <form class = "grid" action = "/result_users" method = "POST">
+            <form class = "grid" action = "/login_check" method = "POST">
                 
                 <center>
                     {% if result %}
@@ -42,14 +40,6 @@
 
                 <label for="username">Username: </label>
                 <input name="username" id="username" type="text" required>
-                <label for="first_name">First Name: </label>
-                <input name="first_name" id="first_name" type="text" required>
-                <label for="last_name">Last Name: </label>
-                <input name="last_name" id="last_name" type="text" required>
-                <label for="email">Email: </label>
-                <input name="email" id="email" type="text" required>
-                <label for="phone_number">Phone Number: </label>
-                <input name="phone_number" id="phone_number" type="text" maxlength="10" required>
                 <!--
                     IMAGE
                 -->

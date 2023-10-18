@@ -7,7 +7,7 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'Users'
-    
+
     user_id = Column('user_id', Integer, primary_key=True, autoincrement=True)
     username = Column(String(255))
     first_name = Column(String(255))
@@ -34,10 +34,8 @@ def create_user(username, first_name, last_name, email, phone_number, user_photo
     user_with_same_username = session.query(User).filter_by(username=username).first()
 
     if user_with_same_email:
-        print("EMAIL IN USE")
         return 'EMAIL IN USE'
     if user_with_same_username:
-        print("USERNAME IN USE")
         return 'USERNAME IN USE'
     
     try:
@@ -64,15 +62,23 @@ def get_all_users():
         return users
     except Exception as e:
         print(f"Get All Users Error: {e}")
-        return None
+        return f"ERROR: {e}"
 
+def get_user_id_by_username(username):
+    try:
+        user = session.query(User).filter_by(username=username).first()
+        return user.user_id
+    except Exception as e:
+        print(f"Get User By Username Error: {e}")
+        return f"ERROR: {e}"
+    
 def get_user_by_id(user_id):
     try:
         user = session.query(User).filter_by(id=user_id).first()
         return user
     except Exception as e:
         print(f"Get User By ID Error: {e}")
-        return None
+        return f"ERROR: {e}"
 
 def update_user(user_id, new_username, new_first_name, new_last_name, new_email, new_phone_number, new_user_photo_file_name):
     try:
