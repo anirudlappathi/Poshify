@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Poshify</title>
+        
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+        <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <script src="app.py"></script>
+        
+
+    </head>
+    <body>
+        <div class ="sec" id="sec">
+            <h2>Create User</h2>
+            
+            <!--
+                CREATE TABLE Users (
+                user_id INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(255),
+                first_name VARCHAR(255),
+                last_name VARCHAR(255),
+                email VARCHAR(255),
+                phone_number VARCHAR(15),
+                user_photo_file_name VARCHAR(255)
+                );
+            -->
+
+
+            <form class = "grid" action = "/result_users" method = "POST">
+                
+                <center>
+                    {% if result %}
+                    <a href="#sec"></a>
+                    <h3 style="color: rgb(31, 236, 192)">Your Result:</h3>
+                    <p>
+                        {{result}}
+                    </p>
+                    {% endif %}
+                </center>
+
+                <label for="username">Username: </label>
+                <input name="username" id="username" type="text" required>
+                <label for="first_name">First Name: </label>
+                <input name="first_name" id="first_name" type="text" required>
+                <label for="last_name">Last Name: </label>
+                <input name="last_name" id="last_name" type="text" required>
+                <label for="email">Email: </label>
+                <input name="email" id="email" type="text" required>
+                <label for="phone_number">Phone Number: </label>
+                <input name="phone_number" id="phone_number" type="text" maxlength="10" required>
+                <!--
+                    IMAGE
+                -->
+                <center><input type = "Submit" class = "file_submit"></center>
+                
+            </form>
+        </div>
+    </body>
+</html>
