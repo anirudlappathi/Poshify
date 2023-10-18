@@ -1,19 +1,41 @@
 from flask import Flask, render_template, request
 from datalayer import clothes_db, users_db
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
 
+global user_id
 
 @app.route("/")
 @app.route("/home")
 def home():
   return render_template("home.html")
 
+@app.route("/login")
+def login():
+   return render_template("login.html")
+
+@app.route("/login_check", methods=["POST", "GET"])
+def login_success():
+   result = ""
+   if request.method == "POST":
+      username = request.form['username']
+      username_user_id = users_db.get_user_by_username(username)
+      if username_user_id is None:
+        return render_template("login.html", result=result)
+      else:
+        user_id = username_user_id
+        return render_template("home.html")
+
 @app.route("/create_user")
 def make_user_page():
    return render_template("create_user.html")
 
-@app.route("/result_users", methods=['POST', "GET"])
+@app.route("/result_users", methods=["POST", "GET"])
 def result_users():
     result = ""
     if request.method == 'POST':

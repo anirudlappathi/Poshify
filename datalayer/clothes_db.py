@@ -7,7 +7,7 @@ import os
 Base = declarative_base()
 
 class Clothes(Base):
-    __tablename__ = 'clothes'
+    __tablename__ = 'Clothes'
     
     clothes_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('users.user_id'))
