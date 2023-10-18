@@ -3,7 +3,7 @@
     <head>
         <title>Poshify</title>
         
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
         <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
         </script>
@@ -15,7 +15,7 @@
         <div class ="sec" id="sec">
             <h2>Poshify</h2>
             
-            <form class = "grid" action = "/result" method = "POST">
+            <form class = "grid" action = "/result_clothes" method = "POST">
                 
                 <center>
                     {% if result %}
@@ -26,6 +26,7 @@
                     </p>
                     {% endif %}
                 </center>
+
                 <label for="clothing_type">Clothing Type: </label>
                 <input name="clothes_type" id="clothes_type" type="text" required>
                 <label for="color">Color: </label>

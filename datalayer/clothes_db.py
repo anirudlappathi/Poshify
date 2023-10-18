@@ -8,6 +8,7 @@ Base = declarative_base()
 
 class Clothes(Base):
     __tablename__ = 'clothes'
+    
     clothes_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('users.user_id'))
     clothing_type = Column(String(255))
@@ -33,7 +34,7 @@ def create_cloth(clothing_type, color, is_clean):
         return "WORKING"
     except Exception as e:
         print(f"Create Cloth Error: {e}")
-        return "NOT WORKING"
+        return f"ERROR: {e}"
 
 # Read (Select) Users
 # def get_all_users():

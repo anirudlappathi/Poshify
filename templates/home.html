@@ -1,20 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script src="app.py"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Poshify</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Poshify</div>
+            <div class="nav-links sec">
+                <a href="login.html">Login</a>
+                <a href="create_user">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="center-container sec" id="sec">
+            <h1>Add Clothing</h1>
+            <a href="clothes_page" class="action-button">Add Clothing</a>
+        </div>
+    </main>
+</body>
+</html>
+
+
+<!-- <!doctype html>
 <html>
     <head>
-        <title>Poshify</title>
-        
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-        <script type="text/javascript"
-            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-        </script>
-        <script src="app.py"></script>
         
 
     </head>
     <body>
-        <div class ="sec" id="sec">
+        <div class ="sec" id="sec"> 
             <h2>Poshify</h2>
             <a href="clothes_page">Get Clothes</a>
-            
+            <br>
+            <a href="create_user">Make User</a>
     </body>
-</html>
+</html> -->

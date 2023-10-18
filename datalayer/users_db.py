@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 from dotenv import load_dotenv
 import os
 
@@ -8,7 +7,8 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'Users'
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    user_id = Column('user_id', Integer, primary_key=True, autoincrement=True)
     username = Column(String(255))
     first_name = Column(String(255))
     last_name = Column(String(255))
@@ -19,7 +19,7 @@ class User(Base):
 load_dotenv()
 password = os.getenv("PASSWORD")
 
-DATABASE_URL = 'mysql+mysqlconnector://root:{password}@localhost/Poshify'
+DATABASE_URL = f'mysql+mysqlconnector://root:{password}@localhost/Poshify'
 engine = create_engine(DATABASE_URL, echo=True)
 
 Session = sessionmaker(bind=engine)
@@ -30,20 +30,33 @@ session = Session()
 # ERROR
 
 def create_user(username, first_name, last_name, email, phone_number, user_photo_file_name):
+    user_with_same_email = session.query(User).filter_by(email=email).first()
+    user_with_same_username = session.query(User).filter_by(username=username).first()
+
+    if user_with_same_email:
+        print("EMAIL IN USE")
+        return 'EMAIL IN USE'
+    if user_with_same_username:
+        print("USERNAME IN USE")
+        return 'USERNAME IN USE'
+    
     try:
-        user = session.query(User).filter_by(email=email)
-        return 'INUSE'
-    except:
-        try:
-            print("Starting Function: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
-            new_user = User(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
-            session.add(new_user)
-            session.commit()
-            print(f"Added to Clothes DB: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
-            return 'CREATED'
-        except Exception as e:
-            print(f"Create User Error: {e}")
-            return 'ERROR'
+        print("Starting Function: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
+        new_user = User(
+            username=username, 
+            first_name=first_name, 
+            last_name=last_name, 
+            email=email, 
+            phone_number=phone_number, 
+            user_photo_file_name=user_photo_file_name
+        )
+        session.add(new_user)
+        session.commit()
+        print(f"Added to Clothes DB: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
+        return 'CREATED'
+    except Exception as e:
+        print(f"Create User Error: {e}")
+        return f'ERROR: {e}'
 
 def get_all_users():
     try:
