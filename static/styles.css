@@ -1,11 +1,53 @@
 body {
     background-color: #f2f2f2;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
 }
 
-h1 {
+header {
+    background-color: #f2f2f2; /* Set the background color to match the page */
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo {
     font-family: 'Playfair Display', serif;
-    color: #333;
+    font-size: 36px; /* Increase the font size */
+    font-weight: bold;
+    text-align: center;
+    color: black;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+}
+
+.nav-links li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.nav-links a {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.center-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 form {
@@ -14,7 +56,6 @@ form {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
-    display: inline-block;
 }
 
 /* label {
@@ -32,47 +73,6 @@ input {
     border-radius: 4px;
 }
 
-nav {
-    width: 100%;
-    min-width: 300px;
-    height: 75px;
-    display: inline-flex;
-    justify-content: space-evenly;
-    text-align: center;
-    position: fixed;
-    background-color: #f2f2f2;
-}
-  
-nav > ul {
-    display: inline-flex;
-    justify-content: space-evenly;
-    list-style-type: none;
-    margin: 25px;
-    font-family: JetBrainsRegular, 'Courier New', Courier, monospace;
-}
-
-.logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 80px;
-    font-weight: bold;
-}
-
-nav:visited {
-    color: #fff;
-    font-style: normal;
-}
-
-.nav-links a {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 20px;
-}
-
-.center-container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .action-button {
     display: inline-block;
     padding: 10px 20px;
@@ -80,11 +80,27 @@ nav:visited {
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 1rem;
+    font-size: 16px;
     margin-top: 20px;
     transition: background-color 0.3s;
 }
 
 .action-button:hover {
-    background-color: #555;
+    background-color: #800080; /* Purple color on hover */
+}
+
+.file_submit {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.file_submit:hover {
+    background-color: #800080; /* Purple color on hover */
 }
