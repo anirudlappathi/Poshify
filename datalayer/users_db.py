@@ -50,7 +50,7 @@ def create_user(username, first_name, last_name, email, phone_number, user_photo
         )
         session.add(new_user)
         session.commit()
-        print(f"Added to Clothes DB: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
+        print(f"Added to User DB: ", username, first_name, last_name, email, phone_number, user_photo_file_name)
         return 'CREATED'
     except Exception as e:
         print(f"Create User Error: {e}")

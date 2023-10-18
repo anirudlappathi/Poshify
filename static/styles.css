@@ -1,18 +1,11 @@
 body {
     background-color: #f2f2f2;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
-    flex-direction: column; /* Added to stack items vertically */
 }
 
 h1 {
     font-family: 'Playfair Display', serif;
-    text-align: center;
     color: #333;
-    margin-bottom: 20px; /* Added margin for separation */
 }
 
 form {
@@ -24,11 +17,11 @@ form {
     display: inline-block;
 }
 
-label {
+/* label {
     display: block;
     margin: 10px 0 5px;
     color: #555;
-}
+} */
 
 input {
     width: 100%;
@@ -40,8 +33,22 @@ input {
 }
 
 nav {
-    justify-content: space-between;
-    align-items: center;
+    width: 100%;
+    min-width: 300px;
+    height: 75px;
+    display: inline-flex;
+    justify-content: space-evenly;
+    text-align: center;
+    position: fixed;
+    background-color: #f2f2f2;
+}
+  
+nav > ul {
+    display: inline-flex;
+    justify-content: space-evenly;
+    list-style-type: none;
+    margin: 25px;
+    font-family: JetBrainsRegular, 'Courier New', Courier, monospace;
 }
 
 .logo {
@@ -59,11 +66,6 @@ nav:visited {
     color: #fff;
     text-decoration: none;
     margin-left: 20px;
-}
-
-main {
-    text-align: center;
-    padding: 50px 20px;
 }
 
 .center-container {
