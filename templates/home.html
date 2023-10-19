@@ -25,7 +25,16 @@
         </nav>
     </header>
     <main>
-        <div class="center-container sec" id="sec">
+        <center>
+            {% if result %}
+            <a href="#sec"></a>
+            <h3 style="color: black">Your username and user_id</h3>
+            <p>
+                {{result}}
+            </p>
+            {% endif %}
+        </center>
+        <div class="center-container">
             <a href="clothes_page" class="action-button">Add Clothing</a>
         </div>
     </main>
