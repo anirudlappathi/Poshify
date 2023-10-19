@@ -22,6 +22,24 @@ def create_cloth(user_id, clothing_type, color, is_clean):
         print(f"Create Cloth Error: {e}")
         return f"ERROR: {e}"
 
+###
+###
+###
+##3
+### NEW CODE HERE
+def get_clothing_type_by_user_id(user_id):
+    try:
+        clothing_types = dbsession.query(Clothes.clothing_type).filter_by(user_id=user_id).all()
+        # Extract clothing types from the query result
+        clothing_types = [type[0] for type in clothing_types]
+        return clothing_types
+    except Exception as e:
+        print(f"Get Clothing Types Error: {e}")
+        return None
+
+
+
+
 # Read (Select) Users
 # def get_all_users():
 #     try:
