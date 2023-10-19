@@ -12,4 +12,6 @@ DATABASE_URL = f'mysql+mysqlconnector://root:{password}@localhost/Poshify'
 engine = create_engine(DATABASE_URL, echo=True)
 
 Session = sessionmaker(bind=engine)
-session = Session()
+dbsession = Session()
+
+Base = declarative_base()

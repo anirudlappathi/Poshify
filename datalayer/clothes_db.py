@@ -1,12 +1,5 @@
+from .database import dbsession, Base
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-import os
-
-from .database import session, engine
-
-Base = declarative_base()
 
 class Clothes(Base):
     __tablename__ = 'Clothes'
@@ -17,13 +10,13 @@ class Clothes(Base):
     color = Column(String(255))
     is_clean = Column(Boolean)
 
-def create_cloth(clothing_type, color, is_clean):
+def create_cloth(user_id, clothing_type, color, is_clean):
     try:
-        print(f"Starting Function: {clothing_type}, {color}, {is_clean}")
-        new_cloth = Clothes(clothing_type=clothing_type, color=color, is_clean=is_clean)
-        session.add(new_cloth)
-        session.commit()
-        print(f"Added to Clothes DB: {clothing_type}, {color}, {is_clean}")
+        print(f"Starting Function: {user_id}, {clothing_type}, {color}, {is_clean}")
+        new_cloth = Clothes(user_id=user_id, clothing_type=clothing_type, color=color, is_clean=is_clean)
+        dbsession.add(new_cloth)
+        dbsession.commit()
+        print(f"Added to Clothes DB: {user_id} {clothing_type}, {color}, {is_clean}")
         return "WORKING"
     except Exception as e:
         print(f"Create Cloth Error: {e}")
@@ -70,7 +63,3 @@ def create_cloth(clothing_type, color, is_clean):
 #         print("User deleted successfully.")
 #     except mysql.connector.Error as err:
 #         print(f"Delete User Error: {err}")
-
-# def close_connection():
-#     cursor.close()
-#     conn.close()

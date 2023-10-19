@@ -1,9 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from datalayer import clothes_db, users_db
 import os
 from dotenv import load_dotenv
-
-from datalayer.database import session
 
 load_dotenv()
 
@@ -29,8 +27,8 @@ def login_success():
         return render_template("login.html", result=result)
       else:
         session['user_id'] = username_user_id
-        print(session['user_id'])
-        return render_template("home.html")
+        result = (username, username_user_id)
+        return render_template("home.html", result=result)
 
 @app.route("/create_user")
 def make_user_page():
@@ -60,11 +58,31 @@ def clothes_page():
 def result_clothes():
     result = ""
     if request.method == 'POST':
+        
+        print("POSTING CLOTHING")
+
+        if (session['user_id']):
+          user_id = session['user_id']
+        else:
+           return 'ERROR: NOT LOGGED IN'
+        
+        print("POSTING CLOTHING")
+        
         clothing_type = request.form['clothes_type']
-        print(clothing_type)
         color = request.form['color']
         is_clean = request.form['is_clean']
-        result = clothes_db.create_cloth(clothing_type, color, is_clean)
+
+        print("POSTING CLOTHING")
+
+        if (is_clean == "y"):
+           is_clean = True
+        else:
+           is_clean = False
+
+           print("POSTING CLOTHING")
+        
+        print("ALL VALUES: ", user_id, clothing_type, color, is_clean)
+        result = clothes_db.create_cloth(user_id, clothing_type, color, is_clean)
     return render_template("clothes_page.html", result=result)               
 
 app.run(host='0.0.0.0', port=81)

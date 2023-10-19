@@ -6,3 +6,10 @@ CREATE TABLE Clothes (
     color VARCHAR(255),
     is_clean BOOLEAN
 );
+
+-- mysql -u root -p
+-- [ENTER PASSWORD]
+-- USE Poshify;
+-- ALTER TABLE Clothes
+-- ADD COLUMN color VARCHAR(255);
+-- 
