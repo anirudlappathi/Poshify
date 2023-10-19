@@ -4,25 +4,18 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 
+from .database import session, engine
+
 Base = declarative_base()
 
 class Clothes(Base):
     __tablename__ = 'Clothes'
     
     clothes_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users.user_id'))
+    user_id = Column(Integer, ForeignKey('Users.user_id'))
     clothing_type = Column(String(255))
     color = Column(String(255))
     is_clean = Column(Boolean)
-
-load_dotenv()
-password = os.getenv("PASSWORD")
-
-DATABASE_URL = f'mysql+mysqlconnector://root:{password}@localhost/Poshify'
-engine = create_engine(DATABASE_URL, echo=True)
-
-Session = sessionmaker(bind=engine)
-session = Session()
 
 def create_cloth(clothing_type, color, is_clean):
     try:

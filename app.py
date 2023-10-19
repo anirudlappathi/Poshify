@@ -3,12 +3,12 @@ from datalayer import clothes_db, users_db
 import os
 from dotenv import load_dotenv
 
+from datalayer.database import session
+
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
-
-global user_id
 
 @app.route("/")
 @app.route("/home")
@@ -24,11 +24,12 @@ def login_success():
    result = ""
    if request.method == "POST":
       username = request.form['username']
-      username_user_id = users_db.get_user_by_username(username)
+      username_user_id = users_db.get_user_id_by_username(username)
       if username_user_id is None:
         return render_template("login.html", result=result)
       else:
-        user_id = username_user_id
+        session['user_id'] = username_user_id
+        print(session['user_id'])
         return render_template("home.html")
 
 @app.route("/create_user")

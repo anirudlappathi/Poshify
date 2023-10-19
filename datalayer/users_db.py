@@ -3,6 +3,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from dotenv import load_dotenv
 import os
 
+from .database import session, engine
+
 Base = declarative_base()
 
 class User(Base):
@@ -15,15 +17,6 @@ class User(Base):
     email = Column(String(255))
     phone_number = Column(String(20))
     user_photo_file_name = Column(String(255))
-
-load_dotenv()
-password = os.getenv("PASSWORD")
-
-DATABASE_URL = f'mysql+mysqlconnector://root:{password}@localhost/Poshify'
-engine = create_engine(DATABASE_URL, echo=True)
-
-Session = sessionmaker(bind=engine)
-session = Session()
 
 # INUSE
 # CREATED
