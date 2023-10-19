@@ -28,7 +28,7 @@ def login_success():
       else:
         session['user_id'] = username_user_id
         result = (username, username_user_id)
-        return render_template("home.html", result=result)
+        return render_template("home.html", result=result, user_id=username_user_id)
 
 @app.route("/create_user")
 def make_user_page():

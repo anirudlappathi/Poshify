@@ -1,5 +1,5 @@
 body {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Young Serif', serif;
     font-style: normal;
 
     background-color: #f2f2f2;
@@ -41,7 +41,6 @@ nav {
 .title {
     font-family: 'Playfair Display', serif;
     font-weight: 900;
-    font-style: italic;
 
     font-size: 30px;
     text-align: center;
@@ -153,7 +152,7 @@ input {
     background-color: #800080; /* Purple color on hover */
 }
 
-.radio-label {
-    display: inline-block;
-    margin-right: 10px; /* Adjust as needed for spacing */
+.radio-container {
+    display: flex;
+    align-items: center;
 }
