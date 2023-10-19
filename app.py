@@ -3,9 +3,6 @@ from datalayer import clothes_db, users_db
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-global globalID
-
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
