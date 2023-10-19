@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+global globalID
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -28,7 +29,20 @@ def login_success():
       else:
         session['user_id'] = username_user_id
         result = (username, username_user_id)
-        return render_template("home.html", result=result, user_id=username_user_id)
+        succesfullogin = "yes"
+        return render_template("home.html", result=result, user_id=username_user_id, successfullogin=succesfullogin)
+
+
+###
+###
+###
+##3
+### NEW CODE HERE
+@app.route("/get_all_cloth", methods=["POST", "GET"])
+def get_all_cloth():
+      clothes = clothes_db.get_clothing_type_by_user_id(session['user_id'])
+      return render_template("home.html", successfullogin="yes", clothes=clothes)
+
 
 @app.route("/create_user")
 def make_user_page():
@@ -49,6 +63,9 @@ def result_users():
         user_photo_file_name = "test_img/blackshirt.jpg"
         result = users_db.create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
     return render_template("create_user.html", result=result)     
+
+
+   
 
 @app.route("/clothes_page")
 def clothes_page():
