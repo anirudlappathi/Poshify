@@ -17,13 +17,43 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 20px 50px;
+    border-bottom: #e2e2e2 2px solid;
 }
 
 .logo {
     font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-style: italic;
+
+    font-size: 40px; /* Increase the font size */
+    text-align: center;
+    color: black;
+}
+
+.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-style: italic;
+
+    font-size: 30px;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+}
+
+.logo a:visited {
+    font-family: 'Playfair Display', serif;
     font-size: 36px; /* Increase the font size */
     font-weight: bold;
+    text-decoration: none;
     text-align: center;
     color: black;
 }
@@ -51,6 +81,9 @@ nav {
 }
 
 form {
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -58,13 +91,18 @@ form {
     width: 300px;
 }
 
-/* label {
+label {
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+
     display: block;
     margin: 10px 0 5px;
     color: #555;
-} */
+}
 
 input {
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
