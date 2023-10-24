@@ -30,3 +30,8 @@ CMD npm RUN src/index.js
 
 #CMD ["npm", 'start']
 
+#RUN pip install -U scikit-fuzzy
+
+#RUN pip install matplotlib
+
+#RUN pip install numpy
