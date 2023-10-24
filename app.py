@@ -40,6 +40,10 @@ def get_all_cloth():
       clothes = clothes_db.get_clothing_type_by_user_id(session['user_id'])
       return render_template("home.html", successfullogin="yes", clothes=clothes)
 
+@app.route("/generate_fit", methods=["POST", "GET"])
+def generate_fit():
+   generate = "Placehholder"
+   return render_template("home.html", successfullogin="yes", generate=generate)
 
 @app.route("/create_user")
 def make_user_page():

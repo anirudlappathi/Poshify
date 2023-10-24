@@ -1,5 +1,10 @@
 from .database import dbsession, Base
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
+import numpy as np
+import matplotlib.pyplot as plt
+import skfuzzy as fuzz
+from skfuzzy import control as ctrl
+import colorsys
 
 class Clothes(Base):
     __tablename__ = 'Clothes'

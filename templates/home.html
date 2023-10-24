@@ -43,6 +43,10 @@
                 {% if clothes %}
                     <p>{{clothes}}</p>
                 {% endif %}
+            <a href="{{ url_for('generate_fit') }}" class="action-button">Generate Outfit</a>
+                {% if generate %}
+                    <p>{{generate}}</p>
+                {% endif %}
             {% endif %}
         </div>
     </main>
