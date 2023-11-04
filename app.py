@@ -65,9 +65,6 @@ def result_users():
         result = users_db.create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
     return render_template("create_user.html", result=result)     
 
-
-   
-
 @app.route("/clothes_page")
 def clothes_page():
    return render_template("clothes_page.html")

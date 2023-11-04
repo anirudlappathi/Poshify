@@ -6,7 +6,6 @@ WORKDIR /app
 
 CMD npm RUN src/index.js 
 
-
 #RUN pip install pandas
 
 #RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -22,7 +21,6 @@ CMD npm RUN src/index.js
 #RUN xcode-select --install
 
 #ENV PORT = 5500
-
 
 #RUN npm install
 
