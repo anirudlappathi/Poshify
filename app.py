@@ -86,6 +86,9 @@ def result_clothes():
         clothing_type = request.form['clothes_type']
         color = request.form['color']
         is_clean = request.form['is_clean']
+        hue = request.form['hue']
+        saturation = request.form['saturation']
+        value = request.form['value']
 
         print("POSTING CLOTHING")
 
@@ -97,7 +100,7 @@ def result_clothes():
            print("POSTING CLOTHING")
         
         print("ALL VALUES: ", user_id, clothing_type, color, is_clean)
-        result = clothes_db.create_cloth(user_id, clothing_type, color, is_clean)
+        result = clothes_db.create_cloth(user_id, clothing_type, color, is_clean, hue, saturation, value)
     return render_template("clothes_page.html", result=result)               
 
 app.run(host='0.0.0.0', port=81)
