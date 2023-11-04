@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 import colorsys
+from algorithm import color_algo
+
 
 class Clothes(Base):
     __tablename__ = 'Clothes'
@@ -17,11 +19,17 @@ class Clothes(Base):
     hue = Column(String(255))
     saturation = Column(String(255))
     value = Column(String(255))
+    tone = Column(String(255))
+    colortemp = Column(String(255))
 
 def create_cloth(user_id, clothing_type, color, is_clean, hue, saturation, value):
     try:
         print(f"Starting Function: {user_id}, {clothing_type}, {color}, {is_clean}, {hue}, {saturation}, {value}")
-        new_cloth = Clothes(user_id=user_id, clothing_type=clothing_type, color=color, is_clean=is_clean, hue=hue, saturation=saturation, value=value)
+        tone = color_algo.GetTone((int(saturation), int(value)))
+        print(f"{tone}")
+        colortemp = color_algo.GetColorTemp(hue)
+        print(f"{colortemp}")
+        new_cloth = Clothes(user_id=user_id, clothing_type=clothing_type, color=color, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp)
         dbsession.add(new_cloth)
         dbsession.commit()
         print(f"Added to Clothes DB: {user_id} {clothing_type}, {color}, {is_clean}, {hue}, {saturation}, {value}")
