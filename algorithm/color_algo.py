@@ -134,21 +134,107 @@ def GetColorDesc(hsv):
     return (tone, temp)
 
 
+
+
+def BasicMatch(outfit):
+    top = outfit[0]
+    bot = outfit[1] 
+    shoes = outfit[2]
+    
+    bright_count = len([i for i in outfit if i[0] == 'BRIGHT'])
+    if bright_count > 1: return False
+    # Check for high contrast
+    
+    return True
+
+def AnalogousMatch(outfit):
+    top = outfit[0]
+    bot = outfit[1] 
+    shoes = outfit[2]
+    
+    cool_count = len([color for color in outfit if color[1] == 'COOL'])
+    warm_count = len(outfit) - cool_count
+    if cool_count < len(outfit) and warm_count < len(outfit):
+        return False
+    
+    return True
+
+def NeutralMatch(outfit):
+    top = outfit[0]
+    bot = outfit[1] 
+    shoes = outfit[2]
+    
+    neutral = [color for color in outfit if color[0] == 'NEUTRAL']
+    if len(neutral) != len(outfit):
+        return False
+    
+    return True
+
+def ContrastMatch(outfit):
+    top = outfit[0]
+    bot = outfit[1] 
+    shoes = outfit[2]
+    
+    warm_count = len([color for color in outfit if color[1] == 'WARM'])
+    if warm_count < 1: return False
+    
+    dark_count = len([color for color in outfit if color[0] == 'DARK'])
+    bright_count = len([color for color in outfit if color[0] == 'BRIGHT'])
+    if dark_count < 1 or bright_count < 1:
+        return False
+    
+    return True
+
+def SummerMatch(outfit):
+    top = outfit[0]
+    bot = outfit[1] 
+    shoes = outfit[2]
+    
+    non_neutral = [color for color in outfit if color[0] != 'NEUTRAL']
+    
+    warm_count = len([color for color in non_neutral if color[1] == 'WARM'])
+    if warm_count < 2: return False
+    
+    dark_count = len([color for color in non_neutral if color[0] == 'DARK'])
+    if dark_count > 1: return False
+    
+    bright_count = len(non_neutral) - dark_count
+    if bright_count < 1: return False
+    
+    return True
+
+def WinterMatch(outfit):
+    top = outfit[0]
+    bot = outfit[1] 
+    shoes = outfit[2]
+    
+    non_neutral = [color for color in outfit if color[0] != 'NEUTRAL']
+    
+    dark_count = len([color for color in non_neutral if color[0] == 'DARK'])
+    if dark_count < 1: return False
+    
+    bright_count = len(non_neutral) - dark_count
+    if bright_count > 0: return False
+    
+    return True
+
+
+
 """
 Iterate outfit over all color schemes and get all valid matches
 INPUT:
-outfit - tuple(top, bot, shs)
+outfit - tuple(top, bot, shoes)
     top - hsv
     bot - hsv
-    shs - hsv
+    shoes - hsv
 OUTPUT:
     All names of valid outfit matches
 """
-def GetValidMatches(outfit):
+def GetOutfitMatches(outfit):
     top = GetColorDesc(outfit[0])
     bot = GetColorDesc(outfit[1])
-    shs = GetColorDesc(outfit[2])
-    outfit_desc = (top, bot, shs)
+    shoes = GetColorDesc(outfit[2])
+    outfit_desc = (top, bot, shoes)
     
     rules = {"Basic": BasicMatch, "Neutral": NeutralMatch,
              "Analogous": AnalogousMatch, "Summer": SummerMatch,
@@ -170,3 +256,28 @@ After running all combinations display the clothing data for each stored outfit,
 Let user choose, 
 the outfitrs that the user doesn't choose can be used later in the week
 '''
+
+
+"""
+style - which style to choose
+tops - list of all tops
+bots - list of all bots
+sheos - list of all shoes
+"""
+def GetStyleOutfits(style, tops, bots, shoes):
+
+    rules = {"Basic": BasicMatch, "Neutral": NeutralMatch,
+             "Analogous": AnalogousMatch, "Summer": SummerMatch,
+            "Winter": WinterMatch}
+    
+    matchingOutfits = []
+
+    for top in range(len(tops)):
+        for bot in range(len(bots)):
+            for shoe in range(len(shoes)):
+                if rules[style]((tops[top][1:], bots[bot][1:], shoes[shoe][1:])):
+                    matchingOutfits.append((tops[top][0], bots[bot][0], shoes[shoe][0]))
+
+    return matchingOutfits
+
+

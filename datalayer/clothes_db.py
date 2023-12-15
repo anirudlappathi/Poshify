@@ -13,26 +13,25 @@ class Clothes(Base):
     
     clothes_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('Users.user_id'))
+    clothing_name = Column(String(255))
     clothing_type = Column(String(255))
     color = Column(String(255))
     is_clean = Column(Boolean)
-    hue = Column(String(255))
-    saturation = Column(String(255))
-    value = Column(String(255))
-    tone = Column(String(255))
-    colortemp = Column(String(255))
+    hue = Column(Integer)
+    saturation = Column(Integer)
+    value = Column(Integer)
+    tone = Column(Integer)
+    colortemp = Column(Integer)
 
-def create_cloth(user_id, clothing_type, color, is_clean, hue, saturation, value):
+def create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value):
     try:
-        print(f"Starting Function: {user_id}, {clothing_type}, {color}, {is_clean}, {hue}, {saturation}, {value}")
         tone = color_algo.GetTone((int(saturation), int(value)))
-        print(f"{tone}")
         colortemp = color_algo.GetColorTemp(hue)
-        print(f"{colortemp}")
-        new_cloth = Clothes(user_id=user_id, clothing_type=clothing_type, color=color, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp)
+
+        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, color=color, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp)
+
         dbsession.add(new_cloth)
         dbsession.commit()
-        print(f"Added to Clothes DB: {user_id} {clothing_type}, {color}, {is_clean}, {hue}, {saturation}, {value}")
         return "WORKING"
     except Exception as e:
         print(f"Create Cloth Error: {e}")
@@ -53,6 +52,20 @@ def get_clothing_type_by_user_id(user_id):
         print(f"Get Clothing Types Error: {e}")
         return None
 
+def get_clothing_by_type(user_id, clothing_type):
+    try:
+        names = dbsession.query(Clothes.clothing_name).filter_by(user_id=user_id, clothing_type=clothing_type).all()
+        hues = dbsession.query(Clothes.hue).filter_by(user_id=user_id, clothing_type=clothing_type).all()
+        saturation = dbsession.query(Clothes.saturation).filter_by(user_id=user_id, clothing_type=clothing_type).all()
+        value = dbsession.query(Clothes.value).filter_by(user_id=user_id, clothing_type=clothing_type).all()
+        clothes = []
+        for i in range(len(hues)):
+            clothes.append((names[i][0], hues[i][0], saturation[i][0], value[i][0]))
+
+        return clothes
+    except:
+        print(f"Get Clothing Types Error: {e}")
+        return None
 
 
 
