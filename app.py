@@ -20,7 +20,7 @@ def home():
 def login():
    return render_template("login.html")
 
-@app.route("/login_check", methods=["POST", "GET"])
+@app.route("/dashboard", methods=["POST", "GET"])
 def login_success():
    result = ""
    if request.method == "POST":
@@ -31,17 +31,11 @@ def login_success():
       else:
         session['user_id'] = username_user_id
         result = (username, username_user_id)
-        succesfullogin = "yes"
-        return render_template("home.html", result=result, user_id=username_user_id, successfullogin=succesfullogin)
+        return render_template("home.html", result=result, user_id=username_user_id, successfullogin="yes")
 
-
-###
-###
-###
-##3
 ### NEW CODE HERE
-@app.route("/get_all_cloth", methods=["POST", "GET"])
-def get_all_cloth():
+@app.route("/closet", methods=["POST", "GET"])
+def closet():
       clothes = get_clothing_type_by_user_id(session['user_id'])
       return render_template("home.html", successfullogin="yes", clothes=clothes)
 
