@@ -31,7 +31,8 @@
             </nav>
         </header>
         <div class ="sec" id="sec">
-            <form class = "grid" action = "/add_clothing" method = "POST" id="clothesForm">
+            <h2 class="center title">Add Clothing Manually</h2>
+            <form action = "/add_clothing_manual" method = "POST" id="clothesForm">
                 
                 <center>
                     {% if result %}
@@ -54,60 +55,20 @@
                     <option value="Shoes">Shoes</option>
                     <option value="Hat">Hat</option>
                 </select>
-                <label for="color">Color: </label>
-                <input name="color" id="color" type="text" required>
                 <label for="hue">Hue: </label>
-                <input name="hue" id="hue" type="text" required>
+                <input name="hue" id="hue" type="text">
                 <label for="saturation">Saturation: </label>
-                <input name="saturation" id="saturation" type="text" required>
+                <input name="saturation" id="saturation" type="text">
                 <label for="value">Value: </label>
-                <input name="value" id="value" type="text" required>
+                <input name="value" id="value" type="text">
                 <label for="is_clean">Is it clean?: </label>
                 <label class="radio-label" for="is_clean_yes">
-                    <input type="radio" name="is_clean" id="is_clean_yes" value="y"> Yes
+                    Yes <input type="radio" name="is_clean" class="is_clean_yes" id="is_clean_yes" value="y">
                 </label>
                 <label class="radio-label" for="is_clean_no">
-                    <input type="radio" name="is_clean" id="is_clean_no" value="n"> No
+                    No <input type="radio" name="is_clean" class="is_clean_no" id="is_clean_no" value="n">
                 </label>
-                <video id="videoElement" width="640" height="480" autoplay></video><br>
-                <input type="hidden" name="imageData" id="imageDataInput">
-                <button onclick="captureAndSubmit(event)">Capture Photo</button>
-                <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
-                <input type="submit" class="file_submit" style="display: none;">
-                <script>
-                    async function captureAndSubmit(event) {
-                        event.preventDefault();
-        
-                        const video = document.getElementById('videoElement');
-                        const canvas = document.getElementById('canvas');
-                        const context = canvas.getContext('2d');
-        
-                        const constraints = { video: true };
-        
-                        try {
-                            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                            video.srcObject = stream;
-                        } catch (err) {
-                            console.error('Error accessing the camera: ', err);
-                        }
-        
-                        video.onloadedmetadata = () => {
-                            video.play();
-                        };
-        
-                        setTimeout(() => {
-                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            const imageData = canvas.toDataURL('image/jpeg');
-        
-                            document.getElementById('imageDataInput').value = imageData;
-        
-                            document.getElementById('clothesForm').submit();
-                        }, 5000); // 5000 milliseconds = 5 seconds
-                    }
-                </script>
-                
-                
-                
+                <input class="action-button" type="submit" value="Submit">      
             </form>
         </div>
     </body>

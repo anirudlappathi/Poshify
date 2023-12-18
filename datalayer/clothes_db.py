@@ -15,7 +15,6 @@ class Clothes(Base):
     user_id = Column(Integer, ForeignKey('Users.user_id'))
     clothing_name = Column(String(255))
     clothing_type = Column(String(255))
-    color = Column(String(255))
     is_clean = Column(Boolean)
     hue = Column(Integer)
     saturation = Column(Integer)
@@ -23,12 +22,12 @@ class Clothes(Base):
     tone = Column(Integer)
     colortemp = Column(Integer)
 
-def create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value):
+def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value):
     try:
         tone = color_algo.GetTone((int(saturation), int(value)))
         colortemp = color_algo.GetColorTemp(hue)
 
-        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, color=color, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp)
+        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp)
 
         dbsession.add(new_cloth)
         dbsession.commit()
@@ -37,16 +36,9 @@ def create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, sa
         print(f"Create Cloth Error: {e}")
         return f"ERROR: {e}"
 
-###
-###
-###
-##3
-### NEW CODE HERE
 def get_clothing_type_by_user_id(user_id):
     try:
-        clothing_types = dbsession.query(Clothes.clothing_type).filter_by(user_id=user_id).all()
-        # Extract clothing types from the query result
-        clothing_types = [type[0] for type in clothing_types]
+        clothing_types = dbsession.query(Clothes.clothing_name).filter_by(user_id=user_id).all()
         return clothing_types
     except Exception as e:
         print(f"Get Clothing Types Error: {e}")
