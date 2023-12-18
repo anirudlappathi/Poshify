@@ -1,7 +1,26 @@
 import cv2
 import numpy as np
+import base64
 
 webcam = cv2.VideoCapture(0)
+
+def process_image(image_data):
+    img_data = base64.b64decode(image_data)
+    nparr = np.frombuffer(img_data, np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    # Your OpenCV processing logic here to find dominant color
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    k = 5
+    HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    HSVframe = HSVframe.reshape((-1, 3))
+    HSVframe = np.float32(HSVframe)
+
+    _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+    dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
+    print("Dominant color:", dominant_color)
+
+    return dominant_color.tolist()
 
 def detect_dominant_color_webcam():
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)

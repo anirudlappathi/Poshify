@@ -37,7 +37,7 @@ def create_user(username, first_name, last_name, email, phone_number, user_photo
         return 'CREATED'
     except Exception as e:
         print(f"Create User Error: {e}")
-        return f'ERROR: {e}'
+        return 'ERROR'
 
 def get_all_users():
     try:

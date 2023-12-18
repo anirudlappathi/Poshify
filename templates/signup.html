@@ -21,7 +21,7 @@
                 <div class="logo" href="home"><a href="home">Poshify</a></div>
                 <ul class="nav-links">
                     <li><a class="login" href="login">Login</a></li>
-                    <li><a class="signup" href="create_user">Sign Up</a></li>
+                    <li><a class="signup" href="signup">Sign Up</a></li>
                 </ul>
             </nav>
         </header>
@@ -41,7 +41,7 @@
             -->
 
 
-            <form class = "grid" action = "/result_users" method = "POST">
+            <form class = "grid" action = "/dashboard" method = "POST">
                 
                 <center>
                     {% if result %}
@@ -54,15 +54,15 @@
                 </center>
 
                 <label for="username">Username: </label>
-                <input name="username" id="username" type="text" required>
+                <input name="username" id="username" type="text">
                 <label for="first_name">First Name: </label>
-                <input name="first_name" id="first_name" type="text" required>
+                <input name="first_name" id="first_name" type="text">
                 <label for="last_name">Last Name: </label>
-                <input name="last_name" id="last_name" type="text" required>
+                <input name="last_name" id="last_name" type="text">
                 <label for="email">Email: </label>
-                <input name="email" id="email" type="text" required>
+                <input name="email" id="email" type="text">
                 <label for="phone_number">Phone Number: </label>
-                <input name="phone_number" id="phone_number" type="text" maxlength="10" required>
+                <input name="phone_number" id="phone_number" type="text" maxlength="10">
                 <!--
                     IMAGE
                 -->
