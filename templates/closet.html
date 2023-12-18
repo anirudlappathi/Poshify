@@ -34,19 +34,17 @@
             </p>
             {% endif %}
         </center>
-        <center>
-            {% if generate %}
-                <p>{{generate}}</p>
-            {% endif %}
-            {% if clothes %}
-                <p>{{clothes}}</p>
-            {% endif %}
-        </center>
         <div class="center-container">
             {% if successfullogin %}
             <a href="clothes_page" class="action-button">Add Clothing</a>
-            <a href="{{ url_for('closet') }}" class="action-button">Get All Clothes</a>
+            <a href="{{ url_for('get_all_cloth') }}" class="action-button">Get All Clothes</a>
+                {% if clothes %}
+                    <p>{{clothes}}</p>
+                {% endif %}
             <a href="{{ url_for('generate_fit') }}" class="action-button">Generate Outfit</a>
+                {% if generate %}
+                    <p>{{generate}}</p>
+                {% endif %}
             {% endif %}
         </div>
     </main>
