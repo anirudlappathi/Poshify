@@ -19,16 +19,20 @@
         <nav>
             <div class="logo" href="home"><a href="home">Poshify</a></div>
             <ul class="nav-links">
+                {% if user_id %}
+                <li><a class="dashboard" href="dashboard">Dashboard</a></li>
+                {% else %}
                 <li><a class="login" href="login">Login</a></li>
                 <li><a class="signup" href="signup">Sign Up</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
     <main>
         <center>
-            {% if result %}
+            {% if user_id %}
             <a href="#sec"></a>
-            <h3 style="color: black">Your username and user_id</h3>
+            <h3 class="text">user_id</h3>
             <p>
                 {{result}}
             </p>
@@ -43,7 +47,7 @@
             {% endif %}
         </center>
         <div class="center-container">
-            {% if successfullogin %}
+            {% if user_id %}
             <a href="add_clothing" class="action-button">Add Clothing</a>
             <a href="closet" class="action-button">Get All Clothes</a>
             <a href="outfits" class="action-button">Generate Outfit</a>
