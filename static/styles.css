@@ -20,6 +20,13 @@ header {
     display: inline-flex;
 }
 
+.text {
+    text-align: center;
+    color: black;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+}
+
 nav {
     display: flex;
     justify-content: space-between;

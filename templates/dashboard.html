@@ -25,7 +25,30 @@
         </nav>
     </header>
     <main>
-       <h1>Closet</h1>
+        <center>
+            {% if result %}
+            <a href="#sec"></a>
+            <h3 style="color: black">Your username and user_id</h3>
+            <p>
+                {{result}}
+            </p>
+            {% endif %}
+        </center>
+        <center>
+            {% if outfit %}
+                <p>{{outfit}}</p>
+            {% endif %}
+            {% if clothes %}
+                <p>{{clothes}}</p>
+            {% endif %}
+        </center>
+        <div class="center-container">
+            {% if successfullogin %}
+            <a href="add_clothing" class="action-button">Add Clothing</a>
+            <a href="closet" class="action-button">Get All Clothes</a>
+            <a href="outfits" class="action-button">Generate Outfit</a>
+            {% endif %}
+        </div>
     </main>
 </body>
 </html>

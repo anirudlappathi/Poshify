@@ -20,34 +20,19 @@
             <div class="logo" href="home"><a href="home">Poshify</a></div>
             <ul class="nav-links">
                 <li><a class="login" href="login">Login</a></li>
-                <li><a class="signup" href="create_user">Sign Up</a></li>
+                <li><a class="signup" href="signup">Sign Up</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <center>
-            {% if result %}
-            <a href="#sec"></a>
-            <h3 style="color: black">Your username and user_id</h3>
-            <p>
-                {{result}}
-            </p>
-            {% endif %}
-        </center>
-        <center>
-            {% if generate %}
-                <p>{{generate}}</p>
-            {% endif %}
-            {% if clothes %}
-                <p>{{clothes}}</p>
-            {% endif %}
-        </center>
-        <div class="center-container">
-            {% if successfullogin %}
-            <a href="clothes_page" class="action-button">Add Clothing</a>
-            <a href="{{ url_for('closet') }}" class="action-button">Get All Clothes</a>
-            <a href="{{ url_for('generate_fit') }}" class="action-button">Generate Outfit</a>
-            {% endif %}
+        <div class="center-container text">            
+            <h3>Welcome to Poshify</h3>
+            <h4>Blah Blah</h4>
+            <h4>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah </h5>
+            <h4>Blah Blah</h4>
+            <h4>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah </h5>
+            <h4>Blah Blah</h4>
+            <h4>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah </h5>
         </div>
     </main>
 </body>
