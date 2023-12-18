@@ -32,7 +32,7 @@ def create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, sa
 
         dbsession.add(new_cloth)
         dbsession.commit()
-        return "WORKING"
+        return "Cloth created successfully"
     except Exception as e:
         print(f"Create Cloth Error: {e}")
         return f"ERROR: {e}"

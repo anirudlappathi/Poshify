@@ -27,7 +27,7 @@
             </nav>
         </header>
         <div class ="sec" id="sec">
-            <form class = "grid" action = "/result_clothes" method = "POST">
+            <form class = "grid" action = "/result_clothes" method = "POST" id="clothesForm">
                 
                 <center>
                     {% if result %}
@@ -66,39 +66,42 @@
                     <input type="radio" name="is_clean" id="is_clean_no" value="n"> No
                 </label>
                 <video id="videoElement" width="640" height="480" autoplay></video><br>
-    <button onclick="captureImage()">Capture Photo</button><br>
-    <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
-
-    <script>
-        async function captureImage() {
-            const video = document.getElementById('videoElement');
-            const canvas = document.getElementById('canvas');
-            const context = canvas.getContext('2d');
-
-            const constraints = {
-                video: true
-            };
-
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                video.srcObject = stream;
-            } catch (err) {
-                console.error('Error accessing the camera: ', err);
-            }
-
-            video.onloadedmetadata = () => {
-                video.play();
-            };
-
-            document.querySelector('button').addEventListener('click', () => {
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = canvas.toDataURL('image/jpeg');
-                // Send imageData to the server for processing
-                // Example: sendToBackend(imageData);
-            });
-        }
-    </script>
-                <center><input type = "Submit" class = "file_submit"></center>
+                <input type="hidden" name="imageData" id="imageDataInput">
+                <button onclick="captureAndSubmit(event)">Capture Photo</button>
+                <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+                <input type="submit" class="file_submit" style="display: none;">
+                <script>
+                    async function captureAndSubmit(event) {
+                        event.preventDefault();
+        
+                        const video = document.getElementById('videoElement');
+                        const canvas = document.getElementById('canvas');
+                        const context = canvas.getContext('2d');
+        
+                        const constraints = { video: true };
+        
+                        try {
+                            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                            video.srcObject = stream;
+                        } catch (err) {
+                            console.error('Error accessing the camera: ', err);
+                        }
+        
+                        video.onloadedmetadata = () => {
+                            video.play();
+                        };
+        
+                        setTimeout(() => {
+                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            const imageData = canvas.toDataURL('image/jpeg');
+        
+                            document.getElementById('imageDataInput').value = imageData;
+        
+                            document.getElementById('clothesForm').submit();
+                        }, 5000); // 5000 milliseconds = 5 seconds
+                    }
+                </script>
+                
                 
                 
             </form>

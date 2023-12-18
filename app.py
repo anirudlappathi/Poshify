@@ -106,13 +106,13 @@ def result_clothes():
 
         
         result = create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value)
-        image_data = request.form['imageData'].split(",")[1]  # Remove 'data:image/jpeg;base64,' prefix
-        result = create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value)
+        print("result worked")
+        image_data = request.form['imageData']
+        print("image data : " + image_data)
 
-        if result == "Cloth created successfully":
-            dominant_color = process_image(image_data)
-            # Save the dominant color information into the database
-            # For example: save_dominant_color(user_id, clothing_name, dominant_color    
+        # Process the image data
+        dominant_color = process_image(image_data)
+        print("dominant color: " + str(dominant_color))
     
     
     return render_template("clothes_page.html", result=result)               
@@ -120,9 +120,18 @@ def result_clothes():
 
 
 def process_image(image_data):
-    img_data = base64.b64decode(image_data)
+    print("process image time")
+    base64_str = image_data.split(',')[1]
+    
+    # Decoding base64 string to image data
+    img_data = base64.b64decode(base64_str)
+    
+    # Convert image data to numpy array
     nparr = np.frombuffer(img_data, np.uint8)
+    
+    # Decode image using OpenCV
     frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    
 
     # Your OpenCV processing logic here to find dominant color
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
