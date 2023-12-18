@@ -4,7 +4,9 @@ from datalayer.users_db import *
 from algorithm.color_algo import GetStyleOutfits
 import os
 from dotenv import load_dotenv
-
+import cv2
+import numpy as np
+import base64
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -110,6 +112,39 @@ def result_clothes():
 
         
         result = create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value)
+        image_data = request.form['imageData'].split(",")[1]  # Remove 'data:image/jpeg;base64,' prefix
+        result = create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value)
+
+        if result == "Cloth created successfully":
+            dominant_color = process_image(image_data)
+            # Save the dominant color information into the database
+            # For example: save_dominant_color(user_id, clothing_name, dominant_color    
+    
+    
     return render_template("clothes_page.html", result=result)               
+
+
+
+def process_image(image_data):
+    img_data = base64.b64decode(image_data)
+    nparr = np.frombuffer(img_data, np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    # Your OpenCV processing logic here to find dominant color
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    k = 5
+    HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    HSVframe = HSVframe.reshape((-1, 3))
+    HSVframe = np.float32(HSVframe)
+
+    _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+    dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
+    print("Dominant color:", dominant_color)
+
+    return dominant_color.tolist()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=81)
+
 
 app.run(host='0.0.0.0', port=81)
