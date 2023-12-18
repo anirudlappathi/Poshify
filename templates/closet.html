@@ -29,7 +29,17 @@
         </nav>
     </header>
     <main>
-       <h1>Closet</h1>
+       <h1 class="center-container title">Closet</h1>
+        <div class="grid">
+            {% for item in clothes %}
+                <div class="grid-item center text">
+                    {{ item[0] }}
+                </div>
+                <!-- {% if loop.index % 4 == 0 %}
+                    <div class="clearfix"></div>
+                {% endif %} -->
+            {% endfor %}
+        </div>
     </main>
 </body>
 </html>

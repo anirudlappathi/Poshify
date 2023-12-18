@@ -276,7 +276,7 @@ def GetStyleOutfits(style, tops, bots, shoes):
         for bot in range(len(bots)):
             for shoe in range(len(shoes)):
                 if rules[style]((tops[top][1:], bots[bot][1:], shoes[shoe][1:])):
-                    matchingOutfits.append((tops[top][0], bots[bot][0], shoes[shoe][0]))
+                    matchingOutfits.append((style ,tops[top][0], bots[bot][0], shoes[shoe][0]))
 
     return matchingOutfits
 

@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session
 from datalayer.clothes_db import *
 from datalayer.users_db import *
 from algorithm.color_algo import GetStyleOutfits
+from algorithm.color_detection_camera import process_image
 import os
 from dotenv import load_dotenv
 import cv2
@@ -52,11 +53,13 @@ def generate_fit():
    tops = get_clothing_by_type(session['user_id'], "T-Shirt")
    bots = get_clothing_by_type(session['user_id'], "Pants")
    shoes = get_clothing_by_type(session['user_id'], "Shoes")
-   style = "Basic"
+   styles = ["Basic", "Neutral", "Analogous", "Summer", "Winter"]
 
-   generate = GetStyleOutfits(style, tops, bots, shoes)
+   outfits = []
+   for style in styles:
+      outfits.extend(GetStyleOutfits(style, tops, bots, shoes))
 
-   return render_template("outfits.html", user_id=session['user_id'], generate=generate)
+   return render_template("outfits.html", user_id=session['user_id'], outfits=outfits)
 
 @app.route("/signup", methods=["POST", "GET"])
 def result_users():
@@ -74,8 +77,8 @@ def result_users():
         result = create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
     return render_template("signup.html", result=result)     
 
-@app.route("/add_clothing", methods=['POST', "GET"])
-def result_clothes():
+@app.route("/add_clothing_manual", methods=['POST', "GET"])
+def add_clothing_manual():
    user_id = None
    if 'user_id' in session:
       user_id = session['user_id']
@@ -91,7 +94,37 @@ def result_clothes():
         
         clothing_name = request.form['clothing_name']
         clothing_type = request.form['clothes_type']
-        color = request.form['color']
+        is_clean = request.form['is_clean'] == "y"
+        hue = request.form['hue']
+        saturation = request.form['saturation']
+        value = request.form['value']
+
+        if clothing_name is None or clothing_type is None or is_clean is None or hue is None or saturation is None or value is None:
+         return render_template("add_clothing_manual.html", result="Empty Field", user_id=user_id)       
+
+        result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
+        image_data = "Placeholder of type image"
+        return render_template("add_clothing_manual.html", result=result, user_id=user_id)   
+    
+   return render_template("add_clothing_manual.html", result="", user_id=user_id)               
+
+@app.route("/add_clothing_camera", methods=['POST', "GET"])
+def add_clothing_camera():
+   user_id = None
+   if 'user_id' in session:
+      user_id = session['user_id']
+
+   if request.method == 'POST':
+        
+        print("start posting")
+        if (session['user_id']):
+          user_id = session['user_id']
+        else:
+           return 'ERROR: NOT LOGGED IN'
+        
+        
+        clothing_name = request.form['clothing_name']
+        clothing_type = request.form['clothes_type']
         is_clean = request.form['is_clean']
         hue = request.form['hue']
         saturation = request.form['saturation']
@@ -102,42 +135,13 @@ def result_clothes():
         else:
            is_clean = False
 
-        result = create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value)
+        result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
         image_data = request.form['imageData']
         dominant_color = process_image(image_data)
         print("dominant color: " + str(dominant_color))
-        return render_template("add_clothing.html", result=result, user_id=user_id)   
+        return render_template("add_clothing_camera.html", result=result, user_id=user_id)   
     
-   return render_template("add_clothing.html", result="", user_id=user_id)               
-
-
-
-def process_image(image_data):
-    print("process image time")
-    base64_str = image_data.split(',')[1]
-    
-    # Decoding base64 string to image data
-    img_data = base64.b64decode(base64_str)
-    
-    # Convert image data to numpy array
-    nparr = np.frombuffer(img_data, np.uint8)
-    
-    # Decode image using OpenCV
-    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    
-
-    # Your OpenCV processing logic here to find dominant color
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-    k = 5
-    HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    HSVframe = HSVframe.reshape((-1, 3))
-    HSVframe = np.float32(HSVframe)
-
-    _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
-    dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
-    print("Dominant color:", dominant_color)
-
-    return dominant_color.tolist()
+   return render_template("add_clothing_camera.html", result="", user_id=user_id)               
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=81)

@@ -29,7 +29,26 @@
         </nav>
     </header>
     <main>
-       <h1>Outfits</h1>
+        
+        <h1 class="center-container title">Outfits</h1>
+        <div class="grid">
+            {% for outfit in outfits %}
+                <div class="grid-item text">
+                    <h2 class="text">
+                        {{ outfit[0] + " Outfit" }}
+                    </h2>
+                    <h4 class="text">
+                        {{ outfit[1] + ", " }}
+                        {{ outfit[2] + ", " }}
+                        {{ outfit[3] }}
+                    </h4>
+                </div>
+                <!-- {% if loop.index % 5 == 0 %}
+                    <div class="clearfix"></div>
+                    <br>
+                {% endif %} -->
+            {% endfor %}
+        </div>
     </main>
 </body>
 </html>
