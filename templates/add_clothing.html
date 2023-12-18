@@ -21,13 +21,17 @@
             <nav>
                 <div class="logo" href="home"><a href="home">Poshify</a></div>
                 <ul class="nav-links">
+                    {% if user_id %}
+                    <li><a class="dashboard" href="dashboard">Dashboard</a></li>
+                    {% else %}
                     <li><a class="login" href="login">Login</a></li>
-                    <li><a class="signup" href="create_user">Sign Up</a></li>
+                    <li><a class="signup" href="signup">Sign Up</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </header>
         <div class ="sec" id="sec">
-            <form class = "grid" action = "/result_clothes" method = "POST" id="clothesForm">
+            <form class = "grid" action = "/add_clothing" method = "POST" id="clothesForm">
                 
                 <center>
                     {% if result %}

@@ -53,7 +53,7 @@ def get_user_id_by_username(username):
         return user.user_id
     except Exception as e:
         print(f"Get User By Username Error: {e}")
-        return f"ERROR: {e}"
+        return None
     
 def get_user_by_id(user_id):
     try:

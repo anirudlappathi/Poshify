@@ -14,33 +14,40 @@ app.secret_key = os.getenv("SECRET_KEY")
 @app.route("/")
 @app.route("/home")
 def home():
-  return render_template("home.html")
+  user_id = None
+  if 'user_id' in session:
+     user_id = session['user_id']
+  return render_template("home.html", user_id=user_id)
 
-@app.route("/login")
+@app.route("/login", methods=["POST", "GET"])
 def login():
-   return render_template("login.html")
+   user_id = None
+   if 'user_id' in session:
+      user_id = session['user_id']
+      return render_template("dashboard.html", result="", user_id=session['user_id'])
+   
+   if request.method == "POST":
+      username = request.form['username']
+      user_id = get_user_id_by_username(username)
+      if user_id is None:
+        return render_template("login.html", result="Username does not exist")
+      else:
+        session['username'] = username
+        session['user_id'] = user_id
+        result = (username, user_id)
+        return render_template("dashboard.html", result=result, user_id=session['user_id'])
+   return render_template("login.html", result="No result yet", user_id=user_id)
 
 @app.route("/dashboard", methods=["POST", "GET"])
 def login_success():
-   result = ""
-   if request.method == "POST":
-      username = request.form['username']
-      username_user_id = get_user_id_by_username(username)
-      if username_user_id is None:
-        return render_template("login.html", result=result)
-      else:
-        session['user_id'] = username_user_id
-        result = (username, username_user_id)
-        return render_template("dashboard.html", result=result, user_id=username_user_id, successfullogin="yes")
+   return render_template("dashboard.html", result=session['user_id'], user_id=session['user_id'])
 
-### NEW CODE HERE
 @app.route("/closet", methods=["POST", "GET"])
 def closet():
       clothes = get_clothing_type_by_user_id(session['user_id'])
-      return render_template("home.html", successfullogin="yes", clothes=clothes)
+      return render_template("closet.html", user_id=session['user_id'], clothes=clothes)
 
-
-@app.route("/generate_fit", methods=["POST", "GET"])
+@app.route("/outfits", methods=["POST", "GET"])
 def generate_fit():
    tops = get_clothing_by_type(session['user_id'], "T-Shirt")
    bots = get_clothing_by_type(session['user_id'], "Pants")
@@ -49,11 +56,7 @@ def generate_fit():
 
    generate = GetStyleOutfits(style, tops, bots, shoes)
 
-   return render_template("dashboard.html", successfullogin="yes", generate=generate)
-
-@app.route("/create_user")
-def make_user_page():
-   return render_template("create_user.html")
+   return render_template("outfits.html", user_id=session['user_id'], generate=generate)
 
 @app.route("/signup", methods=["POST", "GET"])
 def result_users():
@@ -71,17 +74,15 @@ def result_users():
         result = create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
     return render_template("signup.html", result=result)     
 
-@app.route("/add_clothing")
-def clothes_page():
-   return render_template("add_clothing.html")
-
-@app.route("/result_clothes", methods=['POST', "GET"])
+@app.route("/add_clothing", methods=['POST', "GET"])
 def result_clothes():
-    result = ""
+   user_id = None
+   if 'user_id' in session:
+      user_id = session['user_id']
 
-    if request.method == 'POST':
+   if request.method == 'POST':
         
-
+        print("start posting")
         if (session['user_id']):
           user_id = session['user_id']
         else:
@@ -101,18 +102,13 @@ def result_clothes():
         else:
            is_clean = False
 
-        
         result = create_cloth(user_id, clothing_name, clothing_type, color, is_clean, hue, saturation, value)
-        print("result worked")
         image_data = request.form['imageData']
-        print("image data : " + image_data)
-
-        # Process the image data
         dominant_color = process_image(image_data)
         print("dominant color: " + str(dominant_color))
+        return render_template("add_clothing.html", result=result, user_id=user_id)   
     
-    
-    return render_template("add_clothing.html", result=result)               
+   return render_template("add_clothing.html", result="", user_id=user_id)               
 
 
 
