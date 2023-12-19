@@ -1,5 +1,40 @@
 import mysql.connector
 
+
+# ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
+# ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
+# ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
+# THIS FILE DELETES ALL DATA FROM DATABASES IF YOU HAVE ANYTHING BTW
+# ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ 
+# ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ 
+# ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ 
+
+
+# JUST RUN THIS FILE AND IT WILL SETUP UR DB's
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
 # ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
 # ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` ` `
@@ -50,6 +85,44 @@ connection = mysql.connector.connect(
 
 cursor = connection.cursor()
 
+def create_databases():
+    cursor.execute(f"USE Poshify")
+    try:
+        cursor.execute(f"DROP TABLE Clothes")
+    except:
+        print("No table to drop: Clothes.")
+    try:
+        cursor.execute(f"DROP TABLE Users")
+    except:
+        print("No table to drop: Users.")
+
+    cursor.execute(f"""CREATE TABLE Clothes (
+        clothes_id AUTO_INCREMENT INT,
+        MODIFY COLUMN clothes_id INT AUTO_INCREMENT,
+        ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES Users(user_id);,
+        clothing_type VARCHAR(255),
+        is_clean TINYINT(1),
+        color VARCHAR(255),
+        hue INT,
+        saturation INT,
+        value INT,
+        tone VARCHAR(255),
+        colortemp VARCHAR(255),
+        clothing_name VARCHAR(255),
+        );"""
+    )
+
+    cursor.execute(f"""CREATE TABLE Users (
+        user_id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255),
+        first_name VARCHAR(255),
+        last_name VARCHAR(255),
+        email VARCHAR(255),
+        phone_number VARCHAR(15),
+        user_photo_file_name VARCHAR(255)
+        );"""
+    )
+
 def init_database():
     try:
         cursor.execute(f"USE Poshify")
@@ -84,11 +157,13 @@ def init_column(table_name, command):
 
 def create_database():
 
-    init_database()
-    for table_name in TABLES:
-        init_table(table_name)
-        for command in TABLES[table_name]:
-            init_column(table_name, command)
+    create_databases()
+
+    # init_database()
+    # for table_name in TABLES:
+    #     init_table(table_name)
+    #     for command in TABLES[table_name]:
+    #         init_column(table_name, command)
 
 if __name__ == "__main__":
     create_database()

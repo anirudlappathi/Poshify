@@ -1,7 +1,13 @@
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
 body {
     font-family: 'Young Serif', serif;
     font-style: normal;
-
+    height: 100%;
+    overflow: auto;
     background-color: #f2f2f2;
     height: 100vh;
     display: flex;
@@ -179,7 +185,7 @@ input {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(4 , 2fr); /* Adjust columns */
+    grid-template-columns: repeat(5 , 2fr); /* Adjust columns */
     gap: 15px; /* Adjust gap between items */
 }
 
