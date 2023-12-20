@@ -89,6 +89,7 @@ def delete_table(table_name):
     cursor.execute(f"DROP TABLE {table_name}")
 
 def create_databases():
+    cursor.execute("CREATE DATABASE Poshify")
     cursor.execute(f"USE Poshify")
     try:
         cursor.execute(f"DROP TABLE Clothes")
