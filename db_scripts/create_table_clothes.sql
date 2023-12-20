@@ -1,16 +1,16 @@
 CREATE TABLE Clothes (
-    clothes_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    clothing_name VARCHAR(255),
+    clothes_id AUTO_INCREMENT INT,
+    MODIFY COLUMN clothes_id INT AUTO_INCREMENT,
+    ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES Users(user_id);,
     clothing_type VARCHAR(255),
+    is_clean TINYINT(1),
     color VARCHAR(255),
-    is_clean BOOLEAN
-    hue INT
-    saturation INT
-    value INT
-    tone INT
-    colortemp INT
+    hue INT,
+    saturation INT,
+    value INT,
+    tone VARCHAR(255),
+    colortemp VARCHAR(255),
+    clothing_name VARCHAR(255),
 );
 
 -- mysql -u root -p

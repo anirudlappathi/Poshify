@@ -5,9 +5,7 @@ from algorithm.color_algo import GetStyleOutfits
 from algorithm.color_detection_camera import process_image
 import os
 from dotenv import load_dotenv
-import cv2
 import numpy as np
-import base64
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -39,8 +37,26 @@ def login():
         return render_template("dashboard.html", result=result, user_id=session['user_id'])
    return render_template("login.html", result="No result yet", user_id=user_id)
 
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
+    result = ""
+    if request.method == 'POST':
+        username = request.form['username']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        phone_number = request.form['phone_number']
+        user_photo_file_name = "test_img/blackshirt.jpg"
+        user_id = create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
+        session['user_id'] = user_id
+        return render_template("dashboard.html", user_id=user_id, result=user_id)     
+    return render_template("signup.html", result="User not created yet")
+     
 @app.route("/dashboard", methods=["POST", "GET"])
-def login_success():
+def dashboard():
+   user_id = session.get('user_id')
+   if user_id is None:
+      render_template("home.html")
    return render_template("dashboard.html", result=session['user_id'], user_id=session['user_id'])
 
 @app.route("/closet", methods=["POST", "GET"])
@@ -61,21 +77,6 @@ def generate_fit():
 
    return render_template("outfits.html", user_id=session['user_id'], outfits=outfits)
 
-@app.route("/signup", methods=["POST", "GET"])
-def result_users():
-    result = ""
-    if request.method == 'POST':
-        username = request.form['username']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        phone_number = request.form['phone_number']
-
-        # TEST BLACK SHIRT IMAGE FOR RIGHT NOW
-
-        user_photo_file_name = "test_img/blackshirt.jpg"
-        result = create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
-    return render_template("signup.html", result=result)     
 
 @app.route("/add_clothing_manual", methods=['POST', "GET"])
 def add_clothing_manual():
