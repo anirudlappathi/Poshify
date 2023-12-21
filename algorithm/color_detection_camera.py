@@ -23,6 +23,7 @@ def process_image(image_data):
 
     return dominant_color.tolist()
 
+'''
 def process_image(image_data):
     img_data = base64.b64decode(image_data)
     nparr = np.frombuffer(img_data, np.uint8)
@@ -40,7 +41,7 @@ def process_image(image_data):
     print("Dominant color:", dominant_color)
 
     return dominant_color.tolist()
-
+'''
 def detect_dominant_color_webcam():
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     k = 5

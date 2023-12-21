@@ -31,13 +31,11 @@
     <main>
        <h1 class="center-container title">Closet</h1>
         <div class="grid">
-            {% for item in clothes %}
+            {% for clothing_name, file_path in clothes.items() %}
                 <div class="grid-item center text">
-                    {{ item[0] }}
+                    <p>{{ clothing_name }}</p>
+                    <img src="{{ file_path }}" alt="{{ clothing_name }} Image">
                 </div>
-                <!-- {% if loop.index % 4 == 0 %}
-                    <div class="clearfix"></div>
-                {% endif %} -->
             {% endfor %}
         </div>
     </main>
