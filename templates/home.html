@@ -19,8 +19,9 @@
         <nav>
             <div class="logo" href="home"><a href="home">Poshify</a></div>
             <ul class="nav-links">
-                {% if user_id %}
+                {% if session %}
                 <li><a class="dashboard" href="dashboard">Dashboard</a></li>
+                <li><a class="settings" href="settings">Settings</a></li>
                 {% else %}
                 <li><a class="login" href="login">Login</a></li>
                 <li><a class="signup" href="signup">Sign Up</a></li>

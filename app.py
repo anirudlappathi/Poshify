@@ -1,14 +1,43 @@
-from flask import Flask, render_template, request, session
 from datalayer.clothes_db import *
 from datalayer.users_db import *
 from algorithm.color_algo import GetStyleOutfits
 from algorithm.color_detection_camera import process_image
-import os
-from dotenv import load_dotenv
-import numpy as np
+
+import json
+from os import environ as env
+from flask import Flask, render_template, request, session, redirect, url_for
+from dotenv import find_dotenv, load_dotenv
+
+from authlib.integrations.flask_client import OAuth
+from urllib.parse import quote_plus, urlencode
+
+ENV_FILE = find_dotenv()
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
+else:
+   print("ERROR: .env FILE NOT FOUND CANNOT CONNECT TO DB AND AUTH0")
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
+app.secret_key = env.get("APP_SECRET_KEY")
+
+oauth = OAuth(app)
+
+oauth.register(
+    "auth0",
+    client_id=env.get("AUTH0_CLIENT_ID"),
+    client_secret=env.get("AUTH0_CLIENT_SECRET"),
+    client_kwargs={
+        "scope": "openid profile email",
+    },
+    server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
+)
+
+
+
+
+
+
+
 
 @app.route("/")
 @app.route("/home")
@@ -16,12 +45,15 @@ def home():
   user_id = None
   if 'user_id' in session:
      user_id = session['user_id']
-  return render_template("home.html", user_id=user_id)
+  return render_template("home.html", session=session.get('user'))
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+   return oauth.auth0.authorize_redirect(
+      redirect_url=url_for("callback", _external=True)
+   )
    user_id = None
-   if 'user_id' in session:
+   if 'user_id' in session and session['user_id'] != None:
       user_id = session['user_id']
       return render_template("dashboard.html", result="", user_id=session['user_id'])
    
@@ -36,6 +68,12 @@ def login():
         result = (username, user_id)
         return render_template("dashboard.html", result=result, user_id=session['user_id'])
    return render_template("login.html", result="No result yet", user_id=user_id)
+
+@app.route("/callback", methods=["GET", "POST"])
+def callback():
+    token = oauth.auth0.authorize_access_token()
+    session["user"] = token
+    return redirect("/")
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -77,6 +115,27 @@ def generate_fit():
 
    return render_template("outfits.html", user_id=session['user_id'], outfits=outfits)
 
+@app.route("/settings", methods=["POST", "GET"])
+def settings():
+   user_id = session.get('user_id')
+   if user_id is None:
+      return render_template("home.html", result="ERROR: user_id not found.")
+   return render_template("settings.html", user_id=session["user_id"])
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(
+        "https://" + env.get("AUTH0_DOMAIN")
+        + "/v2/logout?"
+        + urlencode(
+            {
+                "returnTo": url_for("home", _external=True),
+                "client_id": env.get("AUTH0_CLIENT_ID"),
+            },
+            quote_via=quote_plus,
+        )
+    )
 
 @app.route("/add_clothing_manual", methods=['POST', "GET"])
 def add_clothing_manual():
@@ -142,6 +201,10 @@ def add_clothing_camera():
         hue = request.form['hue']
         saturation = request.form['saturation']
         value = request.form['value']
+        uploaded_image = request.file['image']
+        print(uploaded_image)
+        image_path = f"clothing_images/{clothing_name}.jpg"
+        uploaded_image.save(image_path)
 
         if (is_clean == "y"):
            is_clean = True

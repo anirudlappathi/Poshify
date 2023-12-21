@@ -51,8 +51,8 @@ def get_user_id_by_username(username):
         return user.user_id
     except Exception as e:
         print(f"Get Users By Username Error: {e}")
-        return "ERROR USER ID"
-    
+        return None
+
 def get_user_by_id(user_id):
     try:
         user = dbsession.query(Users).filter_by(id=user_id).first()
