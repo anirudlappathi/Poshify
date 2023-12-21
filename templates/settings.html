@@ -30,14 +30,19 @@
         </nav>
     </header>
     <main>
-       <h1 class="center-container title">Closet</h1>
-        <div class="grid">
-            {% for clothing_name, file_path in clothes.items() %}
-                <div class="grid-item center text">
-                    <p>{{ clothing_name }}</p>
-                    <img src="{{ file_path }}" alt="{{ clothing_name }} Image">
-                </div>
-            {% endfor %}
+        <center>
+            {% if user_id %}
+            <a href="#sec"></a>
+            <h3 class="text">user_id</h3>
+            <p>
+                {{user_id}}
+            </p>
+            {% endif %}
+        </center>
+        <div class="center-container"> 
+            <form action = "/logout" method = "POST" id="settings">
+                <a href="logout" class="action-button center-container">Logout</a>
+            </form>      
         </div>
     </main>
 </body>
