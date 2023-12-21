@@ -21,13 +21,14 @@ class Clothes(Base):
     value = Column(Integer)
     tone = Column(Integer)
     colortemp = Column(Integer)
+    clothingimg_filepath = Column(String(255))
 
-def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value):
+def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, clothingimg_filepath):
     try:
         tone = color_algo.GetTone((int(saturation), int(value)))
         colortemp = color_algo.GetColorTemp(hue)
 
-        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp)
+        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp, clothingimg_filepath = clothingimg_filepath + ".jpg")
 
         dbsession.add(new_cloth)
         dbsession.commit()
@@ -36,14 +37,24 @@ def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturatio
         print(f"Create Cloth Error: {e}")
         return f"ERROR: {e}"
 
-def get_clothing_type_by_user_id(user_id):
+def get_clothing_type_by_user_id(user_id): #returns clothing img file as well
+    try:
+        clothing_data = dbsession.query(Clothes.clothing_name, Clothes.clothingimg_filepath).filter_by(user_id=user_id).all()
+        clothing_dict = {item[0]: item[1] for item in clothing_data}
+        return clothing_dict
+    except Exception as e:
+        print(f"Get Clothing Data Error: {e}")
+        return None
+
+'''
+def get_clothing_type_by_user_id(user_id): #original get clothing function
     try:
         clothing_types = dbsession.query(Clothes.clothing_name).filter_by(user_id=user_id).all()
         return clothing_types
     except Exception as e:
         print(f"Get Clothing Types Error: {e}")
         return None
-
+'''
 def get_clothing_by_type(user_id, clothing_type):
     try:
         names = dbsession.query(Clothes.clothing_name).filter_by(user_id=user_id, clothing_type=clothing_type).all()

@@ -46,7 +46,7 @@ def signup():
         last_name = request.form['last_name']
         email = request.form['email']
         phone_number = request.form['phone_number']
-        user_photo_file_name = "test_img/blackshirt.jpg"
+        user_photo_file_name = "test_img/blackshirt.jpg" #Assuming this is for profile picture
         user_id = create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
         session['user_id'] = user_id
         return render_template("dashboard.html", user_id=user_id, result=user_id)     
@@ -103,8 +103,20 @@ def add_clothing_manual():
         if clothing_name is None or clothing_type is None or is_clean is None or hue is None or saturation is None or value is None:
          return render_template("add_clothing_manual.html", result="Empty Field", user_id=user_id)       
 
-        result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
+        
         image_data = "Placeholder of type image"
+
+         #IMAGE PROCESSING CODE
+        if 'image' in request.files:
+            image = request.files['image']
+            if image.filename != '':
+               print("IMAGE FILE NAMEEEEEEEEEE: " + image.filename)
+               #saveimagefilepath(user_id, imagefilepath)
+               result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, image.filename)
+        else:
+           result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
+
+
         return render_template("add_clothing_manual.html", result=result, user_id=user_id)   
     
    return render_template("add_clothing_manual.html", result="", user_id=user_id)               

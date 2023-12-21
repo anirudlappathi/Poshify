@@ -59,13 +59,13 @@ CLOTHES_COMMANDS = [
     "ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES Users(user_id);",
     "clothing_type VARCHAR(255)",
     "is_clean TINYINT(1)",
-    "color VARCHAR(255)",
     "hue INT",
     "saturation INT",
     "value INT",
     "tone VARCHAR(255)",
     "colortemp VARCHAR(255)",
     "clothing_name VARCHAR(255)",
+    "clothingimg_filepath VARCHAR(255)"
 ]
 
 # ONLY CHANGE THESE IF WE ADD MORE DB's
@@ -89,7 +89,7 @@ def delete_table(table_name):
     cursor.execute(f"DROP TABLE {table_name}")
 
 def create_databases():
-    cursor.execute("CREATE DATABASE Poshify")
+    #cursor.execute("CREATE DATABASE Poshify")
     cursor.execute(f"USE Poshify")
     try:
         cursor.execute(f"DROP TABLE Clothes")
@@ -120,12 +120,12 @@ def create_databases():
             clothing_type VARCHAR(255),
             clothing_name VARCHAR(255),
             is_clean TINYINT(1),
-            color VARCHAR(255),
             hue INT,
             saturation INT,
             value INT,
             tone VARCHAR(255),
-            colortemp VARCHAR(255)
+            colortemp VARCHAR(255),
+            clothingimg_filepath VARCHAR(255)
         );
     """)
 
