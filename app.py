@@ -43,15 +43,15 @@ oauth.register(
 @app.route("/home")
 def home():
   user_id = None
-  if 'user_id' in session:
+  if 'user_id' in session and session['user_id'] != None:
      user_id = session['user_id']
-  return render_template("home.html", session=session.get('user'))
+  return render_template("home.html", user_id=user_id)
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-   return oauth.auth0.authorize_redirect(
-      redirect_url=url_for("callback", _external=True)
-   )
+   # return oauth.auth0.authorize_redirect(
+   #      redirect_url=url_for("callback", _external=True)
+   #  )
    user_id = None
    if 'user_id' in session and session['user_id'] != None:
       user_id = session['user_id']
@@ -69,12 +69,6 @@ def login():
         return render_template("dashboard.html", result=result, user_id=session['user_id'])
    return render_template("login.html", result="No result yet", user_id=user_id)
 
-@app.route("/callback", methods=["GET", "POST"])
-def callback():
-    token = oauth.auth0.authorize_access_token()
-    session["user"] = token
-    return redirect("/")
-
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     result = ""
@@ -84,7 +78,7 @@ def signup():
         last_name = request.form['last_name']
         email = request.form['email']
         phone_number = request.form['phone_number']
-        user_photo_file_name = "test_img/blackshirt.jpg" #Assuming this is for profile picture
+        user_photo_file_name = "test_img/blackshirt.jpg"
         user_id = create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
         session['user_id'] = user_id
         return render_template("dashboard.html", user_id=user_id, result=user_id)     
@@ -122,20 +116,10 @@ def settings():
       return render_template("home.html", result="ERROR: user_id not found.")
    return render_template("settings.html", user_id=session["user_id"])
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(
-        "https://" + env.get("AUTH0_DOMAIN")
-        + "/v2/logout?"
-        + urlencode(
-            {
-                "returnTo": url_for("home", _external=True),
-                "client_id": env.get("AUTH0_CLIENT_ID"),
-            },
-            quote_via=quote_plus,
-        )
-    )
+@app.route("/signout", methods=["POST", "GET"])
+def signout():
+   session["user_id"] = None
+   return render_template("home.html")
 
 @app.route("/add_clothing_manual", methods=['POST', "GET"])
 def add_clothing_manual():
@@ -162,20 +146,8 @@ def add_clothing_manual():
         if clothing_name is None or clothing_type is None or is_clean is None or hue is None or saturation is None or value is None:
          return render_template("add_clothing_manual.html", result="Empty Field", user_id=user_id)       
 
-        
+        result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
         image_data = "Placeholder of type image"
-
-         #IMAGE PROCESSING CODE
-        if 'image' in request.files:
-            image = request.files['image']
-            if image.filename != '':
-               print("IMAGE FILE NAMEEEEEEEEEE: " + image.filename)
-               #saveimagefilepath(user_id, imagefilepath)
-               result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, image.filename)
-        else:
-           result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
-
-
         return render_template("add_clothing_manual.html", result=result, user_id=user_id)   
     
    return render_template("add_clothing_manual.html", result="", user_id=user_id)               
