@@ -192,10 +192,33 @@ input {
 .grid-item {
     border: 1px solid #333; /* Borders or any additional styling */
     border-radius: 3px;
-    padding: 60px;
+    /* padding: 60px; */
+}
+
+.grid-image {
+    width: 100%; /* Ensure image fills its container */
+    height: 80%; /* Ensure image fills its container */
+    object-fit: cover; /* Crop the image to fit */
+    opacity: 1; /* Adjust opacity (0 to 1) */
+}
+
+.text-over-image {
+    /* position: absolute; */
+    top: 50%;
+    left: 50%;
+    /* transform: translate(-50%, -50%); */
+    color: #333;
+    font-size: 20px; /* Adjust font size */
+    font-weight: bold; /* Adjust font weight */
+    text-align: center;
+    z-index: 1; /* Ensure text appears above the image */
 }
 
 .clearfix::after {
     display: table;
     clear: both;
+}
+
+.closetimage {
+
 }
