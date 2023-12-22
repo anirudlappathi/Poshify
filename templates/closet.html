@@ -13,6 +13,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
     <title>Poshify</title>
+    <script>
+        function makeEditable(element) {
+            element.contentEditable = true;
+            element.focus();
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -35,7 +41,7 @@
         <div class="grid">
             {% for clothing_name, file_path in clothes.items() %}
                 <div class="grid-item center text">
-                    <p class="text-over-image">{{ clothing_name }}</p>
+                    <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
                     <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing_name }} Image">
                 </div>
             {% endfor %}

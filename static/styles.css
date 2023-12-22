@@ -196,6 +196,7 @@ input {
 .grid-item {
     border: 1px solid #333; /* Borders or any additional styling */
     border-radius: 3px;
+    background-color: #f5f5f5;
     /* padding: 60px; */
 }
 
@@ -205,6 +206,7 @@ input {
     object-fit: fill; /* Crop the image to fit */
     opacity: 1; /* Adjust opacity (0 to 1) */
     border: 1px solid #333;
+    border-radius: 3px;
 }
 
 .text-over-image {
