@@ -45,6 +45,44 @@
                     <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing_name }} Image">
                 </div>
             {% endfor %}
+            <script>
+                function makeEditable(element) {
+                    element.contentEditable = true;
+                    element.focus();
+            
+                    const clothingName = element.innerText.trim(); // Extract clothing name from the clicked element
+            
+                    element.addEventListener('focusout', function() {
+                        const updatedText = element.innerText.trim();
+            
+                        updateBackend(updatedText, clothingName);
+                        element.contentEditable = false;
+                    });
+                }
+            
+                function updateBackend(updatedText, identifier) {
+                    fetch('/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ updatedText, identifier }),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Network response was not ok.');
+                    })
+                    .then(data => {
+                        console.log('Updated successfully:', data);
+                        // If needed, handle the response data here
+                    })
+                    .catch(error => {
+                        console.error('Error updating:', error);
+                    });
+                }
+            </script>
         </div>
     </main>
 </body>

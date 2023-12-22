@@ -56,6 +56,20 @@ def get_clothing_by_type(user_id, clothing_type):
     except:
         print(f"Get Clothing Types Error: {e}")
         return None
+    
+def update_clothing_name_by_identifier(identifier, updated_text):
+    try:
+        cloth_item = dbsession.query(Clothes).filter_by(clothing_name=identifier).first()
+
+        if cloth_item:
+            cloth_item.clothing_name = updated_text
+            dbsession.commit()
+            return "Clothing name updated successfully"
+        else:
+            return "Clothing item not found"
+    except Exception as e:
+        print(f"Update Clothing Name Error: {e}")
+        return f"ERROR: {e}"
 
 
 
