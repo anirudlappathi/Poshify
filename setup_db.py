@@ -103,8 +103,10 @@ def create_databases():
 
     cursor.execute(f"""
         CREATE TABLE Users (
-            user_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id VARCHAR(255),
+            PRIMARY KEY (user_id),
             username VARCHAR(255),
+            password VARCHAR(255),
             first_name VARCHAR(255),
             last_name VARCHAR(255),
             email VARCHAR(255),
@@ -116,7 +118,7 @@ def create_databases():
     cursor.execute(f"""
         CREATE TABLE Clothes (
             clothes_id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT,
+            user_id VARCHAR(255),
             FOREIGN KEY (user_id) REFERENCES Users(user_id),
             clothing_type VARCHAR(255),
             clothing_name VARCHAR(255),

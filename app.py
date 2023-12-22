@@ -64,10 +64,36 @@ def login():
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
-    token = oauth.auth0.authorize_access_token()
-    session["user"] = token
-    print(session.get("user"))
-    return redirect("/dashboard")
+   token = oauth.auth0.authorize_access_token()
+   session["user"] = token
+   print(session.get("user"))
+
+   username = token['userinfo']['nickname']
+   password = None
+   first_name = token['userinfo']['given_name']
+   last_name = token['userinfo']['family_name']
+   email = token['userinfo']['email']
+   phone_number = None
+   user_photo_file_name = token['userinfo']['picture']
+   user_id = token['id_token']
+   create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)   
+
+   return redirect("/dashboard")
+
+@app.route("/logout")
+def logout():
+   session.clear()
+   return redirect(
+      "https://" + env.get("AUTH0_DOMAIN")
+      + "/v2/logout?"
+      + urlencode(
+         {
+               "returnTo": url_for("home", _external=True),
+               "client_id": env.get("AUTH0_CLIENT_ID"),
+         },
+         quote_via=quote_plus,
+      )
+   )
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -96,11 +122,24 @@ def dashboard():
 
 @app.route("/closet", methods=["POST", "GET"])
 def closet():
-      clothes = get_clothing_type_by_user_id(session['user_id'])
-      return render_template("closet.html", user_id=session['user_id'], clothes=clothes)
+      user = session.get("user")
+      if not user:
+         print("ERROR: USER NOT LOGGED IN")
+      id_token = user.get('id_token')
+      if not id_token:
+         print("ERROR: NO ID_TOKEN FOUND")
+      clothes = get_clothing_type_by_user_id(id_token)
+      return render_template("closet.html", session=user, user_id=id_token, clothes=clothes)
 
 @app.route("/outfits", methods=["POST", "GET"])
 def generate_fit():
+   user = session.get("user")
+   if not user:
+      print("ERROR: USER NOT LOGGED IN")
+   id_token = user.get('id_token')
+   if not id_token:
+      print("ERROR: NO ID_TOKEN FOUND")
+
    tops = get_clothing_by_type(session['user_id'], "T-Shirt")
    bots = get_clothing_by_type(session['user_id'], "Pants")
    shoes = get_clothing_by_type(session['user_id'], "Shoes")
@@ -110,19 +149,18 @@ def generate_fit():
    for style in styles:
       outfits.extend(GetStyleOutfits(style, tops, bots, shoes))
 
-   return render_template("outfits.html", user_id=session['user_id'], outfits=outfits)
+   return render_template("outfits.html", session=user, user_id=id_token, outfits=outfits)
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
-   user_id = session.get('user_id')
-   if user_id is None:
-      return render_template("home.html", result="ERROR: user_id not found.")
-   return render_template("settings.html", user_id=session["user_id"])
+   user = session.get("user")
+   if not user:
+      print("ERROR: USER NOT LOGGED IN")
+   id_token = user.get('id_token')
+   if not id_token:
+      print("ERROR: NO ID_TOKEN FOUND")
 
-@app.route("/signout", methods=["POST", "GET"])
-def signout():
-   session["user_id"] = None
-   return render_template("home.html")
+   return render_template("settings.html", session=user, user_id=id_token)
 
 @app.route("/add_clothing_manual", methods=['POST', "GET"])
 def add_clothing_manual():

@@ -12,7 +12,7 @@ class Clothes(Base):
     __tablename__ = 'Clothes'
     
     clothes_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('Users.user_id'))
+    user_id = Column(String(255), ForeignKey('Users.user_id'))
     clothing_name = Column(String(255))
     clothing_type = Column(String(255))
     is_clean = Column(Boolean)
@@ -46,15 +46,6 @@ def get_clothing_type_by_user_id(user_id): #returns clothing img file as well
         print(f"Get Clothing Data Error: {e}")
         return None
 
-'''
-def get_clothing_type_by_user_id(user_id): #original get clothing function
-    try:
-        clothing_types = dbsession.query(Clothes.clothing_name).filter_by(user_id=user_id).all()
-        return clothing_types
-    except Exception as e:
-        print(f"Get Clothing Types Error: {e}")
-        return None
-'''
 def get_clothing_by_type(user_id, clothing_type):
     try:
         names = dbsession.query(Clothes.clothing_name).filter_by(user_id=user_id, clothing_type=clothing_type).all()
