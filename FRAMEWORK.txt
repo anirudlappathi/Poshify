@@ -2,4 +2,10 @@ Hello,
 
 This is our current frameworks
 
-HTML TailwindCSS (or CSS)
+HTML CSS
+
+Python Flask
+
+MySQL
+
+Auth0
