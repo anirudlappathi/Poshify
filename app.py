@@ -6,7 +6,7 @@ from algorithm.color_detection_camera import process_image
 import json
 import os
 from os import environ as env
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from dotenv import find_dotenv, load_dotenv
 import uuid
 
@@ -221,6 +221,31 @@ def add_clothing_camera():
         return render_template("add_clothing_camera.html", result=result, user_id=user_id)   
     
    return render_template("add_clothing_camera.html", session=user, user_id=user_id)               
+
+
+@app.route('/update', methods=['POST'])
+def update_element():
+    if request.method == 'POST':
+        data = request.get_json()
+        updated_text = data.get('updatedText')
+        identifier = data.get('identifier')
+
+        # Perform database update or any other necessary operation with updated_text
+        # You can use the identifier to identify which element was edited
+        update_clothing_name_by_identifier(identifier, updated_text)
+
+        print("Updated Text:", updated_text)
+        print("Identifier:", identifier)
+
+        # Return a response with the identifier and a success message
+        response_data = {
+            'identifier': identifier,
+            'message': 'Updated successfully'
+        }
+        return jsonify(response_data), 200
+    else:
+        return 'Invalid request', 400
+
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=81)
