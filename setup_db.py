@@ -44,8 +44,9 @@ import mysql.connector
 # ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ 
 
 USERS_COMMANDS = [
-    "user_id INT PRIMARY KEY",
+    "user_id VARCHAR(255) PRIMARY KEY",
     "username VARCHAR(255)",
+    "password VARCHAR(255)",
     "first_name VARCHAR(255)",
     "last_name VARCHAR(255)",
     "email VARCHAR(255)",
