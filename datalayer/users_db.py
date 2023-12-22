@@ -13,7 +13,7 @@ class Users(Base):
     phone_number = Column(String(20))
     user_photo_file_name = Column(String(255))
 
-def create_user(username, password, first_name, last_name, email, phone_number, user_photo_file_name):
+def create_user(user_id, username, password, first_name, last_name, email, phone_number, user_photo_file_name):
     user_with_same_email = dbsession.query(Users).filter_by(email=email).first()
     user_with_same_username = dbsession.query(Users).filter_by(username=username).first()
     if user_with_same_email:
@@ -23,7 +23,9 @@ def create_user(username, password, first_name, last_name, email, phone_number, 
     
     try:
         new_user = Users(
+            user_id=user_id,
             username=username, 
+            password=password,
             first_name=first_name, 
             last_name=last_name, 
             email=email, 

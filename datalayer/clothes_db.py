@@ -1,11 +1,7 @@
-from .database import dbsession, Base
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
-import numpy as np
-import matplotlib.pyplot as plt
-import skfuzzy as fuzz
-from skfuzzy import control as ctrl
-import colorsys
 from algorithm import color_algo
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from .database import dbsession, Base
+import os
 
 
 class Clothes(Base):
@@ -28,7 +24,7 @@ def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturatio
         tone = color_algo.GetTone((int(saturation), int(value)))
         colortemp = color_algo.GetColorTemp(hue)
 
-        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp, clothingimg_filepath = clothingimg_filepath + ".jpg")
+        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp, clothingimg_filepath = clothingimg_filepath)
 
         dbsession.add(new_cloth)
         dbsession.commit()
@@ -37,10 +33,10 @@ def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturatio
         print(f"Create Cloth Error: {e}")
         return f"ERROR: {e}"
 
-def get_clothing_type_by_user_id(user_id): #returns clothing img file as well
+def get_clothing_name_and_image_by_user_id(user_id): #returns clothing img file as well
     try:
         clothing_data = dbsession.query(Clothes.clothing_name, Clothes.clothingimg_filepath).filter_by(user_id=user_id).all()
-        clothing_dict = {item[0]: item[1] for item in clothing_data}
+        clothing_dict = {item[0]: os.path.join('clothing_images', item[1]) for item in clothing_data}
         return clothing_dict
     except Exception as e:
         print(f"Get Clothing Data Error: {e}")

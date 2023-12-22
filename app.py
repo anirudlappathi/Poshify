@@ -4,9 +4,11 @@ from algorithm.color_algo import GetStyleOutfits
 from algorithm.color_detection_camera import process_image
 
 import json
+import os
 from os import environ as env
 from flask import Flask, render_template, request, session, redirect, url_for
 from dotenv import find_dotenv, load_dotenv
+import uuid
 
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
@@ -35,32 +37,21 @@ oauth.register(
 @app.route("/")
 @app.route("/home")
 def home():
-  print(session.get("user"))
   return render_template("home.html", session=session.get('user'))
+
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
+   return oauth.auth0.authorize_redirect(
+      redirect_uri=url_for("callback", _external=True),
+      screen_hint="signup"
+   )
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
    return oauth.auth0.authorize_redirect(
-      redirect_uri=url_for("callback", _external=True)
+      redirect_uri=url_for("callback", _external=True),
+      screen_hint="login"
    )
-   def old_login_code():
-      # user_id = None
-      # if 'user_id' in session and session['user_id'] != None:
-      #    user_id = session['user_id']
-      #    return render_template("dashboard.html", result="", user_id=session['user_id'])
-      
-      # if request.method == "POST":
-      #    username = request.form['username']
-      #    user_id = get_user_id_by_username(username)
-      #    if user_id is None:
-      #      return render_template("login.html", result="Username does not exist")
-      #    else:
-      #      session['username'] = username
-      #      session['user_id'] = user_id
-      #      result = (username, user_id)
-      #      return render_template("dashboard.html", result=result, user_id=session['user_id'])
-      # return render_template("login.html", result="No result yet", user_id=user_id)
-      pass
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
@@ -68,6 +59,8 @@ def callback():
    session["user"] = token
    print(session.get("user"))
 
+   user_id = token['userinfo']['sub'][14:]
+   print(user_id)
    username = token['userinfo']['nickname']
    password = None
    first_name = token['userinfo']['given_name']
@@ -75,8 +68,8 @@ def callback():
    email = token['userinfo']['email']
    phone_number = None
    user_photo_file_name = token['userinfo']['picture']
-   user_id = token['id_token']
-   create_user(username=username, password=password, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)   
+   
+   create_user(user_id=user_id, username=username, password=password, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)   
 
    return redirect("/dashboard")
 
@@ -94,120 +87,117 @@ def logout():
          quote_via=quote_plus,
       )
    )
-
-@app.route("/signup", methods=["POST", "GET"])
-def signup():
-    result = ""
-    if request.method == 'POST':
-        username = request.form['username']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        phone_number = request.form['phone_number']
-        user_photo_file_name = "test_img/blackshirt.jpg"
-        user_id = create_user(username=username, first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, user_photo_file_name=user_photo_file_name)
-        session['user_id'] = user_id
-        return render_template("dashboard.html", user_id=user_id, result=user_id)     
-    return render_template("signup.html", result="User not created yet")
      
 @app.route("/dashboard", methods=["POST", "GET"])
 def dashboard():
    user = session.get("user")
    if not user:
       print("ERROR: USER NOT LOGGED IN")
-   id_token = user.get('id_token')
-   if not id_token:
+      return render_template("home.html", session=session.get('user'))
+   user_id = user['userinfo']['sub'][14:]
+   if not user_id:
       print("ERROR: NO ID_TOKEN FOUND")
-   return render_template("dashboard.html", session=user, user_id=id_token, pretty=json.dumps(session.get('user'), indent=4))
+      return render_template("home.html", session=session.get('user'))
+   return render_template("dashboard.html", session=user, user_id=user_id, pretty=json.dumps(session.get('user'), indent=4))
 
 @app.route("/closet", methods=["POST", "GET"])
 def closet():
       user = session.get("user")
       if not user:
          print("ERROR: USER NOT LOGGED IN")
-      id_token = user.get('id_token')
-      if not id_token:
+      user_id = user['userinfo']['sub'][14:]
+      if not user_id:
          print("ERROR: NO ID_TOKEN FOUND")
-      clothes = get_clothing_type_by_user_id(id_token)
-      return render_template("closet.html", session=user, user_id=id_token, clothes=clothes)
+
+      clothes = get_clothing_name_and_image_by_user_id(user_id)
+      print(clothes)
+      return render_template("closet.html", session=user, user_id=user_id, clothes=clothes)
 
 @app.route("/outfits", methods=["POST", "GET"])
 def generate_fit():
    user = session.get("user")
    if not user:
       print("ERROR: USER NOT LOGGED IN")
-   id_token = user.get('id_token')
-   if not id_token:
+      return render_template("home.html", session=session.get('user'))
+   user_id = user['userinfo']['sub'][14:]
+   if not user_id:
       print("ERROR: NO ID_TOKEN FOUND")
+      return render_template("home.html", session=session.get('user'))
 
-   tops = get_clothing_by_type(session['user_id'], "T-Shirt")
-   bots = get_clothing_by_type(session['user_id'], "Pants")
-   shoes = get_clothing_by_type(session['user_id'], "Shoes")
+   tops = get_clothing_by_type(user_id, "T-Shirt")
+   bots = get_clothing_by_type(user_id, "Pants")
+   shoes = get_clothing_by_type(user_id, "Shoes")
    styles = ["Basic", "Neutral", "Analogous", "Summer", "Winter"]
 
    outfits = []
    for style in styles:
       outfits.extend(GetStyleOutfits(style, tops, bots, shoes))
 
-   return render_template("outfits.html", session=user, user_id=id_token, outfits=outfits)
+   return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits)
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
    user = session.get("user")
    if not user:
       print("ERROR: USER NOT LOGGED IN")
-   id_token = user.get('id_token')
-   if not id_token:
+      return render_template("home.html", session=session.get('user'))
+   user_id = user['userinfo']['sub'][14:]
+   if not user_id:
       print("ERROR: NO ID_TOKEN FOUND")
+      return render_template("home.html", session=session.get('user'))
 
-   return render_template("settings.html", session=user, user_id=id_token)
+   return render_template("settings.html", session=user, user_id=user_id)
 
 @app.route("/add_clothing_manual", methods=['POST', "GET"])
 def add_clothing_manual():
-   user_id = None
-   if 'user_id' in session:
-      user_id = session['user_id']
+   user = session.get("user")
+   if not user:
+      print("ERROR: USER NOT LOGGED IN")
+      return render_template("home.html", session=session.get('user'))
+   user_id = user['userinfo']['sub'][14:]
+   if not user_id:
+      print("ERROR: NO ID_TOKEN FOUND")
+      return render_template("home.html", session=session.get('user'))
 
-   if request.method == 'POST':
+   if request.method == 'POST':     
         
-        print("start posting")
-        if (session['user_id']):
-          user_id = session['user_id']
-        else:
-           return 'ERROR: NOT LOGGED IN'
-        
-        
-        clothing_name = request.form['clothing_name']
-        clothing_type = request.form['clothes_type']
-        is_clean = request.form['is_clean'] == "y"
-        hue = request.form['hue']
-        saturation = request.form['saturation']
-        value = request.form['value']
+      clothing_name = request.form['clothing_name']
+      clothing_type = request.form['clothes_type']
+      is_clean = request.form['is_clean'] == "y"
+      hue = request.form['hue']
+      saturation = request.form['saturation']
+      value = request.form['value']
 
-        if clothing_name is None or clothing_type is None or is_clean is None or hue is None or saturation is None or value is None:
+      image_data = request.files['image']
+      if image_data.filename == '':
+         return render_template("add_clothing_manual.html", result="No Selected File", session=user, user_id=user_id)   
+      
+      if image_data:
+         filename = str(uuid.uuid4()) + os.path.splitext(image_data.filename)[1]
+         image_data.save(os.path.join('static/clothing_images', filename))
+
+      if clothing_name is None or clothing_type is None or is_clean is None or hue is None or saturation is None or value is None:
          return render_template("add_clothing_manual.html", result="Empty Field", user_id=user_id)       
 
-        result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
-        image_data = "Placeholder of type image"
-        return render_template("add_clothing_manual.html", result=result, user_id=user_id)   
-    
+      result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
+      return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
+   
    return render_template("add_clothing_manual.html", result="", user_id=user_id)               
 
 @app.route("/add_clothing_camera", methods=['POST', "GET"])
 def add_clothing_camera():
-   user_id = None
-   if 'user_id' in session:
-      user_id = session['user_id']
+
+   user = session.get("user")
+   if not user:
+      print("ERROR: USER NOT LOGGED IN")
+      return render_template("home.html", session=session.get('user'))
+   user_id = user['userinfo']['sub'][14:]
+   if not user_id:
+      print("ERROR: NO ID_TOKEN FOUND")
+      return render_template("home.html", session=session.get('user'))
 
    if request.method == 'POST':
-        
-        print("start posting")
-        if (session['user_id']):
-          user_id = session['user_id']
-        else:
-           return 'ERROR: NOT LOGGED IN'
-        
-        
+         
         clothing_name = request.form['clothing_name']
         clothing_type = request.form['clothes_type']
         is_clean = request.form['is_clean']
@@ -230,7 +220,7 @@ def add_clothing_camera():
         print("dominant color: " + str(dominant_color))
         return render_template("add_clothing_camera.html", result=result, user_id=user_id)   
     
-   return render_template("add_clothing_camera.html", result="", user_id=user_id)               
+   return render_template("add_clothing_camera.html", session=user, user_id=user_id)               
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=81)
