@@ -32,42 +32,42 @@ oauth.register(
     server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
 )
 
-
-
-
-
-
-
-
 @app.route("/")
 @app.route("/home")
 def home():
-  user_id = None
-  if 'user_id' in session and session['user_id'] != None:
-     user_id = session['user_id']
-  return render_template("home.html", user_id=user_id)
+  print(session.get("user"))
+  return render_template("home.html", session=session.get('user'))
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-   # return oauth.auth0.authorize_redirect(
-   #      redirect_url=url_for("callback", _external=True)
-   #  )
-   user_id = None
-   if 'user_id' in session and session['user_id'] != None:
-      user_id = session['user_id']
-      return render_template("dashboard.html", result="", user_id=session['user_id'])
-   
-   if request.method == "POST":
-      username = request.form['username']
-      user_id = get_user_id_by_username(username)
-      if user_id is None:
-        return render_template("login.html", result="Username does not exist")
-      else:
-        session['username'] = username
-        session['user_id'] = user_id
-        result = (username, user_id)
-        return render_template("dashboard.html", result=result, user_id=session['user_id'])
-   return render_template("login.html", result="No result yet", user_id=user_id)
+   return oauth.auth0.authorize_redirect(
+      redirect_uri=url_for("callback", _external=True)
+   )
+   def old_login_code():
+      # user_id = None
+      # if 'user_id' in session and session['user_id'] != None:
+      #    user_id = session['user_id']
+      #    return render_template("dashboard.html", result="", user_id=session['user_id'])
+      
+      # if request.method == "POST":
+      #    username = request.form['username']
+      #    user_id = get_user_id_by_username(username)
+      #    if user_id is None:
+      #      return render_template("login.html", result="Username does not exist")
+      #    else:
+      #      session['username'] = username
+      #      session['user_id'] = user_id
+      #      result = (username, user_id)
+      #      return render_template("dashboard.html", result=result, user_id=session['user_id'])
+      # return render_template("login.html", result="No result yet", user_id=user_id)
+      pass
+
+@app.route("/callback", methods=["GET", "POST"])
+def callback():
+    token = oauth.auth0.authorize_access_token()
+    session["user"] = token
+    print(session.get("user"))
+    return redirect("/dashboard")
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -86,10 +86,13 @@ def signup():
      
 @app.route("/dashboard", methods=["POST", "GET"])
 def dashboard():
-   user_id = session.get('user_id')
-   if user_id is None:
-      render_template("home.html")
-   return render_template("dashboard.html", result=session['user_id'], user_id=session['user_id'])
+   user = session.get("user")
+   if not user:
+      print("ERROR: USER NOT LOGGED IN")
+   id_token = user.get('id_token')
+   if not id_token:
+      print("ERROR: NO ID_TOKEN FOUND")
+   return render_template("dashboard.html", session=user, user_id=id_token, pretty=json.dumps(session.get('user'), indent=4))
 
 @app.route("/closet", methods=["POST", "GET"])
 def closet():
