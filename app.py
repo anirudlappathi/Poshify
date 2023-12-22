@@ -223,7 +223,4 @@ def add_clothing_camera():
    return render_template("add_clothing_camera.html", session=user, user_id=user_id)               
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=81)
-
-
-app.run(host='0.0.0.0', port=81)
+   app.run(host='0.0.0.0', port=81)

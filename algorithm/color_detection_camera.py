@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import base64
 
-webcam = cv2.VideoCapture(0)
+#webcam = cv2.VideoCapture(0)
 
 def process_image(image_data):
     print("process image time")

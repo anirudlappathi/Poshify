@@ -196,10 +196,11 @@ input {
 }
 
 .grid-image {
-    width: 100%; /* Ensure image fills its container */
-    height: 80%; /* Ensure image fills its container */
-    object-fit: cover; /* Crop the image to fit */
+    width: 90%; /* Ensure image fills its container */
+    height: 75%; /* Ensure image fills its container */
+    object-fit: fill; /* Crop the image to fit */
     opacity: 1; /* Adjust opacity (0 to 1) */
+    border: 1px solid #333;
 }
 
 .text-over-image {
