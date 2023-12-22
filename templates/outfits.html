@@ -21,6 +21,8 @@
             <ul class="nav-links">
                 {% if session %}
                 <li><a class="dashboard" href="dashboard">Dashboard</a></li>
+                <li><a class="settings" href="settings">Settings</a></li>
+                <img class="profile-picture" src="{{ session['userinfo']['picture'] }}">
                 {% else %}
                 <p>ERROR: not logged in.</p>
                 {% endif %}
