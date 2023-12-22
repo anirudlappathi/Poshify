@@ -90,4 +90,4 @@ def create_contours_webcam():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    detect_dominant_color_webcam()
+    create_contours_webcam()

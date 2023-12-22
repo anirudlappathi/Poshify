@@ -58,7 +58,7 @@ def callback():
    token = oauth.auth0.authorize_access_token()
    session["user"] = token
    print(session.get("user"))
-
+   
    user_id = token['userinfo']['sub'][14:]
    print(user_id)
    username = token['userinfo']['nickname']

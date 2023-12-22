@@ -24,6 +24,7 @@
                     {% if user_id %}
                     <li><a class="dashboard" href="dashboard">Dashboard</a></li>
                     <li><a class="settings" href="settings">Settings</a></li>
+                    <img class="profile-picture" src="{{ session['userinfo']['picture'] }}">
                     {% else %}
                     <li><a class="login" href="login">Login</a></li>
                     <li><a class="signup" href="signup">Sign Up</a></li>
