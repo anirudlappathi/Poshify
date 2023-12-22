@@ -4,15 +4,16 @@ from sqlalchemy import Column, Integer, String
 class Users(Base):
     __tablename__ = 'Users'
 
-    user_id = Column('user_id', Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(255), primary_key=True)
     username = Column(String(255))
+    password = Column(String(255))
     first_name = Column(String(255))
     last_name = Column(String(255))
     email = Column(String(255))
     phone_number = Column(String(20))
     user_photo_file_name = Column(String(255))
 
-def create_user(username, first_name, last_name, email, phone_number, user_photo_file_name):
+def create_user(username, password, first_name, last_name, email, phone_number, user_photo_file_name):
     user_with_same_email = dbsession.query(Users).filter_by(email=email).first()
     user_with_same_username = dbsession.query(Users).filter_by(username=username).first()
     if user_with_same_email:
