@@ -38,36 +38,38 @@
     </header>
     <main>
        <h1 class="center-container title">Closet</h1>
-        <div class="grid">
-            {% for clothing_name, file_path in clothes.items() %}
-                <div class="grid-item center text">
-                    <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
-                    <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing_name }} Image">
-                </div>
-            {% endfor %}
-            <script>
-                function makeEditable(element) {
-                    element.contentEditable = true;
-                    element.focus();
-            
-                    const clothingName = element.innerText.trim(); // Extract clothing name from the clicked element
-            
-                    element.addEventListener('focusout', function() {
-                        const updatedText = element.innerText.trim();
-            
-                        updateBackend(updatedText, clothingName);
-                        element.contentEditable = false;
-                    });
-                }
-            
-                function updateBackend(updatedText, identifier) {
-                    fetch('/update', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ updatedText, identifier }),
-                    })
+       <div class="grid">
+        {% for clothing_name, file_path in clothes.items() %}
+            <div class="grid-item center text">
+                <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
+                <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing_name }} Image">
+                <button class="delete-button" onclick="deleteClothing('{{ clothing_name }}')">Delete Clothing</button>
+            </div>
+        {% endfor %}
+    
+        <script>
+            function makeEditable(element) {
+                element.contentEditable = true;
+                element.focus();
+    
+                const clothingName = element.innerText.trim(); // Extract clothing name from the clicked element
+    
+                element.addEventListener('focusout', function () {
+                    const updatedText = element.innerText.trim();
+    
+                    updateBackend(updatedText, clothingName);
+                    element.contentEditable = false;
+                });
+            }
+    
+            function updateBackend(updatedText, identifier) {
+                fetch('/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ updatedText, identifier }),
+                })
                     .then(response => {
                         if (response.ok) {
                             return response.json();
@@ -81,9 +83,46 @@
                     .catch(error => {
                         console.error('Error updating:', error);
                     });
-                }
-            </script>
-        </div>
+            }
+            
+            //deletes the clothing off of the page
+            function deleteClothing(clothingName) {
+                fetch('/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ clothingName }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Clothing deleted successfully');
+                        const clothingBlocks = document.querySelectorAll(`.text-over-image`);
+                        clothingBlocks.forEach(textElement => {
+                            if (textElement.innerText === clothingName) {
+                                const gridItem = textElement.closest('.grid-item');
+                                if (gridItem) {
+                                    gridItem.remove();
+                                }
+                            }
+                        });
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting clothing:', error);
+                });
+            }
+
+
+
+
+
+
+        </script>
+    </div>
+    
     </main>
 </body>
 </html>
