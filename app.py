@@ -3,6 +3,10 @@ from datalayer.users_db import *
 from algorithm.color_algo import GetStyleOutfits
 from algorithm.color_detection_camera import process_image
 
+from PIL import Image
+import io
+import base64
+
 import json
 import os
 from os import environ as env
@@ -184,9 +188,9 @@ def add_clothing_manual():
    
    return render_template("add_clothing_manual.html", result="", user_id=user_id)               
 
-@app.route("/add_clothing_camera", methods=['POST', "GET"])
+@app.route("/add_clothing_camera", methods=["POST", "GET"])
 def add_clothing_camera():
-
+   print("CODE RUNNING")
    user = session.get("user")
    if not user:
       print("ERROR: USER NOT LOGGED IN")
@@ -195,29 +199,46 @@ def add_clothing_camera():
    if not user_id:
       print("ERROR: NO ID_TOKEN FOUND")
       return render_template("home.html", session=session.get('user'))
-
+   print(request.method)
    if request.method == 'POST':
-         
+        print("hello")
         clothing_name = request.form['clothing_name']
         clothing_type = request.form['clothes_type']
         is_clean = request.form['is_clean']
-        hue = request.form['hue']
-        saturation = request.form['saturation']
-        value = request.form['value']
-        uploaded_image = request.file['image']
-        print(uploaded_image)
-        image_path = f"clothing_images/{clothing_name}.jpg"
-        uploaded_image.save(image_path)
+
+        # Get the base64-encoded image data from the form
+        image_data = request.form['imageData']
+        print("IMAGE DATA: " + image_data)
+
+
+        # Process the image (example: get the dominant color)
+        dominant_color = process_image(image_data)
+        print("dominant color: " + str(dominant_color))
+
+        hue = dominant_color[0]
+        saturation = dominant_color[1]
+        value = dominant_color[2]
+
+        image_bytes = base64.b64decode(image_data)
+
+        # Generate a unique filename with an appropriate extension (e.g., .jpg)
+        filename = str(uuid.uuid4()) + ".jpeg"
+
+      # Define the file path where you want to save the image
+        file_path = os.path.join('', filename) ## THIS CODE NOT WORKING - ANIRUD PLS MAKE IT WORK 
+
+      # Write the image bytes to a file
+        with open(file_path, 'wb') as file:
+         file.write(image_bytes)
 
         if (is_clean == "y"):
            is_clean = True
         else:
            is_clean = False
+         
 
-        result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value)
-        image_data = request.form['imageData']
-        dominant_color = process_image(image_data)
-        print("dominant color: " + str(dominant_color))
+        result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, file_path)
+
         return render_template("add_clothing_camera.html", result=result, user_id=user_id)   
     
    return render_template("add_clothing_camera.html", session=user, user_id=user_id)               
@@ -229,10 +250,13 @@ def update_element():
         data = request.get_json()
         updated_text = data.get('updatedText')
         identifier = data.get('identifier')
+        user = session.get("user")
+        user_id = user['userinfo']['sub'][14:]
+        print("USER ID: " + user_id)
 
         # Perform database update or any other necessary operation with updated_text
         # You can use the identifier to identify which element was edited
-        update_clothing_name_by_identifier(identifier, updated_text)
+        update_clothing_name_by_identifier(identifier, updated_text, user_id)
 
         print("Updated Text:", updated_text)
         print("Identifier:", identifier)
@@ -246,6 +270,25 @@ def update_element():
     else:
         return 'Invalid request', 400
 
+@app.route('/delete', methods=['DELETE'])
+def delete_element():
+    if request.method == 'DELETE':
+        data = request.get_json()
+        clothing_name = data.get('clothingName')
+        user = session.get("user")
+        user_id = user['userinfo']['sub'][14:]
+
+        delete_clothing_by_name(clothing_name, user_id)
+        
+        print("Deleted Clothing:", clothing_name)
+
+        # Returning a success message
+        response_data = {
+            'message': f'{clothing_name} deleted successfully'
+        }
+        return jsonify(response_data), 200
+    else:
+        return 'Invalid request', 400
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=81)
