@@ -106,6 +106,7 @@ li {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    align-items: center;
 }
 
 form {
@@ -151,7 +152,19 @@ input {
     border-radius: 5px;
     font-size: 16px;
     margin-top: 20px;
-    transition: background-color 0.3s;
+}
+
+.delete-button {
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-top: 0px;
 }
 
 .file_submit {
@@ -232,4 +245,3 @@ input {
     border-radius: 5%; /* Make the image circular */
     margin-right: 10px; /* Add some space to the right of the picture */
 }
-
