@@ -37,8 +37,13 @@
         </nav>
     </header>
     <main>
-       <h1 class="center-container title">Closet</h1>
-       <div class="grid">
+    <h1 class="center-container title">Closet</h1>
+    <center>
+        <a href="add_clothing_camera" class="action-button">Add Clothing: Camera</a>
+        <a href="add_clothing_manual" class="action-button">Add Clothing: Manual</a>
+    </center>
+    </br>
+    <div class="grid">
         {% for clothing_name, file_path in clothes.items() %}
             <div class="grid-item center text">
                 <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
@@ -85,7 +90,6 @@
                     });
             }
             
-            //deletes the clothing off of the page
             function deleteClothing(clothingName) {
                 fetch('/delete', {
                     method: 'DELETE',
