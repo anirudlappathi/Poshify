@@ -135,3 +135,17 @@ def update_cleanliness_status(clothid, new_status):
             return f"Clothing item with ID {clothid} not found"
     except Exception as e:
         return f"Error: {e}"
+
+def get_image_paths_by_name(user_id, clothing_name):
+    try:
+        # Query the database to fetch the clothingimg_filepath based on user_id and clothing_name
+        clothing_item = dbsession.query(Clothes).filter_by(user_id=user_id, clothing_name=clothing_name).first()
+
+        if clothing_item:
+            return 'clothing_images/' + clothing_item.clothingimg_filepath
+        else:
+            return None  # Or handle the case where the clothing item is not found
+    except Exception as e:
+        print(f"Error fetching image path: {e}")
+        return None  # Handle exceptions gracefully
+    

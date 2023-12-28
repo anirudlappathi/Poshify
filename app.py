@@ -172,9 +172,21 @@ def generate_fit():
 
    outfits = []
    for style in styles:
-      outfits.extend(GetStyleOutfits(style, tops, bots, shoes))
+      style_outfits = GetStyleOutfits(style, tops, bots, shoes)
+      for outfit in style_outfits:
+         outfit_with_images = {'OutfitType': outfit[0]}
+         clothing_names = outfit[1:]
+         clothing_info = {}
+         for clothing_name in clothing_names:
+               image_path = get_image_paths_by_name(user_id, clothing_name)
+               clothing_info[clothing_name] = image_path
+         outfit_with_images['Clothing'] = clothing_info
+         outfits.append(outfit_with_images)
 
+   print("OUTFITS: ", outfits)
    return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits)
+
+
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
