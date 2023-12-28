@@ -328,3 +328,23 @@ input {
     border-radius: 5%; /* Make the image circular */
     margin-right: 10px; /* Add some space to the right of the picture */
 }
+.calendar-box {
+    display: flex;
+    justify-content: space-around; /* Adjust spacing between days */
+    align-items: center; /* Center vertically */
+}
+
+.day {
+    text-align: center;
+    margin: 10px; /* Adjust spacing between days */
+}
+
+/* Optional styling for inputs and paragraphs */
+input[type="text"] {
+    width: 200px; /* Set input width */
+    padding: 5px; /* Adjust padding */
+}
+
+p {
+    margin: 0;
+}
