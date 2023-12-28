@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script src="app.py"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
+    <title>Poshify</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo" href="home"><a href="home">Poshify</a></div>
+            <ul class="nav-links">
+                {% if user_id %}
+                <li><a class="dashboard" href="dashboard">Dashboard</a></li>
+                <li><a class="settings" href="settings">Settings</a></li>
+                <img class="profile-picture" src="{{ session['userinfo']['picture'] }}">
+                {% else %}
+                <li><a class="login" href="login">Login</a></li>
+                <li><a class="signup" href="signup">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <center>
+            {% if user_id %}
+            <a href="#sec"></a>
+            <h3 class="text">user_id</h3>
+            <p>
+                {{user_id}}
+            </p>
+            {% endif %}
+        </center>
+        <center>
+            <form action = "/logout" method = "POST" id="settings">
+                <a href="logout" class="action-button center-container">Logout</a>
+            </form>      
+        </center>
+    </main>
+</body>
+</html>
