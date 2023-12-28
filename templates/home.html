@@ -23,7 +23,9 @@
                 <li><a class="dashboard" href="dashboard">Dashboard</a></li>
                 <li><a class="Closet" href="closet">Closet</a></li>
                 <li><a class="Calender" href="outfits">Outfits</a></li>
-                <img class="profile-picture" href="settings" src="{{ session['userinfo']['picture'] }}">
+                <a href="settings">
+                    <img class="profile-picture" src="{{ session['userinfo']['picture'] }}" alt="Profile Picture">
+                </a>
                 {% else %}
                 <li><a class="login" href="login">Login</a></li>
                 <li><a class="signup" href="signup">Sign Up</a></li>
