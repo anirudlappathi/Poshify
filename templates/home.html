@@ -21,8 +21,9 @@
             <ul class="nav-links">
                 {% if session %}
                 <li><a class="dashboard" href="dashboard">Dashboard</a></li>
-                <li><a class="settings" href="settings">Settings</a></li>
-                <img class="profile-picture" src="{{ session['userinfo']['picture'] }}">
+                <li><a class="Closet" href="closet">Closet</a></li>
+                <li><a class="Calender" href="outfits">Outfits</a></li>
+                <img class="profile-picture" href="settings" src="{{ session['userinfo']['picture'] }}">
                 {% else %}
                 <li><a class="login" href="login">Login</a></li>
                 <li><a class="signup" href="signup">Sign Up</a></li>

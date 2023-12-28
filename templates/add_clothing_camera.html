@@ -21,9 +21,11 @@
             <nav>
                 <div class="logo" href="home"><a href="home">Poshify</a></div>
                 <ul class="nav-links">
-                    {% if user_id %}
+                    {% if session %}
                     <li><a class="dashboard" href="dashboard">Dashboard</a></li>
-                    <li><a class="settings" href="settings">Settings</a></li>
+                    <li><a class="closet" href="closet">Closet</a></li>
+                    <li><a class="outfits" href="outfits">Outfits</a></li>
+                    <img class="profile-picture" href="settings" src="{{ session['userinfo']['picture'] }}">
                     {% else %}
                     <li><a class="login" href="login">Login</a></li>
                     <li><a class="signup" href="signup">Sign Up</a></li>
@@ -90,14 +92,15 @@
                 
                         setTimeout(() => {
                             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            const imageData = canvas.toDataURL('image/jpeg');
+                            let dataURL = canvas.toDataURL('image/jpeg');
+                            const imageData = dataURL.split(',')[1]
+                            console.log(imageData)
                 
                             document.getElementById('imageDataInput').value = imageData;
                             console.log("IMAGE CAPTURED AFTER 5 SECONDS");
                 
-                            // Submit the form after setting the image data
                             document.getElementById('clothesForm').submit();
-                        }, 5000); // 5000 milliseconds = 5 seconds
+                        }, 500);
                     }
                 </script>
                 
