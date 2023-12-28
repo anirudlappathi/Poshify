@@ -24,6 +24,7 @@
                     {% if user_id %}
                     <li><a class="dashboard" href="dashboard">Dashboard</a></li>
                     <li><a class="settings" href="settings">Settings</a></li>
+                    <img class="profile-picture" src="{{ session['userinfo']['picture'] }}">
                     {% else %}
                     <li><a class="login" href="login">Login</a></li>
                     <li><a class="signup" href="signup">Sign Up</a></li>
@@ -56,12 +57,6 @@
                     <option value="Shoes">Shoes</option>
                     <option value="Hat">Hat</option>
                 </select>
-                <label for="hue">Hue: </label>
-                <input name="hue" id="hue" type="text">
-                <label for="saturation">Saturation: </label>
-                <input name="saturation" id="saturation" type="text">
-                <label for="value">Value: </label>
-                <input name="value" id="value" type="text">
                 <label for="is_clean">Is it clean?: </label>
                 <label class="radio-label" for="is_clean_yes">
                     Yes <input type="radio" name="is_clean" class="is_clean_yes" id="is_clean_yes" value="y">
