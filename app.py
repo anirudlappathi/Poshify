@@ -243,18 +243,24 @@ def add_clothing_camera():
    if not user_id:
       print("ERROR: NO ID_TOKEN FOUND")
       return render_template("home.html", session=session.get('user'))
-   print(request.method)
    if request.method == 'POST':
+
       clothing_name = request.form['clothing_name']
       clothing_type = request.form['clothes_type']
       is_clean = request.form['is_clean']
+      image_data = request.form['imageData']
+
+      has_name = is_clothing_name_by_id(clothing_name, user_id)
+      print(has_name)
+      if has_name:
+         return render_template("add_clothing_camera.html", session=user, result="Name already exists for cloth", user_id=user_id)   
+      if clothing_name is None or clothing_type is None or is_clean is None or image_data is None:
+         return render_template("add_clothing_camera.html", session=user, result="All data fields not entered", user_id=user_id)   
 
       if (is_clean == "y"):
          is_clean = True
       else:
          is_clean = False
-
-      image_data = request.form['imageData']
 
       # 360 100 100
       hue, saturation, value = dominant_color_finder_dataurl(image_data)
