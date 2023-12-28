@@ -23,7 +23,9 @@
                 <li><a class="dashboard" href="dashboard">Dashboard</a></li>
                 <li><a class="closet" href="closet">Closet</a></li>
                 <li><a class="outfits" href="outfits">Outfits</a></li>
-                <img class="profile-picture" href="settings" src="{{ session['userinfo']['picture'] }}">
+                <a href="settings">
+                    <img class="profile-picture" src="{{ session['userinfo']['picture'] }}" alt="Profile Picture">
+                </a>
                 {% else %}
                 <p>ERROR: not logged in.</p>
                 {% endif %}
@@ -37,16 +39,88 @@
             {% for outfit in outfits %}
                 <div class="grid-item text">
                     <h2 class="text">
-                        {{ outfit[0] + " Outfit" }}
+                        {{ outfit['OutfitType'] }} Outfit
+                        <button class="action-button" onclick="showAssignOptions('{{ clothing }}')">Assign to</button>
+                        <div id="{{ clothing }}-options" class="assign-options" style="display: none;">
+                            <p>Assign {{ clothing }} to:</p>
+                            <div class="calendar-box">
+                                <div class="Monday action-button">
+                                    <button onclick="assignToDay('{{ clothing }}', 'Monday')">Monday</button>
+                                </div>
+                                <div class="Tuesday action-button">
+                                    <button onclick="assignToDay('{{ clothing }}', 'Tuesday')">Tuesday</button>
+                                </div>
+                                <div class="Wednesday action-button">
+                                    <button onclick="assignToDay('{{ clothing }}', 'Wednesday')">Wednesday</button>
+                                </div>
+                                <div class="Thursday action-button">
+                                    <button onclick="assignToDay('{{ clothing }}', 'Thursday')">Thursday</button>
+                                </div>
+                                <div class="Friday action-button">
+                                    <button onclick="assignToDay('{{ clothing }}', 'Friday')">Friday</button>
+                                </div>
+                                <div class="Saturday action-button">
+                                    <button onclick="assignToDay('{{ clothing }}', 'Saturday')">Saturday</button>
+                                </div>
+                                <div class="Sunday action-button">
+                                    <button onclick="assignToDay('{{ clothing }}', 'Sunday')">Sunday</button>
+                                </div>
+                            </div>
+                        </div>
                     </h2>
-                    <h4 class="text">
-                        {{ outfit[1] + ", " }}
-                        {{ outfit[2] + ", " }}
-                        {{ outfit[3] }}
-                    </h4>
+                    <div class="clothing-items">
+                        {% for clothing, image_path in outfit['Clothing'].items() %}
+                            <div class="clothing-item">
+                                <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image">
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
+        <div class="calendar-box">
+            <div class="day">
+                <p>Monday</p>
+                <input type="text" id="monday" name="monday" placeholder="Enter outfit for Monday">
+            </div>
+            <div class="day">
+                <p>Tuesday</p>
+                <input type="text" id="tuesday" name="tuesday" placeholder="Enter outfit for Tuesday">
+            </div>
+            <div class="day">
+                <p>Wednesday</p>
+                <input type="text" id="wednesday" name="wednesday" placeholder="Enter outfit for Wednesday">
+            </div>
+            <div class="day">
+                <p>Thursday</p>
+                <input type="text" id="thursday" name="thursday" placeholder="Enter outfit for Thursday">
+            </div>
+            <div class="day">
+                <p>Friday</p>
+                <input type="text" id="friday" name="friday" placeholder="Enter outfit for Friday">
+            </div>
+            <div class="day">
+                <p>Saturday</p>
+                <input type="text" id="saturday" name="saturday" placeholder="Enter outfit for Saturday">
+            </div>
+            <div class="day">
+                <p>Sunday</p>
+                <input type="text" id="sunday" name="sunday" placeholder="Enter outfit for Sunday">
+            </div>
+        </div>
     </main>
+    <script>
+        function showAssignOptions(clothing) {
+            var options = document.getElementById(clothing + "-options");
+            options.style.display = options.style.display === "none" ? "block" : "none";
+        }
+    
+        function assignToDay(clothing, day) {
+            // Here, you can perform logic to assign the clothing to the selected day
+            console.log("Assign", clothing, "to", day);
+            var options = document.getElementById(clothing + "-options");
+            options.style.display = "none";
+        }
+    </script>
 </body>
 </html>

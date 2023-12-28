@@ -172,9 +172,21 @@ def generate_fit():
 
    outfits = []
    for style in styles:
-      outfits.extend(GetStyleOutfits(style, tops, bots, shoes))
+      style_outfits = GetStyleOutfits(style, tops, bots, shoes)
+      for outfit in style_outfits:
+         outfit_with_images = {'OutfitType': outfit[0]}
+         clothing_names = outfit[1:]
+         clothing_info = {}
+         for clothing_name in clothing_names:
+               image_path = get_image_paths_by_name(user_id, clothing_name)
+               clothing_info[clothing_name] = image_path
+         outfit_with_images['Clothing'] = clothing_info
+         outfits.append(outfit_with_images)
 
+   print("OUTFITS: ", outfits)
    return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits)
+
+
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
@@ -205,8 +217,16 @@ def add_clothing_manual():
       clothing_name = request.form['clothing_name']
       clothing_type = request.form['clothes_type']
       is_clean = request.form['is_clean'] == "y"
-
+      
       image_data = request.files['image']
+
+      has_name = is_clothing_name_by_id(clothing_name, user_id)
+      print(has_name)
+      if has_name:
+         return render_template("add_clothing_manual.html", session=user, result="Name already exists for cloth", user_id=user_id)   
+      if clothing_name is None or clothing_type is None or is_clean is None or image_data is None:
+         return render_template("add_clothing_manual.html", session=user, result="All data fields not entered", user_id=user_id)   
+
 
       if image_data.filename == '':
          return render_template("add_clothing_manual.html", result="No Selected File", session=user, user_id=user_id)   
@@ -304,6 +324,24 @@ def update_element():
         return jsonify(response_data), 200
     else:
         return 'Invalid request', 400
+
+@app.route('/update_cleanliness', methods=['POST'])
+def update_cleanliness():
+   if request.method == 'POST':
+      data = request.get_json()
+      clothid = data.get('clothesId')
+      new_status = data.get('cleanlinessStatus')
+
+      update_cleanliness_status(clothid, new_status)
+      print("clothid: ", clothid)
+      print("new status: ", new_status)
+      response_data = {
+            'clothid': clothid,
+            'message': 'Updated successfully'
+        }
+      return jsonify(response_data), 200
+
+
 
 @app.route('/delete', methods=['DELETE'])
 def delete_element():
