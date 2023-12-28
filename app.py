@@ -151,6 +151,7 @@ def closet():
          print("ERROR: NO ID_TOKEN FOUND")
 
       clothes = get_clothing_name_image_id_by_user_id(user_id)
+
       print(clothes)
       return render_template("closet.html", session=user, user_id=user_id, clothes=clothes)
 
@@ -340,8 +341,6 @@ def update_cleanliness():
             'message': 'Updated successfully'
         }
       return jsonify(response_data), 200
-
-
 
 @app.route('/delete', methods=['DELETE'])
 def delete_element():
