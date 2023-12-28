@@ -1,12 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Playfair+Display:ital,wght@0,400;1,900&family=Young+Serif&display=swap');
+
 html {
     overflow: hidden;
     height: 100%;
-    /* -webkit-animation: text-focus-in 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-    animation: text-focus-in 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+    -webkit-animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
 body {
-    font-family: 'Young Serif', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     height: 100%;
     overflow: auto;
@@ -16,7 +18,6 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 0;
-    font-family: 'Arial', sans-serif;
 }
 
 header {
@@ -35,7 +36,7 @@ header {
 .text {
     text-align: center;
     color: black;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
 }
 
@@ -99,7 +100,7 @@ nav {
 
 
 .title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
 
     font-size: 30px;
@@ -112,12 +113,12 @@ a {
 }
 
 li {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 }
 
 .logo a:visited {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 36px; /* Increase the font size */
     font-weight: bold;
     text-decoration: none;
@@ -153,7 +154,7 @@ li {
 }
 
 form {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 
     background-color: #fff;
@@ -164,7 +165,7 @@ form {
 }
 
 label {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 
     display: block;
@@ -173,7 +174,7 @@ label {
 }
 
 input {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     width: 100%;
     padding: 8px;
@@ -184,20 +185,18 @@ input {
 }
 
 .action-button {
-    font-family: 'Playfair Display', serif;
-    font-style: normal;
+    font-family: 'Montserrat', sans-serif;
 
     display: inline-block;
     padding: 10px 20px;
     background-color: #333;
     color: #fff;
-    text-decoration: none;
     border-radius: 5px;
     font-size: 16px;
     margin-top: 20px;
 
     /* -webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; */
+            animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; */
     /* -webkit-animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
     animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
 }
@@ -238,7 +237,20 @@ input {
   
 
 .delete-button {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-top: 0px;
+}
+
+.cleanliness-button {
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 
     padding: 5px 10px;
