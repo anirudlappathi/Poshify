@@ -1,5 +1,5 @@
 from algorithm import color_algo
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, func
 from .database import dbsession, Base
 import os
 # import logging
@@ -36,16 +36,22 @@ def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturatio
         print(f"Create Cloth Error: {e}")
         return f"ERROR: {e}"
 
-def get_clothing_name_image_id_by_user_id(user_id): #returns clothing img file as well
+def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file as well
     try:
         clothing = dbsession.query(Clothes).filter_by(user_id=user_id).all()
         clothing_data = []
         for item in clothing:
-            clothing_data.append((item.clothing_name, os.path.join("clothing_images", item.clothingimg_filepath), item.clothes_id))
+            clothing_data.append((
+                item.clothing_name,
+                os.path.join("clothing_images", item.clothingimg_filepath),
+                item.clothes_id,
+                item.is_clean  # Assuming is_clean is a field in the Clothes model
+            ))
         return clothing_data
     except Exception as e:
         print(f"Get Clothing Data Error: {e}")
         return None
+
 
 def get_clothing_by_type(user_id, clothing_type):
     try:
@@ -101,10 +107,31 @@ def get_clothing_url_by_id(clothes_id, user_id):
     
 def is_clothing_name_by_id(clothes_name, user_id):
     try:
-        name_exists = dbsession.query(Clothes).filter(Clothes.user_id == user_id, Clothes.clothing_name == clothes_name).first()
+        name_exists = dbsession.query(Clothes).filter(Clothes.user_id == user_id, func.trim(Clothes.clothing_name) == clothes_name.strip()).first()
         print('a',name_exists)
         print('b',bool(name_exists))
         return bool(name_exists)
     except Exception as e:
         print(f"CHECK CLOTHING NAME AND ID ERROR: {e}")
         return f"ERROR: {e}"
+
+def update_cleanliness_status(clothid, new_status):
+    try:
+        print("clothid in function: ", clothid)
+        print("new status in function: ", new_status)
+        clothing_item = dbsession.query(Clothes).filter_by(clothes_id=clothid).first()
+        print("clothing item; ", clothing_item)
+        if clothing_item:
+            if new_status.lower() == 'clean':
+                clothing_item.is_clean = 1  # Set as 1 (True)
+                print("set to clean")
+            elif new_status.lower() == 'dirty':
+                clothing_item.is_clean = 0  # Set as 0 (False)
+                print("Set to dirty")
+
+            dbsession.commit()
+            return f"Updated cleanliness status of clothing ID {clothid} to {new_status.capitalize()}"
+        else:
+            return f"Clothing item with ID {clothid} not found"
+    except Exception as e:
+        return f"Error: {e}"
