@@ -46,6 +46,19 @@
         <a href="add_clothing_manual" class="action-button">Add Clothing: Manual</a>
     </center>
     </br>
+    <div class="dropdown">
+        <button class="action-button" onclick="toggleDropdown()" class="article-filter">Article</button>
+        <div id="article-filter" class="dropdown-content">
+            <label>Jacket<input type="checkbox" class="filterCheckbox" value="Jacket"></label>
+            <label>T-Shirt<input type="checkbox" class="filterCheckbox" value="T-Shirt"></label>
+            <label>Sweatshirt<input type="checkbox" class="filterCheckbox" value="Sweatshirt"></label>
+            <label>Pants<input type="checkbox" class="filterCheckbox" value="Pants"></label>
+            <label>Shorts<input type="checkbox" class="filterCheckbox" value="Shorts"></label>
+            <label>Shoes<input type="checkbox" class="filterCheckbox" value="Shoes"></label>
+            <label>Hat<input type="checkbox" class="filterCheckbox" value="Hat"></label>
+            <button class="action-button" onclick="applyFilters()">Apply</button>
+        </div>
+    </div>
     <div class="grid">
         {% for clothing_name, file_path, clothes_id, is_clean in clothes %}
             <div class="grid-item center text" data-clothes-id="{{ clothes_id }}">
@@ -147,11 +160,26 @@
                     console.error('Error deleting clothing:', error);
                 });
             }
+
+            function toggleDropdown() {
+                var dropdown = document.getElementById("article-filter")
+                dropdown.classList.toggle("show")
+            }
+
+            function applyFilters() {
+                var checkboxes = document.querySelectorAll('.filterCheckbox');
+                var selectedFilters = Array.from(checkboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+
+                // Perform actions with selectedFilters (e.g., filter data, etc.)
+                console.log("Selected Filters: ", selectedFilters);
+
+                // Hide the dropdown after applying filters
+                document.getElementById("filterDropdown").classList.remove("show");
+                }
         </script>
     </div>
-
-    
-    
     </main>
 </body>
 </html>

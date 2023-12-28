@@ -3,12 +3,12 @@
 html {
     overflow: hidden;
     height: 100%;
-    /* -webkit-animation: text-focus-in 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-    animation: text-focus-in 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+    -webkit-animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
 body {
-    font-family: 'Young Serif', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     height: 100%;
     overflow: auto;
@@ -18,11 +18,10 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 0;
-    font-family: 'Arial', sans-serif;
 }
 
 header {
-   background-color: #f2f2f2; /* Set the background color to match the page */
+    background-color: #f2f2f2; /* Set the background color to match the page */
     width: 100%;
 }
 
@@ -37,7 +36,7 @@ header {
 .text {
     text-align: center;
     color: black;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
 }
 
@@ -76,32 +75,32 @@ nav {
 @-webkit-keyframes text-focus-in {
     0% {
     -webkit-filter: blur(12px);
-    filter: blur(12px);
+            filter: blur(12px);
     opacity: 0;
     }
     100% {
     -webkit-filter: blur(0px);
-    filter: blur(0px);
+            filter: blur(0px);
     opacity: 1;
     }
 }
 @keyframes text-focus-in {
     0% {
     -webkit-filter: blur(12px);
-    filter: blur(12px);
+            filter: blur(12px);
     opacity: 0;
     }
     100% {
     -webkit-filter: blur(0px);
-    filter: blur(0px);
+            filter: blur(0px);
     opacity: 1;
     }
 }
-  
+  
 
 
 .title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
 
     font-size: 30px;
@@ -114,17 +113,59 @@ a {
 }
 
 li {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 }
 
 .logo a:visited {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 36px; /* Increase the font size */
     font-weight: bold;
     text-decoration: none;
     text-align: center;
     color: black;
+}
+
+.checkbox-label input[type="checkbox"],
+.label-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+/* Dropdown container */
+.dropdown {
+    margin-left: 10px;
+    position: relative;
+    display: inline-block;
+}
+
+
+/* Style for dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+/* Display dropdown when button is clicked */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Align checkboxes and labels horizontally */
+.dropdown-content label {
+    margin: 10px 10px;
+    display: flex;
+    align-items: center;
+}
+
+
+/* Show the dropdown menu when the button is clicked */
+.show {
+    display: block;
 }
 
 .nav-links {
@@ -155,7 +196,7 @@ li {
 }
 
 form {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 
     background-color: #fff;
@@ -166,7 +207,7 @@ form {
 }
 
 label {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 
     display: block;
@@ -175,7 +216,7 @@ label {
 }
 
 input {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     width: 100%;
     padding: 8px;
@@ -186,20 +227,18 @@ input {
 }
 
 .action-button {
-    font-family: 'Playfair Display', serif;
-    font-style: normal;
+    font-family: 'Montserrat', sans-serif;
 
     display: inline-block;
     padding: 10px 20px;
     background-color: #333;
     color: #fff;
-    text-decoration: none;
     border-radius: 5px;
     font-size: 16px;
     margin-top: 20px;
 
     /* -webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; */
+            animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; */
     /* -webkit-animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
     animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
 }
@@ -219,28 +258,41 @@ input {
 @-webkit-keyframes scale-up-center {
     0% {
     -webkit-transform: scale(0.5);
-    transform: scale(0.5);
+            transform: scale(0.5);
     }
     100% {
     -webkit-transform: scale(1);
-    transform: scale(1);
+            transform: scale(1);
     }
 }
 @keyframes scale-up-center {
     0% {
     -webkit-transform: scale(0.5);
-    transform: scale(0.5);
+            transform: scale(0.5);
     }
     100% {
     -webkit-transform: scale(1);
-    transform: scale(1);
+            transform: scale(1);
     }
 }
-  
-  
+  
+  
 
 .delete-button {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-top: 0px;
+}
+
+.cleanliness-button {
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
 
     padding: 5px 10px;
@@ -274,8 +326,8 @@ input {
 }
 
 .radio-label {
-  display: flex;
-  align-items: center;
+  display: flex;
+  align-items: center;
 }
 .is_clean_yes {
     padding: 0 0;
@@ -330,4 +382,23 @@ input {
     border-radius: 5%; /* Make the image circular */
     margin-right: 10px; /* Add some space to the right of the picture */
 }
+.calendar-box {
+    display: flex;
+    justify-content: space-around; /* Adjust spacing between days */
+    align-items: center; /* Center vertically */
+}
 
+.day {
+    text-align: center;
+    margin: 10px; /* Adjust spacing between days */
+}
+
+/* Optional styling for inputs and paragraphs */
+input[type="text"] {
+    width: 200px; /* Set input width */
+    padding: 5px; /* Adjust padding */
+}
+
+p {
+    margin: 0;
+}

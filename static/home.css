@@ -1,62 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Playfair+Display:ital,wght@0,400;1,900&family=Young+Serif&display=swap');
+
 html {
-  overflow: hidden;
-  height: 100%;
-  /* -webkit-animation: text-focus-in 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-  animation: text-focus-in 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+    overflow: hidden;
+    height: 100%;
+    -webkit-animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
 body {
-  font-family: 'Young Serif', serif;
-  font-style: normal;
-  height: 100%;
-  overflow: auto;
-  background-color: #f2f2f2;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  font-family: 'Arial', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    height: 100%;
+    overflow: auto;
+    background-color: #f2f2f2;
+    /* height: 100vh; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 header {
-  background-color: #f2f2f2; /* Set the background color to match the page */
-  width: 100%;
+    background-color: #f2f2f2; /* Set the background color to match the page */
+    width: 100%;
 }
 
 .inline {
-  display: inline-flex;
+    display: inline-flex;
 }
 
 .center {
-  text-align: center;
+    text-align: center;
 }
 
 .text {
-  text-align: center;
-  color: black;
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
+    text-align: center;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
 }
 
 nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 50px;
-  border-bottom: #e2e2e2 2px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    border-bottom: #e2e2e2 2px solid;
 }
 
 .logo {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 50px; /* Increase the font size */
-  text-align: center;
-  color: black;
-  line-height: 1;
-  /* -webkit-animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-  animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 50px; /* Increase the font size */
+    text-align: center;
+    color: black;
+    line-height: 1;
+    /* -webkit-animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
 }
 
 /* ----------------------------------------------
@@ -72,134 +74,132 @@ nav {
 * ----------------------------------------
 */
 @-webkit-keyframes text-focus-in {
-  0% {
-  -webkit-filter: blur(12px);
-          filter: blur(12px);
-  opacity: 0;
-  }
-  100% {
-  -webkit-filter: blur(0px);
-          filter: blur(0px);
-  opacity: 1;
-  }
+    0% {
+    -webkit-filter: blur(12px);
+            filter: blur(12px);
+    opacity: 0;
+    }
+    100% {
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+    opacity: 1;
+    }
 }
 @keyframes text-focus-in {
-  0% {
-  -webkit-filter: blur(12px);
-          filter: blur(12px);
-  opacity: 0;
-  }
-  100% {
-  -webkit-filter: blur(0px);
-          filter: blur(0px);
-  opacity: 1;
-  }
+    0% {
+    -webkit-filter: blur(12px);
+            filter: blur(12px);
+    opacity: 0;
+    }
+    100% {
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+    opacity: 1;
+    }
 }
-
+  
 
 
 .title {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
 
-  font-size: 30px;
-  text-align: center;
-  padding: 5fr;
+    font-size: 30px;
+    text-align: center;
+    padding: 5fr;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 li {
-  font-family: 'Playfair Display', serif;
-  font-style: normal;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
 }
 
 .logo a:visited {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px; /* Increase the font size */
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px; /* Increase the font size */
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    color: black;
 }
 
 .nav-links {
-  list-style-type: none;
-  margin: 0;
-  display: flex;
-  align-items: center; /* Aligns the list items vertically */
+    list-style-type: none;
+    margin: 0;
+    display: flex;
+    align-items: center; /* Aligns the list items vertically */
 }
 
 .nav-links li {
-  display: inline;
-  margin-right: 20px;
+    display: inline;
+    margin-right: 20px;
 }
 
 .nav-links a {
-  color: black;
-  text-decoration: none;
-  font-size: 16px;
-  display: inline-block; /* Allows vertical alignment */
-  vertical-align: middle; /* Vertically centers the text */
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    display: inline-block; /* Allows vertical alignment */
+    vertical-align: middle; /* Vertically centers the text */
 }
 
 .center-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    align-items: center;
 }
 
 form {
-  font-family: 'Playfair Display', serif;
-  font-style: normal;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
 
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
 }
 
 label {
-  font-family: 'Playfair Display', serif;
-  font-style: normal;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
 
-  display: block;
-  margin: 10px 0 5px;
-  color: #555;
+    display: block;
+    margin: 10px 0 5px;
+    color: #555;
 }
 
 input {
-  font-family: 'Playfair Display', serif;
-  font-style: normal;
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .action-button {
-  font-family: 'Playfair Display', serif;
-  font-style: normal;
+    font-family: 'Montserrat', sans-serif;
 
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  font-size: 16px;
-  margin-top: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1D1C1C;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
 
-  /* -webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; */
-  /* -webkit-animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-  animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+    /* -webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+            animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both; */
+    /* -webkit-animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: text-focus-in 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
 }
 
 /* ----------------------------------------------
@@ -215,118 +215,151 @@ input {
 * ----------------------------------------
 */
 @-webkit-keyframes scale-up-center {
-  0% {
-  -webkit-transform: scale(0.5);
-          transform: scale(0.5);
-  }
-  100% {
-  -webkit-transform: scale(1);
-          transform: scale(1);
-  }
+    0% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+    }
+    100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    }
 }
 @keyframes scale-up-center {
-  0% {
-  -webkit-transform: scale(0.5);
-          transform: scale(0.5);
-  }
-  100% {
-  -webkit-transform: scale(1);
-          transform: scale(1);
-  }
+    0% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+    }
+    100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    }
 }
-
-
+  
+  
 
 .delete-button {
-  font-family: 'Playfair Display', serif;
-  font-style: normal;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
 
-  padding: 5px 10px;
-  background-color: #333;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  font-size: 12px;
-  margin-top: 0px;
+    padding: 5px 10px;
+    background-color: #1D1C1C;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-top: 0px;
+}
+
+.cleanliness-button {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+
+    padding: 5px 10px;
+    background-color: #1D1C1C;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-top: 0px;
 }
 
 .file_submit {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  font-size: 16px;
-  margin-top: 20px;
-  transition: background-color 0.3s;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1D1C1C;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
 }
 
 .file_submit:hover {
-  background-color: #800080; /* Purple color on hover */
+    background-color: #800080; /* Purple color on hover */
 }
 
 .radio-container {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .radio-label {
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 }
 .is_clean_yes {
-  padding: 0 0;
+    padding: 0 0;
 }
 
 .is_clean_no {
-  padding: 0 0;
+    padding: 0 0;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(5 , 2fr); /* Adjust columns */
-  gap: 15px; /* Adjust gap between items */
+    display: grid;
+    grid-template-columns: repeat(5 , 2fr); /* Adjust columns */
+    gap: 15px; /* Adjust gap between items */
 }
 
 .grid-item {
-  border: 1px solid #333; /* Borders or any additional styling */
-  border-radius: 3px;
-  background-color: #f5f5f5;
-  margin: 50px 0px;
+    border: 1px solid #1D1C1C; /* Borders or any additional styling */
+    border-radius: 3px;
+    background-color: #f5f5f5;
+    margin: 50px 0px;
 }
 
 .grid-image {
-  width: 90%; /* Ensure image fills its container */
-  height: 75%; /* Ensure image fills its container */
-  object-fit: cover; /* Crop the image to fit */
-  opacity: 1; /* Adjust opacity (0 to 1) */
-  border: 1px solid #333;
-  border-radius: 3px;
+    width: 90%; /* Ensure image fills its container */
+    height: 75%; /* Ensure image fills its container */
+    object-fit: cover; /* Crop the image to fit */
+    opacity: 1; /* Adjust opacity (0 to 1) */
+    border: 1px solid #1D1C1C;
+    border-radius: 3px;
 }
 
 .text-over-image {
-  /* position: absolute; */
-  top: 50%;
-  left: 50%;
-  /* transform: translate(-50%, -50%); */
-  color: #333;
-  font-size: 20px; /* Adjust font size */
-  font-weight: bold; /* Adjust font weight */
-  text-align: center;
-  z-index: 1; /* Ensure text appears above the image */
+    /* position: absolute; */
+    top: 50%;
+    left: 50%;
+    /* transform: translate(-50%, -50%); */
+    color: #1D1C1C;
+    font-size: 20px; /* Adjust font size */
+    font-weight: bold; /* Adjust font weight */
+    text-align: center;
+    z-index: 1; /* Ensure text appears above the image */
 }
 
 .clearfix::after {
-  display: table;
-  clear: both;
+    display: table;
+    clear: both;
 }
 
 .profile-picture {
-  height: 30px; /* Adjust the height of the profile picture */
-  width: 30px; /* Adjust the width of the profile picture */
-  border-radius: 5%; /* Make the image circular */
-  margin-right: 10px; /* Add some space to the right of the picture */
+    height: 30px; /* Adjust the height of the profile picture */
+    width: 30px; /* Adjust the width of the profile picture */
+    border-radius: 5%; /* Make the image circular */
+    margin-right: 10px; /* Add some space to the right of the picture */
+}
+.calendar-box {
+    display: flex;
+    justify-content: space-around; /* Adjust spacing between days */
+    align-items: center; /* Center vertically */
+}
+
+.day {
+    text-align: center;
+    margin: 10px; /* Adjust spacing between days */
+}
+
+/* Optional styling for inputs and paragraphs */
+input[type="text"] {
+    width: 200px; /* Set input width */
+    padding: 5px; /* Adjust padding */
+}
+
+p {
+    margin: 0;
 }
 
 
@@ -353,7 +386,7 @@ align-items: center;
 }
 
 .landing-page-section {
-  background-color: #011012;
+  background-color: #f2f2f2;
   min-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -376,11 +409,11 @@ align-items: center;
 
 .hero-subtitle {
   font-size: 12px;
-  font-family: 'Inter-Regular';
+  font-family: 'Montserrat', sans-serif;
 }
 
 .rounded-box {
-  background-color: #00161C; /* or any color you want */
+  background-color: #1D1C1C; /* or any color you want */
   border-radius: 8px; 
   padding: 10px 20px; /* Adjust for space around the text */
   display: inline-flex; /* This makes the background only as wide as the content */
@@ -396,16 +429,16 @@ align-items: center;
   color: white; 
   font-size: 5rem; 
   padding-bottom: 20px;
-  background: -webkit-linear-gradient(#eee, #0ADDF8);
+  background: #1D1C1C;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: normal;
 }
 
 .landing-page-container h1:hover{
-  color: aquamarine;
+  color: #1D1C1C;
   cursor: pointer;
-  -webkit-text-fill-color: #0ADDF8;
+  -webkit-text-fill-color: #1D1C1C;
 }
 
 .non-bold-title {
@@ -469,7 +502,7 @@ align-items: center;
 
 .bigcontainer2 h4 {
   color: white;
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
   font-size: 250%;
   text-align: center;
   padding: 5%;
@@ -479,7 +512,7 @@ align-items: center;
   color: white;
   text-align: center;
   margin-top: 5%;
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
 }
 
 .box2 {
@@ -514,7 +547,7 @@ align-items: center;
 }
 
 header {
-  background-color: #333; /* Background color for the header */
+  background-color: #f2f2f2; Background color for the header
   color: #fff; /* Text color for the header */
   padding: 10px 0; /* Add padding to the top and bottom */
   text-align: center;
@@ -549,8 +582,8 @@ header {
   width: calc(100% - 40px); /* Adjust for padding and button width */
   border-radius: 2em;
   border: 2px solid #fff;
-  background-color: #011012;
-  color: #C8C8C8;
+  color: #ffffff;
+  text-align: ce;
   padding: 10px 20px;
   margin: 0;
 }
@@ -579,26 +612,26 @@ header {
 
 .filter-button {
   border: 1px solid #05626E;
-  background-color: #011012;
+  background-color: #1D1C1C;
   color: white;
   padding: 10px 20px;
   border-radius: 20px;
   cursor: pointer;
   outline: none;
   transition: background-color 0.3s, color 0.3s;
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
   font-size: 0.5rem;
 }
 
 .filter-button:hover {
-  background-color: #00B4D8; /* Adjust hover color as needed */
+  background-color: #1D1C1C; /* Adjust hover color as needed */
 }
 
 .filter-button.industry {
-  background-color: #0ADDF8;
+  background-color: 1D1C1C;
   color: black;
   border: none;
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   display: flex;
   flex-direction: row;
@@ -612,7 +645,7 @@ header {
 
 .filter-button.career-role {
   background-color: transparent;
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   display: flex;
   flex-direction: row;
@@ -630,18 +663,20 @@ header {
 }
 
 .review-invitation {
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
 }
 
 .review-link {
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   text-decoration: underline;
 }
 
 .landing-page-intro {
-  font-family: 'Inter-Light';
+  font-family: 'Montserrat', sans-serif;
+  color: #1D1C1C;
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   max-width: 500px; 
   line-height: 1.5; 
@@ -726,7 +761,7 @@ header {
 
 .trending-outfits .pseudo {
   border: 1px solid;
-  border-color: #05728066;
+  border-color: #1D1C1C;
   height: 82px;
   left: 0;
   position: absolute;
@@ -766,7 +801,6 @@ header {
 
 .trending-outfits .div {
   border: 1px solid;
-  border-color: #03353b;
   border-radius: 16px;
   height: 1608px;
   left: 0;
