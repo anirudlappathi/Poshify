@@ -40,29 +40,29 @@
                 <div class="grid-item text">
                     <h2 class="text">
                         {{ outfit['OutfitType'] }} Outfit
-                        <button onclick="showAssignOptions('{{ clothing }}')">Assign to</button>
+                        <button class="action-button" onclick="showAssignOptions('{{ clothing }}')">Assign to</button>
                         <div id="{{ clothing }}-options" class="assign-options" style="display: none;">
                             <p>Assign {{ clothing }} to:</p>
                             <div class="calendar-box">
-                                <div class="Monday">
+                                <div class="Monday action-button">
                                     <button onclick="assignToDay('{{ clothing }}', 'Monday')">Monday</button>
                                 </div>
-                                <div class="Tuesday">
+                                <div class="Tuesday action-button">
                                     <button onclick="assignToDay('{{ clothing }}', 'Tuesday')">Tuesday</button>
                                 </div>
-                                <div class="Wednesday">
+                                <div class="Wednesday action-button">
                                     <button onclick="assignToDay('{{ clothing }}', 'Wednesday')">Wednesday</button>
                                 </div>
-                                <div class="Thursday">
+                                <div class="Thursday action-button">
                                     <button onclick="assignToDay('{{ clothing }}', 'Thursday')">Thursday</button>
                                 </div>
-                                <div class="Friday">
+                                <div class="Friday action-button">
                                     <button onclick="assignToDay('{{ clothing }}', 'Friday')">Friday</button>
                                 </div>
-                                <div class="Saturday">
+                                <div class="Saturday action-button">
                                     <button onclick="assignToDay('{{ clothing }}', 'Saturday')">Saturday</button>
                                 </div>
-                                <div class="Sunday">
+                                <div class="Sunday action-button">
                                     <button onclick="assignToDay('{{ clothing }}', 'Sunday')">Sunday</button>
                                 </div>
                             </div>
