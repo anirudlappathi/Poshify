@@ -2,34 +2,23 @@ import cv2
 import numpy as np
 import base64
 
-#webcam = cv2.VideoCapture(0)
+def bgr_to_hsv(b, g, r):
+    bgr_color = np.uint8([[[b, g, r]]])
+    hsv_color = cv2.cvtColor(bgr_color, cv2.COLOR_BGR2HSV)
+    return hsv_color[0][0]
 
-def process_image(image_data):
-    print("process image time")
-    base64_str = image_data.split(',')[1]
-    img_data = base64.b64decode(base64_str)
-    nparr = np.frombuffer(img_data, np.uint8)
-    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-    k = 5
-    HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    HSVframe = HSVframe.reshape((-1, 3))
-    HSVframe = np.float32(HSVframe)
+def adjust_brightness(frame, wanted_brightness):
+    grayscale_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    mean = cv2.mean(grayscale_frame)
+    brightness_factor = wanted_brightness / mean[0]
+    return cv2.convertScaleAbs(frame, alpha=brightness_factor, beta=0)
 
-    _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
-    dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
-    print("Dominant color:", dominant_color)
-
-    return dominant_color.tolist()
-
-'''
-def process_image(image_data):
+def dominant_color_finder_dataurl(image_data):
+    #f'data:image/jpeg;base64,{encoded_jpg}'
+    # image data is just encoded_jpg
     img_data = base64.b64decode(image_data)
     nparr = np.frombuffer(img_data, np.uint8)
-    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-    # Your OpenCV processing logic here to find dominant color
+    frame = adjust_brightness(cv2.imdecode(nparr, cv2.IMREAD_COLOR), 200)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     k = 5
     HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -38,11 +27,13 @@ def process_image(image_data):
 
     _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
     dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
-    print("Dominant color:", dominant_color)
+    dominant_color_hsv = cv2.cvtColor(np.uint8([[dominant_color]]), cv2.COLOR_BGR2HSV)[0][0]
+    print('a',dominant_color_hsv)
+    print(dominant_color_hsv[0])
+    return (int(dominant_color_hsv[0]) * 360) // 179, (int(dominant_color_hsv[1]) * 100) // 255, (int(dominant_color_hsv[2]) * 100) // 255
 
-    return dominant_color.tolist()
-'''
 def detect_dominant_color_webcam():
+    webcam = cv2.VideoCapture(0)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     k = 5
     time = 0
@@ -66,6 +57,7 @@ def detect_dominant_color_webcam():
     cv2.destroyAllWindows()
         
 def create_contours_webcam():
+    webcam = cv2.VideoCapture(0)
     object_detector = cv2.createBackgroundSubtractorMOG2()
     while True:
 
@@ -89,5 +81,56 @@ def create_contours_webcam():
     webcam.release()
     cv2.destroyAllWindows()
 
+def brighten_webcam():
+
+    webcam = cv2.VideoCapture(0)
+
+    alpha = 1.5  # Contrast control (1.0-3.0)
+    beta = 30    # Brightness control (0-100)
+    wanted_brightness = 150
+    while True:
+        _, frame = webcam.read()
+
+        adjusted_image = adjust_brightness(frame, wanted_brightness)
+
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord('o'):
+            wanted_brightness -= 5
+            print(wanted_brightness)
+        if key == ord('p'):
+            wanted_brightness += 5
+            print(wanted_brightness)
+
+        cv2.imshow('Adjusted Image', adjusted_image)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
+def testing_brightness():
+
+    webcam = cv2.VideoCapture(0)
+    while True:
+        _, frame = webcam.read()
+        frame = adjust_brightness(frame, 200)
+        cv2.imshow('frame', frame)
+        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+        k = 5
+        HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        HSVframe = HSVframe.reshape((-1, 3))
+        HSVframe = np.float32(HSVframe)
+
+        _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+        dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
+        dominant_color_hsv = cv2.cvtColor(np.uint8([[dominant_color]]), cv2.COLOR_BGR2HSV)[0][0]
+        print('a',dominant_color_hsv)
+        print(dominant_color_hsv[0])
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
+
+
 if __name__ == "__main__":
-    create_contours_webcam()
+    testing_brightness()

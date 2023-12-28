@@ -25,10 +25,11 @@
         <nav>
             <div class="logo" href="home"><a href="home">Poshify</a></div>
             <ul class="nav-links">
-                {% if user_id %}
+                {% if session %}
                 <li><a class="dashboard" href="dashboard">Dashboard</a></li>
-                <li><a class="settings" href="settings">Settings</a></li>
-                <img class="profile-picture" src="{{ session['userinfo']['picture'] }}">
+                <li><a class="closet" href="closet">Closet</a></li>
+                <li><a class="outfits" href="outfits">Outfits</a></li>
+                <img class="profile-picture" href="settings" src="{{ session['userinfo']['picture'] }}">
                 {% else %}
                 <li><a class="login" href="login">Login</a></li>
                 <li><a class="signup" href="signup">Sign Up</a></li>
@@ -44,11 +45,11 @@
     </center>
     </br>
     <div class="grid">
-        {% for clothing_name, file_path in clothes.items() %}
-            <div class="grid-item center text">
+        {% for clothing_name, file_path, clothes_id in clothes %}
+            <div class="grid-item center text" data-clothes-id="{{ clothes_id }}">
                 <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
                 <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing_name }} Image">
-                <button class="delete-button" onclick="deleteClothing('{{ clothing_name }}')">Delete Clothing</button>
+                <button class="delete-button" onclick="deleteClothing('{{ clothes_id }}')">Delete Clothing</button>
             </div>
         {% endfor %}
     
@@ -90,24 +91,22 @@
                     });
             }
             
-            function deleteClothing(clothingName) {
+            function deleteClothing(clothes_id) {
                 fetch('/delete', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ clothingName }),
+                    body: JSON.stringify({ clothes_id }),
                 })
                 .then(response => {
                     if (response.ok) {
                         console.log('Clothing deleted successfully');
-                        const clothingBlocks = document.querySelectorAll(`.text-over-image`);
-                        clothingBlocks.forEach(textElement => {
-                            if (textElement.innerText === clothingName) {
-                                const gridItem = textElement.closest('.grid-item');
-                                if (gridItem) {
-                                    gridItem.remove();
-                                }
+                        const gridItems = document.querySelectorAll('.grid-item');
+                        gridItems.forEach(gridItem => {
+                            const dataClothesId = gridItem.getAttribute('data-clothes-id');
+                            if (dataClothesId === clothes_id) {
+                                gridItem.remove();
                             }
                         });
                     } else {
@@ -118,12 +117,6 @@
                     console.error('Error deleting clothing:', error);
                 });
             }
-
-
-
-
-
-
         </script>
     </div>
     
