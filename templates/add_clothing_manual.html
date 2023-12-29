@@ -1,40 +1,7 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Poshify</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-        <script type="text/javascript"
-            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-        </script>
-        <script src="app.py"></script>
-        
-        <link rel="stylesheet" href="styles.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,900&family=Young+Serif&display=swap" rel="stylesheet">
-
-    </head>
     <body>
-        <header>
-            <nav>
-                <div class="logo" href="home"><a href="home">Poshify</a></div>
-                <ul class="nav-links">
-                    {% if session %}
-                    <li><a class="dashboard" href="dashboard">Dashboard</a></li>
-                    <li><a class="closet" href="closet">Closet</a></li>
-                    <li><a class="outfits" href="outfits">Outfits</a></li>
-                    <a href="settings">
-                        <img class="profile-picture" src="{{ session['userinfo']['picture'] }}" alt="Profile Picture">
-                    </a>
-                    {% else %}
-                    <li><a class="login" href="login">Login</a></li>
-                    <li><a class="signup" href="signup">Sign Up</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </header>
+        {% include 'header.html' %}
         <div class ="sec" id="sec">
             <h2 class="center title">Add Clothing Manually</h2>
             <form action = "/add_clothing_manual" method = "POST" id="clothesForm" enctype="multipart/form-data">
