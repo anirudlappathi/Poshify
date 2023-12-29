@@ -151,9 +151,27 @@ def closet():
          print("ERROR: NO ID_TOKEN FOUND")
 
       clothes = get_clothing_name_image_id_by_user_id(user_id)
+      
+      # articles filter
+      # color filter
+      # dirty clean filter
+      filters = [[] for i in range(3)]
+      if 'filters' in session:
+         filters = session['filters']
 
-      print(clothes)
-      return render_template("closet.html", session=user, user_id=user_id, clothes=clothes)
+      return render_template("closet.html", session=user, user_id=user_id, clothes=clothes, filters=filters)
+
+@app.route("/update_filters", methods=["POST"])
+def update_filters():
+   if request.method == 'POST':
+      filter_data = request.get_json()
+      articles_data = filter_data.get('articles')
+      # color_data = filter_data.get('color_data')
+      # is_clean_data = filter_data.get('is_clean_data')
+      session['filters'] = [articles_data]
+
+      return ({'message': f'{articles_data} filter added successfully'}), 200
+
 
 @app.route("/outfits", methods=["POST", "GET"])
 def generate_fit():
