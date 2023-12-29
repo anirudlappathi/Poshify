@@ -2,6 +2,7 @@
 <html>
     <body>
         {% include 'header.html' %}
+        <div class ="content">
         <h2 class="center title">Add Clothing using Camera</h2>
         <div class ="sec" id="sec">
             <form action = "/add_clothing_camera" method = "POST" id="clothesForm">
@@ -78,5 +79,7 @@
                 
             </form>
         </div>
+       </div>
+        {% include 'footer.html' %}
     </body>
 </html>

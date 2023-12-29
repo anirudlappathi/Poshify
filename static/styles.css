@@ -13,11 +13,11 @@ body {
     height: 100%;
     overflow: auto;
     background-color: #f2f2f2;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0;
+    min-height: 100vh; /* 100% of the viewport height */
 }
 
 header {
@@ -402,3 +402,84 @@ input[type="text"] {
 p {
     margin: 0;
 }
+
+.content {
+    flex: 1; /* This allows the content to expand and take up available space, pushing the footer down */
+}
+
+/* Styles for the footer */
+.footer {
+    width: 100%; /* Footer takes the full width of the page */
+    background-color:  #f2f2f2; /* Example background color */
+    color: black; /* Example text color */
+    text-align: center; /* Centers the text */
+    padding: 10px 0; /* Example padding */
+    /* Add any other styles you need for your footer */
+}
+
+.connect-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.connect-with-us {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 0 20px; /* Adds horizontal spacing between box groups and wording */
+}
+
+.connect {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border: 2px solid black;
+}
+
+.wording {
+    /* Additional styling for wording if needed */
+}
+
+.footer-logo {
+    width: 50px; /* Adjust the size as needed */
+    height: auto; /* Maintain aspect ratio */
+    /* Add any additional styling as required, like margins */
+}
+
+.social-logo {
+    display: inline-block;
+    background-color: grey; /* Grey background */
+    border-radius: 50%; /* Circular shape */
+    width: 40px; /* Size of the circle */
+    height: 40px; /* Size of the circle */
+    text-align: center; /* Center the image horizontally */
+    line-height: 40px; /* Center the image vertically */
+    overflow: hidden; /* Ensures no overflow outside the circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-logo img {
+    width: 60%; /* Scales the image down. Adjust as needed */
+    vertical-align: middle; /* Aligns image vertically */
+}
+
+.dashboard-body {
+    display: flex; /* Enables flex layout */
+    margin: 0; /* Resets default margin */
+    height: 100vh; /* Sets the height of the body to the full viewport height */
+}
+
+.left-side {
+    flex: 0 0 200px; /* Fixed width for the left side */
+    background-color: #f2f2f2; /* Background color for the left side */
+    padding: 20px; /* Some padding inside the left side */
+    /* Add more styling as needed */
+}
+
+
+
+
