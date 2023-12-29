@@ -16,11 +16,33 @@
     <script src='https://jeromeetienne.github.io/threex.terrain/threex.terrain.js'></script>
     <script type="module" src="{{ url_for('static', filename='main.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
+    <style>
+        /* Add animation styles */
+        @keyframes slideUp {
+          0% { transform: translateY(100%); opacity: 0; }
+          100% { transform: translateY(0); opacity: 1; }
+        }
     
+        .hero-section h2 {
+          /* Apply initial styles */
+          opacity: 0;
+          transform: translateY(100%);
+          animation: slideUp 1s ease forwards; /* Run the animation */
+        }
+      </style>
+    <style>
+        /* Initially hide the header */
+        .header-hidden {
+            display: none;
+        }
+    </style>
     <title>Poshify</title>
 </head>
 <body>
-    {% include 'header.html' %}
+    <header class="header-hidden" id="site-header">
+        <!-- Your header content here -->
+        {% include 'header.html' %}
+    </header>
     <main>
       <section class="hero-section">
           <h2 id="text">Find your fits fast</h2>
@@ -28,16 +50,42 @@
       </section>
   </main>
   <div class="aboutsection" id="aboutsection">
-      <div class="title">
-          <h3>Our Purpose.</h3>
-          <h1>Creating cool fits</h1>
-      </div>
-      <div class="box">
-          <p>
-              test
-          </p>
-      </div>
+    <div class="title">
+      <h3>Our Purpose.</h3>
+    </div>
+    <div class="content">
+      <p>
+        test
+      </p>
+    </div>
   </div>
+  <script>
+    // Set timeout to display the header after 2 seconds
+    console.log("test1")
+    setTimeout(function() {
+        console.log("Test@")
+        var header = document.getElementById('site-header');
+        header.classList.remove('header-hidden');
+        header.classList.add('slide-in-blurred-top')
+    }, 2000);
+</script>
+
   
+  <script>
+    // Function to handle smooth scrolling
+    function scrollToSection(element) {
+      document.querySelector(element).scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+
+    // Find the Learn More button and add an event listener for smooth scrolling
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('btn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        scrollToSection('#aboutsection'); // Replace with the ID of the section you want to scroll to
+      });
+    });
+</script>
 </body>
 </html>
