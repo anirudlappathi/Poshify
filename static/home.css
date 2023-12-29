@@ -575,6 +575,7 @@ header {
   margin-top: 20px; /* Adjust the space above the search bar */
   margin-right: 20px;
   margin-left: 20px;
+  text-align: center;
   position: relative;
 }
 
@@ -582,7 +583,7 @@ header {
   width: calc(100% - 40px); /* Adjust for padding and button width */
   border-radius: 2em;
   border: 2px solid #fff;
-  color: #ffffff;
+  color: #1D1C1C;
   text-align: ce;
   padding: 10px 20px;
   margin: 0;
