@@ -1,121 +1,88 @@
-import * as THREE from "https://unpkg.com/three@0.127/build/three.module.js";
-import * as dat from "https://unpkg.com/three@0.127/examples/jsm/libs/dat.gui.module.js";
-import Stats from "https://unpkg.com/three@0.127/examples/jsm/libs/stats.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.127/examples/jsm/controls/OrbitControls.js";
-
-const stats = new Stats();
-const gui = new dat.GUI();
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  100
-);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-const controls = new OrbitControls(camera, renderer.domElement);
-
-camera.position.set(3, -2, 3);
-renderer.shadowMap.enabled = true;
-controls.enableDamping = true;
-renderer.setPixelRatio(window.devicePixelRatio);
+var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-controls.enablePan = false;
-controls.maxDistance = 50;
-controls.autoRotate = true;
-controls.autoRotateSpeed = 3;
-
-// Set the background color to white
-renderer.setClearColor(0xffffff);
-
-document.body.style.margin = 0;
 document.body.appendChild(renderer.domElement);
-document.body.appendChild(stats.dom);
+
+var onRenderFcts = [];
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.01, 1000);
+camera.position.z = 15;
+camera.position.y = 8;
+
+// Red ambient light
+var redAmbientLight = new THREE.AmbientLight(0xff0000, 0.01);
+scene.add(redAmbientLight);
+
+// Blue ambient light
+var blueAmbientLight = new THREE.AmbientLight(0x0000ff, 0.01);
+scene.add(blueAmbientLight);
+
+scene.fog = new THREE.Fog(0x000, 0, 45);
+
+// ... Lights and other setup ...
+var geometry = new THREE.TorusGeometry(3, 1, 16, 100);
+var material = new THREE.MeshPhongMaterial({
+  color: 0x996633, // A neutral color (brownish)
+  specular: 0x050505, // Set the specular highlight color (dark)
+  shininess: 100, // Increase shininess for a glossy effect
+  side: THREE.DoubleSide,
+  emissive: 0x000000, // Set emissive color (black)
+  emissiveIntensity: 0.1 // Low intensity for slight emissive effect
+});
 
 
+var mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
 
-const defaultGuiConfig = {
-  radomColors: false,
-  color: 0xffffff,
-  size: 0.015,
-  radius: 1,
-  tube: 0.5,
-  radialSegments: 32,
-  tubularSegments: 128,
-  reset: () => {
-    guiConfig = { ...defaultGuiConfig };
-    gui.remember(guiConfig);
-    reCreateGeo();
-  }
-};
+mesh.rotation.y = Math.PI / 4;
+mesh.rotation.x = Math.PI / 4;
+mesh.rotation.z = Math.PI / 4;
 
-const guiConfig = { ...defaultGuiConfig };
+mesh.scale.set(0.4, 0.4, 0.4);
 
-let donutGeo, donutMat, donut;
+mesh.position.y = 8;
 
-const createDonut = () => {
-  if (donut != null) {
-    donutGeo.dispose();
-    donutMat.dispose();
-    scene.remove(donut);
-  }
+var xRotationSpeed = 0.2; // Original x rotation speed
+var yRotationSpeed = 0.2; // Original y rotation speed
+var zRotationSpeed = 0.2; // Original z rotation speed
 
-  const {
-    radius,
-    tube,
-    radialSegments,
-    tubularSegments,
-    radomColors
-  } = guiConfig;
+var increaseFactor = 0.2; // Speed increase factor on scroll
+var scrollTimeout = null;
 
-  donutGeo = new THREE.TorusGeometry(
-    radius,
-    tube,
-    radialSegments,
-    tubularSegments
-  );
-  donutMat = new THREE.PointsMaterial({
-    color: 0x000000, // Set particle color to black
-    size: guiConfig.size,
-    sizeAttenuation: true
-  });
+// Function to handle scroll events
+function handleScroll(event) {
+  xRotationSpeed += increaseFactor;
+  yRotationSpeed += increaseFactor;
+  zRotationSpeed += increaseFactor;
 
-  if (radomColors) {
-    const pointsCount = donutGeo.attributes.position.count;
-    const colors = new Float32Array(pointsCount * 3);
+  // Clear any previous timeout
+  clearTimeout(scrollTimeout);
 
-    for (let i = 0; i < pointsCount; i++) {
-      colors[i * 3] = Math.random();
-      colors[i * 3 + 1] = Math.random();
-      colors[i * 3 + 2] = Math.random();
-    }
+  // Set a timeout to reset the rotation speed after 500ms (adjust as needed)
+  scrollTimeout = setTimeout(() => {
+    xRotationSpeed = 0.2; // Original x rotation speed
+    yRotationSpeed = 0.2; // Original y rotation speed
+    zRotationSpeed = 0.2; // Original z rotation speed
+  }, 500);
+}
 
-    donutGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-    donutMat.vertexColors = true;
-  }
+// Add a scroll event listener
+window.addEventListener('wheel', handleScroll);
 
-  donut = new THREE.Points(donutGeo, donutMat);
-  scene.add(donut);
-};
-
-createDonut();
-
-const animate = () => {
-  stats.begin();
-
-  controls.update();
+// Modify the rotation in the render loop
+onRenderFcts.push(function(delta, now) {
+  mesh.rotation.x += xRotationSpeed * delta;
+  mesh.rotation.y += yRotationSpeed * delta;
+  mesh.rotation.z += zRotationSpeed * delta;
   renderer.render(scene, camera);
-  // donut.rotation.y += 0.005;
-  // donut.rotation.x += 0.005;
+});
 
-  stats.end();
+var lastTimeMsec = null;
+requestAnimationFrame(function animate(nowMsec) {
   requestAnimationFrame(animate);
-};
-
-animate();
-
-window.addEventListener("resize", () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
+  var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+  lastTimeMsec = nowMsec;
+  onRenderFcts.forEach(function(onRenderFct) {
+    onRenderFct(deltaMsec / 1000, nowMsec / 1000);
+  });
 });
