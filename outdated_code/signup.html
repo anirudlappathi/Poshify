@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<body>
+    {% include 'header.html' %}
+    <div class ="sec" id="sec">
+        <h2 class="title">Create User</h2>
+
+        <form action = "/signup" method = "POST">
+            
+            <center>
+                {% if result %}
+                <a href="#sec"></a>
+                <h3 style="color: rgb(31, 236, 192)">Your Result:</h3>
+                <p>
+                    {{result}}
+                </p>
+                {% endif %}
+            </center>
+
+            <label for="username">Username: </label>
+            <input name="username" id="username" type="text">
+            <label for="first_name">First Name: </label>
+            <input name="first_name" id="first_name" type="text">
+            <label for="last_name">Last Name: </label>
+            <input name="last_name" id="last_name" type="text">
+            <label for="email">Email: </label>
+            <input name="email" id="email" type="text">
+            <label for="phone_number">Phone Number: </label>
+            <input name="phone_number" id="phone_number" type="text" maxlength="10">
+            <center><input type = "Submit" class = "file_submit"></center>
+            
+        </form>
+    </div>
+</body>
+</html>
