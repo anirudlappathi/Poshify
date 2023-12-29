@@ -11,8 +11,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <script src="{{ url_for('static', filename='slideshow.js') }}"></script>
+    <script type="importmap">
+      {
+      "imports": {
+       "three": "https://cdn.skypack.dev/three@0.139.2/build/three.module",
+          "three/": "https://cdn.skypack.dev/three@0.139.2/",      
+          "dat.gui": "https://cdn.skypack.dev/dat.gui"
+      }
+     }
+    </script>
+    <script src='https://jeromeetienne.github.io/threex.terrain/examples/vendor/three.js/build/three-min.js'></script>
+    <script src='https://jeromeetienne.github.io/threex.terrain/examples/vendor/three.js/examples/js/SimplexNoise.js'></script>
+    <script src='https://jeromeetienne.github.io/threex.terrain/threex.terrain.js'></script>
+    <script type="module" src="{{ url_for('static', filename='main.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
+    
     <title>Poshify</title>
 </head>
 <body>
@@ -34,140 +47,23 @@
             </ul>
         </nav> 
     </header>
-    <main>      
-
-        <!-- <h3>Welcome to Poshify</h3> -->
-        <div class="Homepage">
-            <section class="landing-page-section">
-              <div class="landing-page-container">
-          
-                <!-- <img class="hero-subtitle rounded-box" src="static/Poshify-logos/poshifyLogo333.png"> -->
-                <h1 class="non-bold-title">Find Your Fits Fast</h1>
-          
-                <div class="search-container">
-                  <input type="text" placeholder="Search for anything" class="search-input"/>
-                  <!-- Removed Link element and dynamic parts -->
-                  <button class="search-button">
-                    <!-- Assuming searchIcon is an image URL, replace with the actual image URL -->
-                    <!-- <img src="path-to-search-icon.png" alt="Search" class="search-icon" /> -->
-                  </button>
-                </div>       
-                <p class="landing-page-intro"> Welcome to Poshify, the leading platform for outfit creation.</p>
-              </div>
-            </section>
-          
-            <section class="trending-outfits-section">
-              <div class="trending-outfits">
-                <div class="overlap">
-          
-                  <div class="div-framer">
-                    <div class="overlap-group">
-                      <!-- Replace 'src/assets/images/trending-internship-section-icon.png' with actual path -->
-                      <img class="SVG" alt="Svg" src="src/assets/images/trending-internship-section-icon.png" />
-                      <div class="p-framer-text">
-                        <div class="text-wrapper">Outfits Generated</div>
-                      </div>
-                      <div class="pseudo" />
-                    </div>
-                  </div>
-          
-                  <div class="div-framer-tro">
-                    <p class="heading-we-connect">
-                      Discover recent outfits generated.
-                    </p>
-                  </div>
-                  <div class="div" />
-          
-                  <div class="scaled-wrapper">
-                    <div class="SVG-2">
-                      <div class="next-button">
-                        <div class="overlap-group-2">
-                          <!-- Replace 'next.png' with actual path -->
-                          <div class="slideshow-container">
-                            <div class="mySlides fade">
-                              <img src="static/clothing_images/b31df4fb-84db-4a5a-bbf2-d56041e8e013.jpeg" style="width:100%">
-                            </div>
-                          
-                            <div class="mySlides fade">
-                              <img src="img2.jpg" style="width:100%">
-                            </div>
-                          
-                            <div class="mySlides fade">
-                              <img src="img3.jpg" style="width:100%">
-                            </div>
-                          
-                            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                            <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                          </div>
-                          <br>
-                          
-                          <div style="text-align:center">
-                            <span class="dot" onclick="currentSlide(1)"></span> 
-                            <span class="dot" onclick="currentSlide(2)"></span> 
-                            <span class="dot" onclick="currentSlide(3)"></span> 
-                          </div>
-                          
-                          <div class="ellipse" /> 
-                        </div>
-                      </div>
-          
-                      <div class="overlap-wrapper">
-                        <div class="overlap-group-2">
-                          <!-- Replace 'image.png' with actual path -->
-                          <img class="img" alt="Next" src="static/clothing_images/d8353f1f-b1b3-4354-a5c8-9a454a0526e0.jpeg" />
-                          <div class="ellipse" />
-                        </div>
-                      </div>
-          
-                      <div class="group">
-                        <div class="group-2">
-                          <!-- Replace these SVG paths with actual image paths -->
-                        <p>Our Mission:</p>
-                        </div>
-                        <div class="overlap-2">
-                          <p class="lorem-ipsum-dolor"> Our Mission: </p>
-                          <div class="group-3">
-                            <div class="overlap-group-wrapper">
-                              <div class="overlap-3">
-                                <!-- Replace 'line-2.svg' with actual path -->
-                                <img class="line" alt="Line" src="line-2.svg" />
-                                <div class="group-4">
-                                  <div class="overlap-group-3">
-                                   <p>shirt</p>
-                                  </div>
-                                  <div class="image-wrapper">
-                                    <!-- Replace 'image-2.png' with actual path -->
-                                    <img class="image" alt="Image" src="static/clothing_images/50a5ca73-cfbe-43ad-8ef3-580df433851a.jpeg" />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- Replace 'image-529.png' with actual path -->
-                            <img class="image-2" alt="Image" src="static/clothing_images/d8353f1f-b1b3-4354-a5c8-9a454a0526e0.jpeg" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-          
-                  <div class="div-framer-quk">
-                    <p class="we-ve-curated-a-list">
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <div class="bigcontainer2">
-              <p>Join The Community</p>
-              <h4>Connect with Us</h4>
-              <div class="container2">
-                <div class="box2">Github</div>
-                <div class="box2">LinkedIn</div>
-              </div>
-            </div>
-          </div>
-          
-    </main>
-    <script src="slideshow.js"></script>
+    <main>
+      <section class="hero-section">
+          <h2 id="text">Find your fits fast</h2>
+          <a href="#aboutsection" class="active" id="btn">Learn More</a>
+      </section>
+  </main>
+  <div class="aboutsection" id="aboutsection">
+      <div class="title">
+          <h3>Our Purpose.</h3>
+          <h1>Creating cool fits</h1>
+      </div>
+      <div class="box">
+          <p>
+              test
+          </p>
+      </div>
+  </div>
+  
 </body>
 </html>

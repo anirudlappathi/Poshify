@@ -7,6 +7,85 @@ html {
     animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1; /* This ensures the canvas is behind other elements */
+}
+
+
+
+
+
+
+
+/* Styling the hero section (Find your fits fast) */
+/* Reset default margin and padding */
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+/* Styling the hero section (Find your fits fast) */
+.hero-section {
+  text-align: center;
+  height: 100vh; /* Set the hero section to cover the viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#text {
+  font-size: 5em;
+  margin-bottom: 20px;
+}
+
+/* Styling the Learn More button */
+#btn {
+  display: inline-block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #3498db;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+#btn:hover {
+  background-color: #2980b9;
+}
+
+/* Positioning the Our Purpose section */
+.aboutsection {
+  background-color: #000;
+  color: #fff;
+  padding: 40px;
+  height: 100vh; /* Set the about section to cover the viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 9999; /* Ensure it's on top */
+}
+
+/* Style adjustments for content within the Our Purpose section */
+.aboutsection .title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+
+
 body {
     font-family: 'Montserrat', sans-serif;
     font-style: normal;
