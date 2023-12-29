@@ -2,6 +2,7 @@
 <html lang="en">
 <body>
     {% include 'header.html' %}
+    <div class ="content">
     <main>
         <h1 class="center-container title">Outfits</h1>
         <div class="grid">
@@ -78,6 +79,7 @@
             </div>
         </div>
     </main>
+</div>
     <script>
         function showAssignOptions(clothing) {
             var options = document.getElementById(clothing + "-options");
@@ -91,5 +93,6 @@
             options.style.display = "none";
         }
     </script>
+    {% include 'footer.html' %}
 </body>
 </html>

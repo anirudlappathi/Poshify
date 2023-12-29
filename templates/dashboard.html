@@ -2,6 +2,8 @@
 <html lang="en">
 <body>
     {% include 'header.html' %}
+
+    <div class ="content">
     <main>
         <center>
             {% if user_id %}
@@ -12,6 +14,12 @@
             </p>
             {% endif %}
         </center>
+        
+        <div class="left-side">
+            <!-- Content for the left side goes here -->
+            <p>Left side content...</p>
+        </div>
+
         <div class="center-container">
             {% if user_id %}
             <a href="add_clothing_camera" class="action-button">Add Clothing: Camera</a>
@@ -21,5 +29,7 @@
             {% endif %}
         </div>
     </main>
+</div>
+    {% include 'footer.html' %}
 </body>
 </html>
