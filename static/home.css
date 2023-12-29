@@ -628,7 +628,6 @@ p {
 header {
   background-color: #f2f2f2; Background color for the header
   color: #fff; /* Text color for the header */
-  padding: 10px 0; /* Add padding to the top and bottom */
   text-align: center;
 }
 
