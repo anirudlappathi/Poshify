@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<body>
+    {% include 'header.html' %}
+    <div class ="sec" id="sec">
+        <h2 class="title">Login</h2>
+
+        <form action = "/login" method = "POST">
+            
+            <center>
+                {% if result %}
+                <a href="#sec"></a>
+                <h3 style="color: rgb(31, 236, 192)">Your Result:</h3>
+                <p>
+                    {{result}}
+                </p>
+                {% endif %}
+            </center>
+
+            <label for="username">Username: </label>
+            <input name="username" id="username" type="text" required>
+            <!--
+                IMAGE
+            -->
+            <center><input type = "Submit" class = "file_submit"></center>
+            
+        </form>
+    </div>
+</body>
+</html>
