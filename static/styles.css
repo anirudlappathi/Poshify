@@ -201,7 +201,7 @@ form {
 
     background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 3px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
 }
@@ -223,7 +223,7 @@ input {
     margin-bottom: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 3px;
 }
 
 .action-button {
@@ -231,9 +231,9 @@ input {
 
     display: inline-block;
     padding: 10px 20px;
-    background-color: #333;
+    background-color: #1D1C1C;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 16px;
     margin-top: 20px;
 
@@ -286,7 +286,7 @@ input {
     background-color: #333;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 12px;
     margin-top: 0px;
 }
@@ -299,7 +299,7 @@ input {
     background-color: #333;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 12px;
     margin-top: 0px;
 }
@@ -310,7 +310,7 @@ input {
     background-color: #333;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 16px;
     margin-top: 20px;
     transition: background-color 0.3s;
@@ -379,7 +379,7 @@ input {
 .profile-picture {
     height: 30px; /* Adjust the height of the profile picture */
     width: 30px; /* Adjust the width of the profile picture */
-    border-radius: 5%; /* Make the image circular */
+    border-radius: 3%; /* Make the image circular */
     margin-right: 10px; /* Add some space to the right of the picture */
 }
 .calendar-box {
