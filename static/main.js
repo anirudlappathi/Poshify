@@ -29,7 +29,6 @@ var material = new THREE.MeshPhongMaterial({
   emissiveIntensity: 0.1 // Low intensity for slight emissive effect
 });
 
-
 var mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
@@ -45,36 +44,41 @@ var xRotationSpeed = 0.2; // Original x rotation speed
 var yRotationSpeed = 0.2; // Original y rotation speed
 var zRotationSpeed = 0.2; // Original z rotation speed
 
-var increaseFactor = 0.2; // Speed increase factor on scroll
-var scrollTimeout = null;
+var initialSpeed = 5; // Initial speed multiplier
+var initialSpinTime = 0;
+
+var increaseFactor = 0.5; // Adjust this factor as needed
 
 // Function to handle scroll events
 function handleScroll(event) {
-  xRotationSpeed += increaseFactor;
-  yRotationSpeed += increaseFactor;
-  zRotationSpeed += increaseFactor;
-
-  // Clear any previous timeout
-  clearTimeout(scrollTimeout);
-
-  // Set a timeout to reset the rotation speed after 500ms (adjust as needed)
-  scrollTimeout = setTimeout(() => {
-    xRotationSpeed = 0.2; // Original x rotation speed
-    yRotationSpeed = 0.2; // Original y rotation speed
-    zRotationSpeed = 0.2; // Original z rotation speed
-  }, 500);
+  currentRotationSpeed += 0.5
 }
 
 // Add a scroll event listener
 window.addEventListener('wheel', handleScroll);
 
+
 // Modify the rotation in the render loop
+var initialRotationSpeed = 20.0; // Initial fast rotation speed
+var decelerationFactor = 0.99; // Factor to slow down the rotation speed
+var currentRotationSpeed = initialRotationSpeed;
+
+var initialSpinDuration = 300; // 0.3 seconds
+var spinTimer = initialSpinDuration;
+
 onRenderFcts.push(function(delta, now) {
-  mesh.rotation.x += xRotationSpeed * delta;
-  mesh.rotation.y += yRotationSpeed * delta;
-  mesh.rotation.z += zRotationSpeed * delta;
+  if (spinTimer >= 0) {
+    mesh.rotation.y += currentRotationSpeed * delta;
+    spinTimer -= delta * 1000;
+    currentRotationSpeed *= decelerationFactor; // Apply deceleration
+  } else {
+    mesh.rotation.y += currentRotationSpeed * delta;
+    if (currentRotationSpeed > 0.2)
+      currentRotationSpeed *= decelerationFactor; // Continuously slow down
+  }
   renderer.render(scene, camera);
 });
+
 
 var lastTimeMsec = null;
 requestAnimationFrame(function animate(nowMsec) {

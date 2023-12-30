@@ -68,21 +68,66 @@ header {
 #btn:hover {
   background-color: #2980b9;
 }
-
 .aboutsection {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
+  height: 100vh;
+  margin-left: 100px; /* Space from the left side */
+  padding-right: 20px;
+  justify-content: center;
+  max-width: calc(100% - 100px); /* Adjust the max-width */
+  text-align: left;
+}
+
+.testsection .placeholder h3 {
+  color: white;
 }
 
 .title {
-  margin-right: 20px; /* Adjust the space between title and content */
+  margin-top: 100px;
+  margin-bottom: 10px; /* Adjust the space between title and content */
 }
 
 .content {
   font-size: 1.1em;
   font-style: italic;
   margin: 0;
-  padding-left: 20px; /* Move content more to the left */
+  width: 30%; /* Adjust as needed */
+}
+
+.aboutsection .title {
+  text-align: left; /* Ensure the title within about section stays left-aligned */
+}
+
+
+
+
+.getstarted {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100vh;
+  margin-left: 100px; /* Same distance from the left as aboutsection */
+  padding-right: 20px;
+  max-width: calc(100% - 100px);
+  text-align: left;
+}
+
+.getstarted .getstartedtitle {
+  margin-bottom: 10px;
+}
+
+.getstarted .getstartedcontent {
+  display: flex;
+  gap: 10px;
+}
+
+/* Adjust the button styles as needed */
+.getstarted .getstartedcontent button {
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
 }
 
 
