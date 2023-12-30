@@ -50,8 +50,7 @@
 <body>
     <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
     <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer> -->
-    <header id="site-header">
-        <!-- Your header content here -->
+    <header id="site-header" class="header-hidden">
         {% include 'header.html' %}
     </header>
     <main>
@@ -87,6 +86,20 @@
   
 </div>
   <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const header = document.getElementById('site-header');
+
+      // Function to slide in the header after a delay
+      function slideInHeader() {
+          header.classList.remove('header-hidden'); // Ensure the header is not hidden
+          header.classList.add('slide-in-top'); // Apply the sliding animation class
+      }
+
+      // Set a timeout to slide in the header after 2 seconds (2000 milliseconds)
+      setTimeout(slideInHeader, 2000);
+    });
+
 
     // Function to handle smooth scrolling
     function scrollToSection(element) {
