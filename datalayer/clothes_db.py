@@ -42,10 +42,14 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
         clothing_data = []
         for item in clothing:
             clothing_data.append((
-                item.clothing_name,
-                os.path.join("clothing_images", item.clothingimg_filepath),
                 item.clothes_id,
-                item.is_clean  # Assuming is_clean is a field in the Clothes model
+                item.clothing_type,
+                item.clothing_name,
+                item.is_clean,
+                item.hue,
+                item.saturation,
+                item.value,
+                os.path.join("clothing_images", item.clothingimg_filepath),
             ))
         return clothing_data
     except Exception as e:
