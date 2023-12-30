@@ -121,7 +121,8 @@ function loadModel() {
     time += currentRotationSpeed * 0.016; // Adjust speed based on frame rate
 
     petals.forEach((petal, index) => {
-      const petalAngle = time + (Math.PI / 2) * index;
+        const angle = time * rotationSpeed; // Alternate rotation direction
+        const petalAngle = angle + (Math.PI / 2) * (index - 120); // Offset rotation for each petal
 
       const posX = Math.cos(petalAngle) * petalRadius * 2;
       const posY = Math.sin(petalAngle) * petalRadius * 2;
@@ -131,6 +132,7 @@ function loadModel() {
 
     renderer.render(scene, camera);
   }
+
 
   animate(); // Start the animation
 }

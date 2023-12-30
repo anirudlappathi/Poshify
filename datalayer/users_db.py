@@ -78,6 +78,19 @@ def update_user(user_id, new_username, new_first_name, new_last_name, new_email,
     except Exception as e:
         print(f"Update Users Error: {e}")
 
+def update_data_given_row(user_id, row, data):
+    try:
+        user = dbsession.query(Users).filter_by(user_id=user_id).first()
+        if row == 'nickname':
+            user.username = data
+        if row == 'given_name':
+            user.first_name = data
+        if row == 'family_name':
+            user.last_name = data
+        dbsession.commit()
+    except Exception as e:
+        print(f"Update User Data Error: {e}")
+
 def delete_user(user_id):
     try:
         user = dbsession.query(Users).filter_by(id=user_id).first()
