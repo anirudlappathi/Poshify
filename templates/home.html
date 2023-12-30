@@ -52,6 +52,8 @@
 
 </head>
 <body>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
+    <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer>
     <header class="header-hidden" id="site-header">
         <!-- Your header content here -->
         {% include 'header.html' %}
@@ -91,7 +93,6 @@
 </div>
   <script>
     // Set timeout to display the header after 2 seconds
-    console.log("test1")
     setTimeout(function() {
         console.log("Test@")
         var header = document.getElementById('site-header');
