@@ -35,7 +35,7 @@ function loadModel() {
 
   // Define material for the spheres
   const material = new THREE.MeshStandardMaterial({
-    color: 0xDEDEDE, // Base color
+    color: 0xCECECE, // Base color
     metalness: 1, // Set to 1 for a fully metallic appearance
     roughness: 0, // Lower roughness for a smoother surface (0 being completely smooth)
     transparent: true, // Enable transparency
@@ -46,8 +46,8 @@ function loadModel() {
   material.reflectivity = 1; // Adjust the reflectivity
 
   // Define information for the center (pistil) sphere
-  const centerRadius = 1.5; // Adjust the radius for the center sphere
-  const centerSegments = 128; // Number of segments for the center sphere
+  const centerRadius = 1.1; // Adjust the radius for the center sphere
+  const centerSegments = 16; // Number of segments for the center sphere
   const centerGeometry = new THREE.SphereGeometry(centerRadius, centerSegments, centerSegments);
   const centerMesh = new THREE.Mesh(centerGeometry, material);
   centerMesh.position.set(0, 5, 0)
@@ -55,7 +55,7 @@ function loadModel() {
 
   // Define information for the petal spheres
   const petalRadius = 1.8; // Adjust the radius for the petal spheres
-  const petalSegments = 128; // Number of segments for the petal spheres
+  const petalSegments = 16; // Number of segments for the petal spheres
 
   // Function to create a petal sphere
   function createPetalSphere(angle) {
@@ -65,7 +65,7 @@ function loadModel() {
     // Calculate position based on the angle (in radians) around the center
     const posX = Math.cos(angle) * petalRadius * 1.; // Adjust the radius multiplier as needed
     const posY = Math.sin(angle) * petalRadius * 1.; // Adjust the radius multiplier as needed
-    petalMesh.position.set(posX, posY + 15, 50);
+    petalMesh.position.set(0, 0, 0);
 
     return petalMesh;
   }
@@ -79,6 +79,8 @@ function loadModel() {
     petals.push(petalMesh);
   }
 
+  const lights = [];
+
   const whiteLight = new THREE.DirectionalLight(0xDEDEDE, 9999);
   whiteLight.position.set(500, 100, 500); // Positioned in the center
   scene.add(whiteLight);
@@ -87,15 +89,8 @@ function loadModel() {
   whiteLight2.position.set(500, -100, 500); // Positioned in the center
   scene.add(whiteLight2);
   
-  // const redLight = new THREE.DirectionalLight(0xDEDEDE, 9999);
-  // redLight.position.set(-5, 100, 0); // Positioned on one side
-  // scene.add(redLight);
-  
-  // const blueLight = new THREE.DirectionalLight(0xDEDEDE, 9999);
-  // blueLight.position.set(5, 100, 0); // Positioned on the other side
-  // scene.add(blueLight);
-
-
+  lights.push(whiteLight)
+  lights.push(whiteLight2)
 
   // Render loop for animation
   function animate() {
@@ -103,7 +98,7 @@ function loadModel() {
 
     // Rotate the petals around the center
     const time = Date.now() * 0.001; // Get current time
-    const rotationSpeed = 0.2; // Adjust rotation speed as needed
+    let rotationSpeed = 0.1; // Adjust rotation speed as needed
 
     petals.forEach((petal, index) => {
         const angle = time * rotationSpeed; // Alternate rotation direction
@@ -121,14 +116,6 @@ function loadModel() {
 
   animate(); // Start the animation
 
-}
-
-function render() {
-    // Render loop
-    renderer.render(scene, camera);
-
-    // Call render function recursively
-    requestAnimationFrame(render);
 }
 
 // Handle window resize

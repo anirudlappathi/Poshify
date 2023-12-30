@@ -19,7 +19,6 @@ body {
 	margin: 0;
 }
 header {
-	background-color: #ffffff;
 	/* Set the background color to match the page */
 	width: 100%;
 }
@@ -53,6 +52,13 @@ nav {
 	text-align: center;
 	color: black;
 	line-height: 1;
+}
+.logo-img {
+    width: 40px; /* Set the desired width */
+    height: auto;
+}
+.logo-shift-right {
+    margin-left: -3px;
 }
 @-webkit-keyframes text-focus-in {
 	0% {

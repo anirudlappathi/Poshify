@@ -93,11 +93,11 @@
       // Function to slide in the header after a delay
       function slideInHeader() {
           header.classList.remove('header-hidden'); // Ensure the header is not hidden
-          header.classList.add('slide-in-top'); // Apply the sliding animation class
+          // header.classList.add('slide-in-top'); // Apply the sliding animation class
       }
 
       // Set a timeout to slide in the header after 2 seconds (2000 milliseconds)
-      setTimeout(slideInHeader, 2000);
+      setTimeout(slideInHeader, 1000);
     });
 
 
@@ -129,7 +129,7 @@
               if (entry.isIntersecting) {
                   setTimeout(() => { // Introduce a delay using setTimeout
                       entry.target.classList.add('show');
-                  }, 500); // Adjust the delay (in milliseconds) as needed
+                  }, 200); // Adjust the delay (in milliseconds) as needed
               }
           });
       }, options);
