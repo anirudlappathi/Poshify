@@ -95,7 +95,7 @@ function loadModel() {
   const initialRotationSpeed = 5;
   let currentRotationSpeed = initialRotationSpeed;
   let transitionStartTime = Date.now();
-  let transitionDuration = 3000; // Duration for the transition in milliseconds
+  let transitionDuration = 2000; // Duration for the transition in milliseconds
 
   // Set initial rotation speed
   let time = 0;
@@ -106,9 +106,9 @@ function loadModel() {
 
     if (elapsedTime < transitionDuration) {
       // Easing function for smooth transition
-      currentRotationSpeed = initialRotationSpeed + (0.3 - initialRotationSpeed) * Math.min(1, elapsedTime / transitionDuration);
+      currentRotationSpeed = initialRotationSpeed + (0.2 - initialRotationSpeed) * Math.min(1, elapsedTime / transitionDuration);
     } else {
-      currentRotationSpeed = 0.5; // Set to the final speed
+      currentRotationSpeed = 0.2; // Set to the final speed
     }
   }
 
@@ -121,8 +121,7 @@ function loadModel() {
     time += currentRotationSpeed * 0.016; // Adjust speed based on frame rate
 
     petals.forEach((petal, index) => {
-        const angle = time * rotationSpeed; // Alternate rotation direction
-        const petalAngle = angle + (Math.PI / 2) * (index - 120); // Offset rotation for each petal
+      const petalAngle = time + (Math.PI / 2) * index;
 
       const posX = Math.cos(petalAngle) * petalRadius * 2;
       const posY = Math.sin(petalAngle) * petalRadius * 2;
@@ -132,7 +131,6 @@ function loadModel() {
 
     renderer.render(scene, camera);
   }
-
 
   animate(); // Start the animation
 }

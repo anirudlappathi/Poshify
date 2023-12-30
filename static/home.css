@@ -116,12 +116,12 @@ header {
 	text-decoration: none;
 	border-radius: 5px;
 	margin: 10px;
-	background-color: #3498db; /* Button background color */
+	background-color: #0000000; /* Button background color */
 	color: #ffffff; /* Button text color */
   }
   
   .action-button:hover {
-	background-color: #2980b9; /* Button background color on hover */
+	background-color: #0000000; /* Button background color on hover */
   }
   
 body {
