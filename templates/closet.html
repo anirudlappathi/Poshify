@@ -20,6 +20,12 @@
             <label>Shoes<input type="checkbox" class="filterCheckbox" value="Shoes"></label>
             <label>Hat<input type="checkbox" class="filterCheckbox" value="Hat"></label>
             <button class="action-button show" onclick="applyFilters()">Apply</button>
+            <button class="action-button" onclick="clearFilters()">Clear Filters</button>
+            <div class="custom-alert" id="customAlert">
+                <span class="closebtn" onclick="closeCustomAlert()">&times;</span>
+                <strong>Alert!</strong> No clothing of the selected type found.
+            </div>
+
         </div>
     </div>
     <div class="grid">
@@ -137,12 +143,61 @@
                     .map(checkbox => checkbox.value);
 
                 const gridItems = document.querySelectorAll('.grid-item');
+
+                if (selectedFilters.length === 0) {
+                    gridItems.forEach(gridItem => {
+                        gridItem.style.display = 'block';
+                    });
+                } else {
+                    let noClothingOfType = true;
+
+                    gridItems.forEach(gridItem => {
+                        const clothingType = gridItem.getAttribute('data-clothing-type');
+                        const followsFilter = selectedFilters.includes(clothingType);
+
+                        if (followsFilter) {
+                            gridItem.style.display = 'block';
+                            noClothingOfType = false;
+                        } else {
+                            gridItem.style.display = 'none';
+                        }
+                    });
+
+                    if (noClothingOfType) {
+                        var customAlert = document.getElementById("customAlert");
+                        var alertMessage = document.getElementById("alertMessage");
+
+                        customAlert.style.display = "block";
+                        alertMessage.innerHTML = 'No clothing of the selected type found.';
+
+                        setTimeout(function () {
+                            customAlert.style.display = "none";
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    }
+
+                }
+            }
+
+            function closeCustomAlert() {
+                var customAlert = document.getElementById("customAlert");
+                customAlert.style.display = "none";
+            }
+
+
+            function clearFilters() {
+                var checkboxes = document.querySelectorAll('.filterCheckbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false; // Uncheck all checkboxes
+                });
+
+                const gridItems = document.querySelectorAll('.grid-item');
                 gridItems.forEach(gridItem => {
-                    const clothingType = gridItem.getAttribute('data-clothing-type');
-                    const followsFilter = selectedFilters.includes(clothingType);
-                    gridItem.style.display = followsFilter ? 'block' : 'none';
+                    gridItem.style.display = 'block'; // Show all clothing items
                 });
             }
+            
+
+
         </script>
     </div>
     </main>

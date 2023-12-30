@@ -92,31 +92,49 @@ function loadModel() {
   lights.push(whiteLight)
   lights.push(whiteLight2)
 
-  // Render loop for animation
+  const initialRotationSpeed = 5;
+  let currentRotationSpeed = initialRotationSpeed;
+  let transitionStartTime = Date.now();
+  let transitionDuration = 3000; // Duration for the transition in milliseconds
+
+  // Set initial rotation speed
+  let time = 0;
+
+  function updateRotationSpeed() {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - transitionStartTime;
+
+    if (elapsedTime < transitionDuration) {
+      // Easing function for smooth transition
+      currentRotationSpeed = initialRotationSpeed + (0.3 - initialRotationSpeed) * Math.min(1, elapsedTime / transitionDuration);
+    } else {
+      currentRotationSpeed = 0.5; // Set to the final speed
+    }
+  }
+
   function animate() {
     requestAnimationFrame(animate);
 
-    // Rotate the petals around the center
-    const time = Date.now() * 0.001; // Get current time
-    let rotationSpeed = 0.1; // Adjust rotation speed as needed
+    // Update rotation speed
+    updateRotationSpeed();
+
+    time += currentRotationSpeed * 0.016; // Adjust speed based on frame rate
 
     petals.forEach((petal, index) => {
-        const angle = time * rotationSpeed; // Alternate rotation direction
-        const petalAngle = angle + (Math.PI / 2) * index; // Offset rotation for each petal
+      const petalAngle = time + (Math.PI / 2) * index;
 
-        const posX = Math.cos(petalAngle) * petalRadius * 2; // Calculate X position
-        const posY = Math.sin(petalAngle) * petalRadius * 2; // Calculate Y position
+      const posX = Math.cos(petalAngle) * petalRadius * 2;
+      const posY = Math.sin(petalAngle) * petalRadius * 2;
 
-        petal.position.set(posX, posY + 5, 0); // Update petal position
+      petal.position.set(posX, posY + 5, 0);
     });
 
-    // Render the scene
     renderer.render(scene, camera);
   }
 
   animate(); // Start the animation
-
 }
+
 
 // Handle window resize
 window.addEventListener('resize', () => {
