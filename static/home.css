@@ -113,9 +113,7 @@ body {
 	font-style: normal;
 	height: 100%;
 	overflow: auto;
-	background-color: #f2f2f2;
-	/* height: 100vh;
-	*/
+	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -123,7 +121,6 @@ body {
 	padding: 0;
 }
 header {
-	background-color: #f2f2f2;
 	width: 100%;
 }
 .inline {
@@ -140,6 +137,7 @@ header {
 }
 nav {
   background-color: transparent;
+  backdrop-filter: blur(5px); /* Creates a blurred effect for the background */
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -469,22 +467,14 @@ p {
 }
 .rounded-box {
 	background-color: #1D1C1C;
-	/* or any color you want */
 	border-radius: 8px;
 	padding: 10px 20px;
-	/* Adjust for space around the text */
 	display: inline-flex;
-	/* This makes the background only as wide as the content */
 	align-items: center;
-	/* Center the text vertically */
 	justify-content: center;
-	/* Center the text horizontally */
 	gap: 10px;
-	/* If you have icons or other elements, adjust the gap as needed */
 	margin: 20px 0;
-	/* Add some margin if needed */
 	color: white;
-	/* Adjust text color */
 }
 .landing-page-container h1 {
 	margin: auto;
