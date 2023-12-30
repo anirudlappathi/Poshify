@@ -40,33 +40,28 @@
             opacity: 1;
             transform: translateY(0);
         }
-      </style>
-    <style>
         /* Initially hide the header */
         .header-hidden {
             display: none;
         }
     </style>
     <title>Poshify</title>
-
-
 </head>
 <body>
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
-    <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer>
-    <header class="header-hidden" id="site-header">
+    <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
+    <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer> -->
+    <header id="site-header">
         <!-- Your header content here -->
         {% include 'header.html' %}
     </header>
     <main>
       <section class="hero-section">
-          <h2 id="text">Find your fits fast</h2>
-          <a href="#aboutsection" class="active" id="btn">Learn More</a>
+          <h2 id="text">Make yourself <a class="posh">Posh</a></h2>
+          <a href="#aboutsection" class="action-button" id="btn">Learn More</a>
       </section>
       <section class="testsection" id="testsection">
         <div class="placeholder">
-          <h3> ` </h3>
-          <h3> ` </h3> <!-- PLACEHGOLDERS SO THE LEARN MORE BUTTON ALIGNS PROPERLY-->
+          <br><br><br><br><br><br><br>
         </div>
       </section>
       <section class="aboutsection" id="aboutsection">
@@ -81,28 +76,18 @@
       </section>
       <section class="getstarted" id="getstarted">
         <div class="getstartedtitle">
-            <h3>Sign up Login. MAKE LOOK BETTER LATER</h3>
+            <h3>Sign up Login</h3>
         </div>
         <div class="getstartedcontent">
-          <a class="login" href="login">Login</a>
-          <a class="signup" href="signup">Sign Up</a>
+          <a class="login action-button" href="login">Login</a>
+          <a class="signup action-button" href="signup">Sign Up</a>
         </div>
       </section>
   </main>
   
 </div>
   <script>
-    // Set timeout to display the header after 2 seconds
-    setTimeout(function() {
-        console.log("Test@")
-        var header = document.getElementById('site-header');
-        header.classList.remove('header-hidden');
-        header.classList.add('slide-in-blurred-top')
-    }, 2000);
-</script>
 
-  
-  <script>
     // Function to handle smooth scrolling
     function scrollToSection(element) {
       document.querySelector(element).scrollIntoView({
@@ -117,8 +102,7 @@
         scrollToSection('#testsection'); // Replace with the ID of the section you want to scroll to
       });
     });
-</script>
-<script>
+
   document.addEventListener('DOMContentLoaded', function() {
       // Intersection Observer to trigger animation when about section is in view
       const options = {
