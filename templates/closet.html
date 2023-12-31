@@ -11,7 +11,7 @@
     </center>
     </br>
     <div class="dropdown">
-        <button class="action-button" onclick="toggleDropdown()" class="article-filter">Article</button>
+        <button class="action-button" onclick="toggleDropdown()">Article Filter</button>
         <div id="article-filter" class="dropdown-content">
             <label>Jacket<input type="checkbox" class="filterCheckbox" value="Jacket"></label>
             <label>T-Shirt<input type="checkbox" class="filterCheckbox" value="T-Shirt"></label>
@@ -20,16 +20,23 @@
             <label>Shorts<input type="checkbox" class="filterCheckbox" value="Shorts"></label>
             <label>Shoes<input type="checkbox" class="filterCheckbox" value="Shoes"></label>
             <label>Hat<input type="checkbox" class="filterCheckbox" value="Hat"></label>
-            <button class="action-button" onclick="applyFilters()">Apply</button>
+            <button class="action-button show" onclick="applyFilters()">Apply</button>
+            <button class="action-button" onclick="clearFilters()">Clear Filters</button>
+            <div class="custom-alert" id="customAlert">
+                <span class="closebtn" onclick="closeCustomAlert()">&times;</span>
+                <strong>Alert!</strong> No clothing of the selected type found.
+            </div>
+
         </div>
     </div>
     <div class="grid">
-        {% for clothing_name, file_path, clothes_id, is_clean in clothes %}
-            <div class="grid-item center text" data-clothes-id="{{ clothes_id }}">
+        {% for clothes_id, clothing_type, clothing_name, is_clean, hue, saturation, value, file_path in clothes %}
+            <div class="grid-item center text show" data-clothes-id="{{ clothes_id }}" data-clothing-type="{{ clothing_type }}">
                 <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
                 <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing_name }} Image">
                 <button class="delete-button" onclick="deleteClothing('{{ clothes_id }}')">Delete Clothing</button>
                 <button class="cleanliness-button" onclick="toggleCleanliness('{{ clothes_id }}', this)">{{ 'Clean' if is_clean else 'Dirty' }}</button>
+                <p>{{ hue, saturation, value }}</p>
             </div>
         {% endfor %}
     
@@ -136,12 +143,62 @@
                     .filter(checkbox => checkbox.checked)
                     .map(checkbox => checkbox.value);
 
-                // Perform actions with selectedFilters (e.g., filter data, etc.)
-                console.log("Selected Filters: ", selectedFilters);
+                const gridItems = document.querySelectorAll('.grid-item');
 
-                // Hide the dropdown after applying filters
-                document.getElementById("filterDropdown").classList.remove("show");
+                if (selectedFilters.length === 0) {
+                    gridItems.forEach(gridItem => {
+                        gridItem.style.display = 'block';
+                    });
+                } else {
+                    let noClothingOfType = true;
+
+                    gridItems.forEach(gridItem => {
+                        const clothingType = gridItem.getAttribute('data-clothing-type');
+                        const followsFilter = selectedFilters.includes(clothingType);
+
+                        if (followsFilter) {
+                            gridItem.style.display = 'block';
+                            noClothingOfType = false;
+                        } else {
+                            gridItem.style.display = 'none';
+                        }
+                    });
+
+                    if (noClothingOfType) {
+                        var customAlert = document.getElementById("customAlert");
+                        var alertMessage = document.getElementById("alertMessage");
+
+                        customAlert.style.display = "block";
+                        alertMessage.innerHTML = 'No clothing of the selected type found.';
+
+                        setTimeout(function () {
+                            customAlert.style.display = "none";
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    }
+
                 }
+            }
+
+            function closeCustomAlert() {
+                var customAlert = document.getElementById("customAlert");
+                customAlert.style.display = "none";
+            }
+
+
+            function clearFilters() {
+                var checkboxes = document.querySelectorAll('.filterCheckbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false; // Uncheck all checkboxes
+                });
+
+                const gridItems = document.querySelectorAll('.grid-item');
+                gridItems.forEach(gridItem => {
+                    gridItem.style.display = 'block'; // Show all clothing items
+                });
+            }
+            
+
+
         </script>
     </div>
     </main>

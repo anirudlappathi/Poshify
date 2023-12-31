@@ -3,31 +3,95 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/static/home.css">
     <script type="importmap">
-      {
-      "imports": {
-       "three": "https://cdn.skypack.dev/three@0.139.2/build/three.module",
-          "three/": "https://cdn.skypack.dev/three@0.139.2/",      
-          "dat.gui": "https://cdn.skypack.dev/dat.gui"
-      }
-     }
+    {
+    "imports": {
+    "three": "https://cdn.skypack.dev/three@0.139.2/build/three.module",
+        "three/": "https://cdn.skypack.dev/three@0.139.2/",      
+        "dat.gui": "https://cdn.skypack.dev/dat.gui"
+    }
+    }
     </script>
     <script src='https://jeromeetienne.github.io/threex.terrain/examples/vendor/three.js/build/three-min.js'></script>
     <script src='https://jeromeetienne.github.io/threex.terrain/examples/vendor/three.js/examples/js/SimplexNoise.js'></script>
     <script src='https://jeromeetienne.github.io/threex.terrain/threex.terrain.js'></script>
     <script type="module" src="{{ url_for('static', filename='main.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
+    <style>
+        /* Add animation styles */
+        @keyframes slideUp {
+          0% { transform: translateY(100%); opacity: 0; }
+          100% { transform: translateY(0); opacity: 1; }
+        }
     
+        .hero-section h2 {
+          /* Apply initial styles */
+          opacity: 0;
+          transform: translateY(100%);
+          animation: slideUp 1s ease forwards; /* Run the animation */
+        }
+        .aboutsection {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        /* Animation when the section comes into view */
+        .aboutsection.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Initially hide the header */
+        .header-hidden {
+            display: none;
+        }
+    </style>
     <title>Poshify</title>
 </head>
 <body>
+<<<<<<< HEAD
     {% include 'header.html' %}
     <div class ="content">
+=======
+    <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
+    <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer> -->
+    <header id="site-header" class="header-hidden">
+        {% include 'header.html' %}
+    </header>
+>>>>>>> b5efcae2e6698b77451417e5ed2904e890cf5c69
     <main>
       <section class="hero-section">
-          <h2 id="text">Find your fits fast</h2>
-          <a href="#aboutsection" class="active" id="btn">Learn More</a>
+          <h2 id="text">Make yourself <a class="posh">Posh</a></h2>
+          <a href="#aboutsection" class="action-button" id="btn">Learn More</a>
+      </section>
+      <section class="testsection" id="testsection">
+        <div class="placeholder">
+          <br><br><br><br><br><br><br>
+        </div>
+      </section>
+      <section class="aboutsection" id="aboutsection">
+        <div class="title">
+          <h3>Our Purpose.</h3>
+        </div>
+        <div class="content">
+          <p>
+            At Poshify, we revolutionize how you dress by harnessing computer vision and AI. Our platform generates bespoke outfit suggestions based on your provided clothing items. With an intuitive calendar system, we streamline your wardrobe, ensuring stress-free outfit choices for every occasion. More than just simplifying fashion decisions, Poshify aims to reduce clothing waste. By empowering users to explore diverse styling options from their existing wardrobe, we promote sustainability and encourage a modern, conscious approach to dressing.
+          </p>
+        <div class="homeimage">
+           <!-- <img src="static/cartimeme.jpeg"> -->
+       </div>  
+        </div>
+      </section>
+      <section class="getstarted" id="getstarted">
+        <div class="getstartedtitle">
+            <h3>Sign up or Login today!</h3>
+        </div>
+        <div class="getstartedcontent">
+          <a class="login action-button" href="login">Login</a>
+          <a class="signup action-button" href="signup">Sign Up</a>
+        </div>
       </section>
   </main>
+<<<<<<< HEAD
   <div class="aboutsection" id="aboutsection">
       <div class="title">
           <h3>Our Purpose.</h3>
@@ -41,5 +105,63 @@
   </div>
 </div>
 {% include 'footer.html' %}
+=======
+  
+</div>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const header = document.getElementById('site-header');
+
+      // Function to slide in the header after a delay
+      function slideInHeader() {
+          header.classList.remove('header-hidden'); // Ensure the header is not hidden
+          // header.classList.add('slide-in-top'); // Apply the sliding animation class
+      }
+
+      // Set a timeout to slide in the header after 2 seconds (2000 milliseconds)
+      setTimeout(slideInHeader, 1000);
+    });
+
+
+    // Function to handle smooth scrolling
+    function scrollToSection(element) {
+      document.querySelector(element).scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+
+    // Find the Learn More button and add an event listener for smooth scrolling
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('btn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        scrollToSection('#testsection'); // Replace with the ID of the section you want to scroll to
+      });
+    });
+
+  document.addEventListener('DOMContentLoaded', function() {
+      // Intersection Observer to trigger animation when about section is in view
+      const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.3 // Adjust threshold as needed
+      };
+
+      const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  setTimeout(() => { // Introduce a delay using setTimeout
+                      entry.target.classList.add('show');
+                  }, 200); // Adjust the delay (in milliseconds) as needed
+              }
+          });
+      }, options);
+
+      const aboutSection = document.querySelector('.aboutsection');
+      observer.observe(aboutSection);
+  });
+</script>
+
+>>>>>>> b5efcae2e6698b77451417e5ed2904e890cf5c69
 </body>
 </html>
