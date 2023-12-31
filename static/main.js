@@ -1,104 +1,146 @@
+import * as THREE from 'three';
+// import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-window.addEventListener('keydown', (event) => {
-    if (event.keyCode == 13){
-        console.log("hello");
-        getResponse();
+let scene, camera, renderer;
+
+function init() {
+    // Create a scene
+    scene = new THREE.Scene();
+
+    // Create a camera
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 5, 10);
+
+    // Create a renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0xffffff); // Set a light gray background color
+    document.body.appendChild(renderer.domElement);
+
+    // Add lights
+    const ambientLight = new THREE.AmbientLight(0x0f0000, 2);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0x000000, 0.5);
+    directionalLight.position.set(0, 10, 10);
+    scene.add(directionalLight);
+
+    // Load the 3D model
+    loadModel();
+}
+
+function loadModel() {
+
+  // Create a scene, camera, renderer, etc. - Your Three.js setup
+
+  // Define material for the spheres
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xCECECE, // Base color
+    metalness: 1, // Set to 1 for a fully metallic appearance
+    roughness: 0, // Lower roughness for a smoother surface (0 being completely smooth)
+    transparent: true, // Enable transparency
+    opacity: 0.05, // Adjust opacity for transparency effect
+  });
+
+  // Ensure that the material uses reflections by enabling the reflectivity
+  material.reflectivity = 1; // Adjust the reflectivity
+
+  // Define information for the center (pistil) sphere
+  const centerRadius = 1.1; // Adjust the radius for the center sphere
+  const centerSegments = 16; // Number of segments for the center sphere
+  const centerGeometry = new THREE.SphereGeometry(centerRadius, centerSegments, centerSegments);
+  const centerMesh = new THREE.Mesh(centerGeometry, material);
+  centerMesh.position.set(0, 5, 0)
+  scene.add(centerMesh); // Add the center sphere to the scene
+
+  // Define information for the petal spheres
+  const petalRadius = 1.8; // Adjust the radius for the petal spheres
+  const petalSegments = 16; // Number of segments for the petal spheres
+
+  // Function to create a petal sphere
+  function createPetalSphere(angle) {
+    const petalGeometry = new THREE.SphereGeometry(petalRadius, petalSegments, petalSegments);
+    const petalMesh = new THREE.Mesh(petalGeometry, material);
+
+    // Calculate position based on the angle (in radians) around the center
+    const posX = Math.cos(angle) * petalRadius * 1.; // Adjust the radius multiplier as needed
+    const posY = Math.sin(angle) * petalRadius * 1.; // Adjust the radius multiplier as needed
+    petalMesh.position.set(0, 0, 0);
+
+    return petalMesh;
+  }
+
+  const petals = [];
+  // Create four petal spheres and position them around the center
+  for (let i = 0; i < 4; i++) {
+    const angle = (Math.PI / 2) * i; // Angle increment to position petals evenly
+    const petalMesh = createPetalSphere(angle);
+    scene.add(petalMesh); // Add each petal sphere to the scene
+    petals.push(petalMesh);
+  }
+
+  const lights = [];
+
+  const whiteLight = new THREE.DirectionalLight(0xDEDEDE, 9999);
+  whiteLight.position.set(500, 100, 500); // Positioned in the center
+  scene.add(whiteLight);
+
+  const whiteLight2 = new THREE.DirectionalLight(0xDEDEDE, 9999);
+  whiteLight2.position.set(500, -100, 500); // Positioned in the center
+  scene.add(whiteLight2);
+  
+  lights.push(whiteLight)
+  lights.push(whiteLight2)
+
+  const initialRotationSpeed = 5;
+  let currentRotationSpeed = initialRotationSpeed;
+  let transitionStartTime = Date.now();
+  let transitionDuration = 2000; // Duration for the transition in milliseconds
+
+  // Set initial rotation speed
+  let time = 0;
+
+  function updateRotationSpeed() {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - transitionStartTime;
+
+    if (elapsedTime < transitionDuration) {
+      // Easing function for smooth transition
+      currentRotationSpeed = initialRotationSpeed + (0.2 - initialRotationSpeed) * Math.min(1, elapsedTime / transitionDuration);
+    } else {
+      currentRotationSpeed = 0.2; // Set to the final speed
     }
-})
-//procedurally generated environmenment from https://codepen.io/marctannous/pen/RNGjmz
-var renderer	= new THREE.WebGLRenderer({
-    antialias	: true
-});
-/* Fullscreen */
-renderer.setSize( window.innerWidth, window.innerHeight );
-/* Append to HTML */
-document.body.appendChild( renderer.domElement );
-var onRenderFcts= [];
-var scene	= new THREE.Scene();
-var camera	= new THREE.PerspectiveCamera(25, window.innerWidth /    window.innerHeight, 0.01, 1000);
-/* Play around with camera positioning */
-camera.position.z = 15; 
-camera.position.y = 2;
-/* Fog provides depth to the landscape*/
-scene.fog = new THREE.Fog(0x000, 0, 45);
-;(function(){
-    var light	= new THREE.AmbientLight( 0x202020 )
-    scene.add( light )
-    var light	= new THREE.DirectionalLight('white', 5)
-    light.position.set(0.5, 0.0, 2)
-    scene.add( light )
-    var light	= new THREE.DirectionalLight('white', 0.75*2)
-    light.position.set(-0.5, -0.5, -2)
-    scene.add( light )		
-})()
-var heightMap	= THREEx.Terrain.allocateHeightMap(256,256)
-THREEx.Terrain.simplexHeightMap(heightMap)	
-var geometry	= THREEx.Terrain.heightMapToPlaneGeometry(heightMap)
-THREEx.Terrain.heightMapToVertexColor(heightMap, geometry)
-/* Wireframe built-in color is white, no need to change that */
-var material	= new THREE.MeshBasicMaterial({color: 0xc4a7e7,
-    wireframe: true
-});
-var mesh	= new THREE.Mesh( geometry, material );
-scene.add( mesh );
-mesh.lookAt(new THREE.Vector3(0,1,0));
-/* Play around with the scaling */
-mesh.scale.y	= 3.5;
-mesh.scale.x	= 3;
-mesh.scale.z	= 0.20;
-mesh.scale.multiplyScalar(10);
-/* Play around with the camera */
-onRenderFcts.push(function(delta, now){
-    mesh.rotation.z += 0.2 * delta;	
-})
-onRenderFcts.push(function(){
-    renderer.render( scene, camera );		
-})
-var lastTimeMsec= null
-requestAnimationFrame(function animate(nowMsec){
-    requestAnimationFrame( animate );
-    lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-    var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-    lastTimeMsec	= nowMsec
-    onRenderFcts.forEach(function(onRenderFct){
-        onRenderFct(deltaMsec/1000, nowMsec/1000)
-    })
-})
+  }
 
+  function animate() {
+    requestAnimationFrame(animate);
 
+    // Update rotation speed
+    updateRotationSpeed();
 
-// Collapsible
-var coll = document.getElementsByClassName("collapsible");
+    time += currentRotationSpeed * 0.016; // Adjust speed based on frame rate
 
-for (let i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function () {
-        this.classList.toggle("active");
+    petals.forEach((petal, index) => {
+      const petalAngle = time + (Math.PI / 2) * index;
 
-        var content = this.nextElementSibling;
+      const posX = Math.cos(petalAngle) * petalRadius * 2;
+      const posY = Math.sin(petalAngle) * petalRadius * 2;
 
-        if (content.style.maxHeight) {
-            content.style.maxHeight = null;
-        } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-        }
-
+      petal.position.set(posX, posY + 5, 0);
     });
+
+    renderer.render(scene, camera);
+  }
+
+  animate(); // Start the animation
 }
 
-function getTime() {
-    let today = new Date();
-    hours = today.getHours();
-    minutes = today.getMinutes();
 
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
+// Handle window resize
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-
-    let time = hours + ":" + minutes;
-    return time;
-}
-
+init();

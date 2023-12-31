@@ -2,6 +2,14 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+        <script type="importmap">
+            {
+              "imports": {
+                "three": "https://unpkg.com/three@v0.153.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/"
+              }
+            }
+          </script>
         <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
         </script>
@@ -17,7 +25,8 @@
     <body>
         <header>
             <nav>
-                <div class="logo" href="home"><a href="home">Poshify</a></div>
+                <div class="logo" href="home"><a href="home">P<img class="logo-img" src="static/Poshify-logos/poshifyLogo.svg"/><a  href="home" class="logo-shift-right">shify</a></div>
+                <div class="spacer"></div>
                 <ul class="nav-links">
                     {% if session %}
                     <li><a class="dashboard" href="dashboard">Dashboard</a></li>
