@@ -3,6 +3,8 @@ Gives you outfits fast using machine learning. Utilizes Flask, Tensorflow, Dynam
 
 # Programmers:
 
+- Anirud Lappathi
+
 - Vivek Narayana
 
-- Anirud Lappathi
+- Sia Sama
