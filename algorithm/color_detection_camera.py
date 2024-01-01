@@ -60,6 +60,8 @@ def segment_cloth(img_bytes):
     # inverted_alpha = cv2.bitwise_not(alpha_channel)
 
     # Create a white background image
+    result_image = cv2.merge((alpha_bytes, cv2image))
+
     white_background = np.ones(cv2image.shape, dtype=np.uint8) * 255
 
     # Mask the white background with the inverted alpha channel
