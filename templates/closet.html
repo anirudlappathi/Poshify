@@ -77,13 +77,15 @@
     
                 element.addEventListener('focusout', function () {
                     const updatedText = element.innerText.trim();
-    
-                    updateBackend(updatedText, clothingName);
+                    console.log("info: " + clothingName + " " + updatedText);
+                    response = updateBackend(updatedText, clothingName, element);
+                    element.innerText = response.identifier;
+
                     element.contentEditable = false;
                 });
             }
     
-            function updateBackend(updatedText, identifier) {
+            function updateBackend(updatedText, identifier, element) {
                 fetch('/update', {
                     method: 'POST',
                     headers: {
@@ -95,9 +97,9 @@
                         if (response.ok) {
                             return response.json();
                         }
-                        throw new Error('Network response was not ok.');
                     })
                     .then(data => {
+                        element.innerText = data.identifier;
                         console.log('Updated successfully:', data);
                     })
                     .catch(error => {

@@ -290,7 +290,7 @@ def add_clothing_manual():
       
       image_data = request.files['image']
 
-      has_name = is_clothing_name_by_id(clothing_name, user_id)
+      has_name = has_clothing_name_by_id(clothing_name, user_id)
       print(has_name)
       if has_name:
          return render_template("add_clothing_manual.html", session=user, result="Name already exists for cloth", user_id=user_id)   
@@ -343,7 +343,7 @@ def add_clothing_camera():
       is_clean = request.form['is_clean']
       image_data = request.form['imageData']
 
-      has_name = is_clothing_name_by_id(clothing_name, user_id)
+      has_name = has_clothing_name_by_id(clothing_name, user_id)
       print(has_name)
       if has_name:
          return render_template("add_clothing_camera.html", session=user, result="Name already exists for cloth", user_id=user_id)   
@@ -387,19 +387,37 @@ def update_element():
    if request.method == 'POST':
       data = request.get_json()
       updated_text = data.get('updatedText')
-      identifier = data.get('identifier')
+      has_name = has_clothing_name_by_id(updated_text, user_id)
+      clothing_name = data.get('identifier')
+      print(clothing_name, updated_text)
+      if updated_text.lower() == clothing_name.lower():
+         print('same name')
+         response_data = {
+            'identifier': updated_text,
+            'message': 'Same name'
+         }
+         update_clothing_name_by_clothing_name(clothing_name, updated_text, user_id)
+         return jsonify(response_data), 200
+      elif has_name:
+         print('has name')
+         response_data = {
+            'identifier': clothing_name,
+            'message': 'Name exists'
+         }
+         return jsonify(response_data), 200
+      print('gangangn')
       user = session.get("user")
       user_id = session.get('userid')
       print("USER ID: " + user_id)
 
-      update_clothing_name_by_identifier(identifier, updated_text, user_id)
+      update_clothing_name_by_clothing_name(clothing_name, updated_text, user_id)
 
       print("Updated Text:", updated_text)
-      print("Identifier:", identifier)
+      print("Identifier:", clothing_name)
 
       # Return a response with the identifier and a success message
       response_data = {
-            'identifier': identifier,
+            'identifier': updated_text,
             'message': 'Updated successfully'
       }
       return jsonify(response_data), 200

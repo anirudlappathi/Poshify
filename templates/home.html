@@ -4,11 +4,11 @@
     <link rel="stylesheet" type="text/css" href="/static/home.css">
     <script type="importmap">
     {
-    "imports": {
-    "three": "https://cdn.skypack.dev/three@0.139.2/build/three.module",
-        "three/": "https://cdn.skypack.dev/three@0.139.2/",      
-        "dat.gui": "https://cdn.skypack.dev/dat.gui"
-    }
+      "imports": {
+      "three": "https://cdn.skypack.dev/three@0.139.2/build/three.module",
+          "three/": "https://cdn.skypack.dev/three@0.139.2/",      
+          "dat.gui": "https://cdn.skypack.dev/dat.gui"
+      }
     }
     </script>
     <script src='https://jeromeetienne.github.io/threex.terrain/examples/vendor/three.js/build/three-min.js'></script>
@@ -16,40 +16,10 @@
     <script src='https://jeromeetienne.github.io/threex.terrain/threex.terrain.js'></script>
     <script type="module" src="{{ url_for('static', filename='main.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
-    <style>
-        /* Add animation styles */
-        @keyframes slideUp {
-          0% { transform: translateY(100%); opacity: 0; }
-          100% { transform: translateY(0); opacity: 1; }
-        }
-    
-        .hero-section h2 {
-          /* Apply initial styles */
-          opacity: 0;
-          transform: translateY(100%);
-          animation: slideUp 1s ease forwards; /* Run the animation */
-        }
-        .aboutsection {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        /* Animation when the section comes into view */
-        .aboutsection.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* Initially hide the header */
-        .header-hidden {
-            display: none;
-        }
-    </style>
     <title>Poshify</title>
 </head>
 <body>
-    {% include 'header.html' %}
-    <div class ="content">
+    <div class ="main-body-content">
     <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
     <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer> -->
     <header id="site-header" class="header-hidden">
@@ -74,8 +44,8 @@
             At Poshify, we revolutionize how you dress by harnessing computer vision and AI. Our platform generates bespoke outfit suggestions based on your provided clothing items. With an intuitive calendar system, we streamline your wardrobe, ensuring stress-free outfit choices for every occasion. More than just simplifying fashion decisions, Poshify aims to reduce clothing waste. By empowering users to explore diverse styling options from their existing wardrobe, we promote sustainability and encourage a modern, conscious approach to dressing.
           </p>
         <div class="homeimage">
-           <!-- <img src="static/cartimeme.jpeg"> -->
-       </div>  
+          <!-- <img src="static/cartimeme.jpeg"> -->
+      </div>  
         </div>
       </section>
       <section class="getstarted" id="getstarted">
@@ -96,6 +66,7 @@
             <a class="signup action-button" href="signup">Sign Up</a>
           </center>
           {% endif %}
+          <br><br><br><br><br><br><br><br><br><br><br>
         </div>
       </section>
   </main>
@@ -154,6 +125,6 @@
       observer.observe(aboutSection);
   });
 </script>
-
+{% include 'footer.html' %}
 </body>
 </html>

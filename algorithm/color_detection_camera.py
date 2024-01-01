@@ -85,8 +85,8 @@ def dominant_color_finder_dataurl(image_data, filename):
         # image data is just encoded_jpg
         img_bytes = base64.b64decode(image_data)
         
-        segmented_img_bytes = segment_cloth(img_bytes)
-        nparr = np.frombuffer(segmented_img_bytes, np.uint8)
+        # img_bytes = segment_cloth(img_bytes)
+        nparr = np.frombuffer(img_bytes, np.uint8)
         frame = adjust_brightness(cv2.imdecode(nparr, cv2.IMREAD_COLOR), 200)
 
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)

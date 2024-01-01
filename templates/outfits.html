@@ -2,7 +2,6 @@
 <html lang="en">
 <body>
     {% include 'header.html' %}
-<<<<<<< HEAD
     <div class="calendar-box">
         {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
             <div class="day">
@@ -23,9 +22,6 @@
             </div>
         {% endfor %}
     </div>
-=======
-    <div class ="content">
->>>>>>> 0d515c297db0f3ac1e45c7b5cc92b58e19dc1b78
     <main>
         <h1 class="center-container title">Outfits</h1>
         <div class="outfit-container">
@@ -33,7 +29,7 @@
                 <div class="grid" draggable="true" ondragstart="drag(event)">
                     <div class="grid-item text">
                         <h2 class="text">
-                            {{ outfit['OutfitType'] }} Outfit
+                            {{ outfit['OutfitType'] }}
                         </h2>
                         <div class="clothing-items">
                             {% for clothing, image_path in outfit['Clothing'].items() %}

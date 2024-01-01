@@ -72,9 +72,9 @@ def get_clothing_by_type(user_id, clothing_type):
         print(f"Get Clothing Types Error: {e}")
         return None
     
-def update_clothing_name_by_identifier(identifier, updated_text, user_id):
+def update_clothing_name_by_clothing_name(clothing_name, updated_text, user_id):
     try:
-        cloth_item = dbsession.query(Clothes).filter_by(clothing_name=identifier, user_id=user_id).first()
+        cloth_item = dbsession.query(Clothes).filter_by(clothing_name=clothing_name, user_id=user_id).first()
 
         if cloth_item:
             cloth_item.clothing_name = updated_text
@@ -109,7 +109,7 @@ def get_clothing_url_by_id(clothes_id, user_id):
         print(f"GET CLOTHING URL BY ID Clothing Error: {e}")
         return f"ERROR: {e}"
     
-def is_clothing_name_by_id(clothes_name, user_id):
+def has_clothing_name_by_id(clothes_name, user_id):
     try:
         name_exists = dbsession.query(Clothes).filter(Clothes.user_id == user_id, func.trim(Clothes.clothing_name) == clothes_name.strip()).first()
         print('a',name_exists)
