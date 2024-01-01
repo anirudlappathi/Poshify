@@ -100,6 +100,10 @@ def create_databases():
         cursor.execute(f"DROP TABLE Users")
     except:
         print("No table to drop: Users.")
+    try:
+        cursor.execute(f"DROP TABLE Calendar")
+    except:
+        print("No table to drop: Calendar.")
 
     cursor.execute(f"""
         CREATE TABLE Users (
@@ -129,6 +133,13 @@ def create_databases():
             tone VARCHAR(255),
             colortemp VARCHAR(255),
             clothingimg_filepath VARCHAR(255)
+        );
+    """)
+    cursor.execute(f"""
+        CREATE TABLE Calendar (
+            user_id INT,
+            colortemp VARCHAR(255),
+            clothing_name VARCHAR(255),
         );
     """)
 

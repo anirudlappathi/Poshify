@@ -113,29 +113,28 @@ li {
 }
 /* Dropdown container */
 .dropdown {
-	margin-left: 10px;
-	position: relative;
-	display: inline-block;
+    margin-left: 10px;
+    position: relative;
+    display: inline-block;
 }
+
 /* Style for dropdown content */
 .dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f9f9f9;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
-/* Display dropdown when button is clicked */
-.dropdown:hover .dropdown-content {
-	display: block;
-}
+
 /* Align checkboxes and labels horizontally */
 .dropdown-content label {
-	margin: 10px 10px;
-	display: flex;
-	align-items: center;
+    margin: 10px 10px;
+    display: flex;
+    align-items: center;
 }
+
 /* Show the dropdown menu when the button is clicked */
 .show {
 	display: block;
@@ -365,25 +364,112 @@ input {
 	margin-right: 10px;
 	/* Add some space to the right of the picture */
 }
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f3f3;
+}
+
 .calendar-box {
-	display: flex;
-	justify-content: space-around;
-	/* Adjust spacing between days */
-	align-items: center;
-	/* Center vertically */
+    display: flex; /* Use flexbox for horizontal layout */
+    flex-wrap: wrap; /* Allow days to wrap if they exceed width */
+    justify-content: space-between; /* Spread days evenly */
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .day {
-	text-align: center;
-	margin: 10px;
-	/* Adjust spacing between days */
+    width: calc(14.28% - 20px); /* 14.28% for each day of the week */
+    margin: 10px;
+    padding: 5px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    box-sizing: border-box;
+    max-height: 300px; /* Set a maximum height */
+    overflow: auto; /* Enable overflow handling */
 }
-/* Optional styling for inputs and paragraphs */
-input[type="text"] {
-	width: 200px;
-	/* Set input width */
-	padding: 5px;
-	/* Adjust padding */
+
+/* Specific day styles */
+.day p {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
 }
+
+.action-button {
+    border: 2px dashed #ccc;
+    padding: 40px 20px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.action-button:hover {
+    border-color: #999;
+}
+
+/* Clear button styles */
+.clear-button {
+    display: block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    border: none;
+    background-color: #ddd;
+    color: #333;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.clear-button:hover {
+    background-color: #ccc;
+}
+
+
+
 p {
 	margin: 0;
+}
+.outfit-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the gap between outfits */
+}
+
+.grid-item {
+    /* Adjust the width and other styles as needed */
+    width: 200px; /* Set a fixed width for each outfit */
+    /* Add necessary styling */
+}
+
+
+.drop-area {
+    border: 2px dashed #aaa;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    color: #aaa;
+    font-weight: bold;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.drop-area:hover {
+    border-color: #666;
+}
+
+.clear-button {
+    display: none;
 }

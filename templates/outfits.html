@@ -2,94 +2,240 @@
 <html lang="en">
 <body>
     {% include 'header.html' %}
+    <div class="calendar-box">
+        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+            <div class="day">
+                <p>{{ day }}</p>
+                <div class="{{ day.lower() }} action-button" id="{{ day.lower() }}" ondrop="drop(event, '{{ day.lower() }}')" ondragover="allowDrop(event)">
+                    {% if calendarInfo and day.lower() in calendarInfo %}
+                        {% for image_path in calendarInfo[day.lower()] %}
+                            <div class="clothing-item">
+                                <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="Clothing Image" draggable="false">
+                            </div>
+                            <button class="clear-button" onclick="clearDay('{{ day.lower() }}')">Clear Day</button>
+                        {% endfor %}
+                    {% else %}
+                        <span>Drag outfit here</span>
+                    {% endif %}
+                    <button class="clear-button" onclick="clearDay('{{ day.lower() }}')">Clear Day</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     <main>
         <h1 class="center-container title">Outfits</h1>
-        <div class="grid">
+        <div class="outfit-container">
             {% for outfit in outfits %}
-                <div class="grid-item text">
-                    <h2 class="text">
-                        {{ outfit['OutfitType'] }} Outfit
-                        <button class="action-button" onclick="showAssignOptions('{{ clothing }}')">Assign to</button>
-                        <div id="{{ clothing }}-options" class="assign-options" style="display: none;">
-                            <p>Assign {{ clothing }} to:</p>
-                            <div class="calendar-box">
-                                <div class="Monday action-button">
-                                    <button onclick="assignToDay('{{ clothing }}', 'Monday')">Monday</button>
+                <div class="grid" draggable="true" ondragstart="drag(event)">
+                    <div class="grid-item text">
+                        <h2 class="text">
+                            {{ outfit['OutfitType'] }} Outfit
+                        </h2>
+                        <div class="clothing-items">
+                            {% for clothing, image_path in outfit['Clothing'].items() %}
+                                <div class="clothing-item">
+                                    <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
                                 </div>
-                                <div class="Tuesday action-button">
-                                    <button onclick="assignToDay('{{ clothing }}', 'Tuesday')">Tuesday</button>
-                                </div>
-                                <div class="Wednesday action-button">
-                                    <button onclick="assignToDay('{{ clothing }}', 'Wednesday')">Wednesday</button>
-                                </div>
-                                <div class="Thursday action-button">
-                                    <button onclick="assignToDay('{{ clothing }}', 'Thursday')">Thursday</button>
-                                </div>
-                                <div class="Friday action-button">
-                                    <button onclick="assignToDay('{{ clothing }}', 'Friday')">Friday</button>
-                                </div>
-                                <div class="Saturday action-button">
-                                    <button onclick="assignToDay('{{ clothing }}', 'Saturday')">Saturday</button>
-                                </div>
-                                <div class="Sunday action-button">
-                                    <button onclick="assignToDay('{{ clothing }}', 'Sunday')">Sunday</button>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
-                    </h2>
-                    <div class="clothing-items">
-                        {% for clothing, image_path in outfit['Clothing'].items() %}
-                            <div class="clothing-item">
-                                <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image">
-                            </div>
-                        {% endfor %}
                     </div>
                 </div>
             {% endfor %}
         </div>
-        <div class="calendar-box">
-            <div class="day">
-                <p>Monday</p>
-                <input type="text" id="monday" name="monday" placeholder="Enter outfit for Monday">
-            </div>
-            <div class="day">
-                <p>Tuesday</p>
-                <input type="text" id="tuesday" name="tuesday" placeholder="Enter outfit for Tuesday">
-            </div>
-            <div class="day">
-                <p>Wednesday</p>
-                <input type="text" id="wednesday" name="wednesday" placeholder="Enter outfit for Wednesday">
-            </div>
-            <div class="day">
-                <p>Thursday</p>
-                <input type="text" id="thursday" name="thursday" placeholder="Enter outfit for Thursday">
-            </div>
-            <div class="day">
-                <p>Friday</p>
-                <input type="text" id="friday" name="friday" placeholder="Enter outfit for Friday">
-            </div>
-            <div class="day">
-                <p>Saturday</p>
-                <input type="text" id="saturday" name="saturday" placeholder="Enter outfit for Saturday">
-            </div>
-            <div class="day">
-                <p>Sunday</p>
-                <input type="text" id="sunday" name="sunday" placeholder="Enter outfit for Sunday">
-            </div>
-        </div>
+        
+
+        
     </main>
     <script>
-        function showAssignOptions(clothing) {
-            var options = document.getElementById(clothing + "-options");
-            options.style.display = options.style.display === "none" ? "block" : "none";
+        function clearDay(dayId) {
+            //add code to remove all clothing associated with file images from Calendar DB to remove outfit when saving data // send post request to flask with file image names in array
+            var dayElement = document.getElementById(dayId);
+            var outfit = dayElement.querySelector('.grid');
+            
+            if (outfit) {
+                // Retrieve outfit content
+                var outfitContent = outfit.innerHTML;
+
+                // Remove outfit from the day grid
+                dayElement.removeChild(outfit);
+
+                // Parse the HTML content to extract necessary information
+                var tempDiv = document.createElement('div');
+                tempDiv.innerHTML = outfitContent;
+
+                var outfitTitle = tempDiv.querySelector('.text h2').innerText.trim();
+                var imageElements = tempDiv.querySelectorAll('.clothing-item img');
+                var imagePaths = Array.from(imageElements).map(img => img.getAttribute('src'));
+
+                // Construct HTML structure for the outfit
+                var reconstructedOutfit = document.createElement('div');
+                reconstructedOutfit.className = 'grid';
+                reconstructedOutfit.draggable = true; // Make the entire grid draggable
+                reconstructedOutfit.ondragstart = drag; // Assign the drag event
+                var outfitItem = document.createElement('div');
+                outfitItem.className = 'grid-item text';
+                var outfitHeader = document.createElement('h2');
+                outfitHeader.className = 'text';
+                outfitHeader.textContent = outfitTitle;
+                var clothingItems = document.createElement('div');
+                clothingItems.className = 'clothing-items';
+                //pass these to flask by post request
+                console.log("Clear Day clothing type: ", outfitTitle)
+                console.log("Clear day image paths: ", imagePaths)
+                imagePaths.forEach(imagePath => {
+                    var clothingItem = document.createElement('div');
+                    clothingItem.className = 'clothing-item';
+                    var image = document.createElement('img');
+                    image.className = 'grid-image';
+                    image.src = imagePath;
+                    image.draggable = false; // Disable dragging for images
+                    clothingItem.appendChild(image);
+                    clothingItems.appendChild(clothingItem);
+                });
+
+                outfitItem.appendChild(outfitHeader);
+                outfitItem.appendChild(clothingItems);
+                reconstructedOutfit.appendChild(outfitItem);
+
+                // Append reconstructed outfit to the outfit-container
+                var outfitContainer = document.querySelector('.outfit-container');
+                outfitContainer.appendChild(reconstructedOutfit);
+                var dayElement = document.getElementById(dayId);
+                var clearButton = dayElement.querySelector('.clear-button');
+                clearButton.style.display = 'none';
+            }
         }
-    
-        function assignToDay(clothing, day) {
-            // Here, you can perform logic to assign the clothing to the selected day
-            console.log("Assign", clothing, "to", day);
-            var options = document.getElementById(clothing + "-options");
-            options.style.display = "none";
+
+
+        function allowDrop(event) {
+            event.preventDefault();
         }
+
+        let draggedOutfit = null;
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+
+            // Get the clothing associated with the dragged outfit
+            var outfit = event.target.closest('.grid');
+            var clothing = outfit.querySelector('.text h2').innerText.trim();
+            console.log(clothing);
+
+            // Get all the image paths associated with the dragged outfit
+            var imageElements = outfit.querySelectorAll('.clothing-item img');
+            var imagePaths = Array.from(imageElements).map(img => img.getAttribute('src'));
+            console.log(imagePaths);
+
+            // Set custom data attributes for the dragged outfit
+            event.dataTransfer.setData("clothing", clothing);
+            event.dataTransfer.setData("imagePaths", JSON.stringify(imagePaths));
+
+            draggedOutfit = event.target;
+        }
+        function toggleClearButton(dayId, show) {
+            var dayElement = document.getElementById(dayId);
+            var clearButton = dayElement.querySelector('.clear-button');
+
+            // Check if clothing items exist within the day element
+            var clothingItemsExist = dayElement.querySelector('.clothing-items');
+
+            // Show the clear button if clothing items exist, else show based on the provided argument 'show'
+            clearButton.style.display = clothingItemsExist ? 'block' : show ? 'block' : 'none';
+        }
+        // Call this function after the DOM is loaded to initially hide the buttons
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleClearButton('monday', false);
+            toggleClearButton('tuesday', false);
+            toggleClearButton('wednesday', false);
+            toggleClearButton('thursday', false);
+            toggleClearButton('friday', false);
+            toggleClearButton('saturday', false);
+            toggleClearButton('sunday', false);
+        });
+
+        function drop(event, day) {
+            event.preventDefault();
+            var dayElement = document.getElementById(day);
+            var clothingItemsExist = dayElement.querySelector('.clothing-items');
+            //this code handles the replacement for the outfits if another outfit is dragged on top
+            if (clothingItemsExist) {
+                console.log("Clothing items exist within dayElement.");
+                clearDay(day)
+
+            } else {
+                console.log("No clothing items found within dayElement.");
+            }
+            var clothing = event.dataTransfer.getData("clothing");
+            var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
+            console.log("drop clothing: ", clothing);
+            console.log("drop imagePaths: ", imagePaths);
+
+            
+            var outfit = document.createElement('div');
+            outfit.className = 'grid';
+
+            var outfitContent = document.createElement('div');
+            outfitContent.className = 'grid-item text';
+
+            var outfitTitle = document.createElement('h2');
+            outfitTitle.className = 'text';
+            outfitTitle.textContent = clothing;
+
+            var clothingItems = document.createElement('div');
+            clothingItems.className = 'clothing-items';
+
+            imagePaths.forEach(imagePath => {
+                var clothingItem = document.createElement('div');
+                clothingItem.className = 'clothing-item';
+                var image = document.createElement('img');
+                image.className = 'grid-image';
+                image.src = imagePath;
+                clothingItem.appendChild(image);
+                clothingItems.appendChild(clothingItem);
+            });
+
+            outfitContent.appendChild(outfitTitle);
+            outfitContent.appendChild(clothingItems);
+            outfit.appendChild(outfitContent);
+            outfitContent.style.backgroundColor = 'white';
+            outfit.style.backgroundColor = 'white';
+
+            dayElement.appendChild(outfit);
+
+            // Hide the dragged outfit after successful drop
+            draggedOutfit.style.display = 'none';
+            toggleClearButton(day, true);
+
+            var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
+            console.log("drop imagePaths: ", imagePaths);
+
+            // Create an object with the day and image paths data
+            var outfitData = {
+                day_of_week: day,
+                image_paths: imagePaths
+            };
+
+            // Send the outfit data to Flask using fetch
+            fetch('/save_outfit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(outfitData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Outfit data sent successfully.');
+                    // Handle any success actions if needed
+                } else {
+                    throw new Error('Failed to send outfit data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle any error scenarios
+            });
+                }
     </script>
 </body>
 </html>

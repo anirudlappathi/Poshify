@@ -1,5 +1,6 @@
 from datalayer.clothes_db import *
 from datalayer.users_db import *
+from datalayer.calendar_db import *
 from algorithm.color_algo import GetStyleOutfits
 from algorithm.color_detection_camera import dominant_color_finder_dataurl
 
@@ -245,9 +246,15 @@ def generate_fit():
                clothing_info[clothing_name] = image_path
          outfit_with_images['Clothing'] = clothing_info
          outfits.append(outfit_with_images)
-
-   print("OUTFITS: ", outfits)
-   return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits)
+   print(outfits)
+   calendarInfo = get_image_paths_per_day(user_id)
+   print("ALL IMAGE PATHS PER USER ID: ", get_image_paths_per_day(user_id))
+   if calendarInfo:
+      print("returning with calendar info")
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo)
+   
+   else:
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits)
 
 
 
@@ -465,6 +472,25 @@ def update_filters():
       session['filters'] = [articles_data]
 
       return ({'message': f'{articles_data} filter added successfully'}), 200
+
+
+@app.route('/save_outfit', methods=['POST'])
+def save_outfit():
+   try:
+        outfit_data = request.json
+        user_id = session.get('userid')
+        day_of_week = outfit_data.get('day_of_week')
+        image_paths = outfit_data.get('image_paths')
+        print("DAY OF WEEK: ", day_of_week)
+        print("IOMAGE PATHS: ", image_paths)
+
+        create_entry(user_id, day_of_week, image_paths)
+        return 'Outfit data received and saved successfully.', 200
+    
+   except Exception as e:
+        print(f"Error saving outfit data: {str(e)}")
+        return 'Failed to process outfit data.', 500
+
 
 
 
