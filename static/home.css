@@ -35,9 +35,11 @@ header {
 	top: 0;
 	left: 0;
 	width: 100%;
+  background-color: transparent;
+  backdrop-filter: blur(25px); /* Initial blur */
+  transition: backdrop-filter 0.5s ease; /* Adjust timing and easing as needed */
+  z-index: 3;
 	text-align: center;
-	background-color: #ffffff;
-	z-index: 3;
 }
 /* Styling the hero section */
 .hero-section {
@@ -86,6 +88,13 @@ header {
 	margin-top: 100px;
 	margin-bottom: 10px;
 	/* Adjust the space between title and content */
+}
+.content {
+	font-size: 1.1em;
+	flex-direction: row-reverse;
+	font-style: italic;
+	margin: 0;
+	width: 30%;
 }
 .aboutsection .title {
 	text-align: left;
@@ -502,87 +511,6 @@ background-clip: text;
 	to {
 		transform: rotate(360deg);
 	}
-}
-.container {
-	background-color: white;
-	border: 2px solid #2980b9;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	margin: 20px auto;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 20px;
-	color: #fff;
-	font-size: 18px;
-}
-.bigcontainer {
-	display: flex;
-	max-width: 80%;
-	background-color: grey;
-	border: 2px solid #2980b9;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	margin: 20px auto;
-	display: block;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 20px;
-	color: black;
-	font-size: 18px;
-	position: relative;
-}
-.bigcontainer2 {
-	border-color: #00B4D8;
-	background-color: black;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
-.bigcontainer2 h4 {
-	color: white;
-	font-family: 'Montserrat', sans-serif;
-	font-size: 250%;
-	text-align: center;
-	padding: 5%;
-}
-.bigcontainer2 p {
-	color: white;
-	text-align: center;
-	margin-top: 5%;
-	font-family: 'Montserrat', sans-serif;
-}
-.box2 {
-	background-color: black;
-	border: 2px solid #2980b9;
-	border-radius: 10px;
-	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-	text-align: center;
-	line-height: 200px;
-	color: #fff;
-	font-size: 24px;
-}
-.box {
-	background-color: pink;
-	border: 2px solid #2980b9;
-	border-radius: 10px;
-	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-	text-align: center;
-	color: #fff;
-	font-size: 24px;
-}
-.container2 {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	color: #fff;
-	font-size: 18px;
 }
 .description-paragraph {
 	width: 50%;

@@ -39,6 +39,8 @@ header {
 	font-weight: 900;
 }
 nav {
+    background-color: transparent;
+    backdrop-filter: blur(5px); /* Creates a blurred effect for the background */
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -296,10 +298,6 @@ input {
 	margin-top: 20px;
 	transition: background-color 0.3s;
 }
-.file_submit:hover {
-	background-color: #800080;
-	/* Purple color on hover */
-}
 .radio-container {
 	display: flex;
 	align-items: center;
@@ -434,6 +432,7 @@ p {
 /* Styles for the footer */
 .footer {
     width: 100%; /* Footer takes the full width of the page */
+    background-color:  #ffffff; /* Example background color */
     color: black; /* Example text color */
     text-align: center; /* Centers the text */
     padding: 10px 0; /* Example padding */
@@ -469,7 +468,7 @@ p {
 
 .social-logo {
     display: inline-block;
-    background-color: grey; /* Grey background */
+    background-color: #ffffff; /* Grey background */
     border-radius: 50%; /* Circular shape */
     width: 40px; /* Size of the circle */
     height: 40px; /* Size of the circle */
@@ -496,7 +495,7 @@ p {
 
 .left-side {
     flex: 0 0 200px; /* Fixed width for the left side */
-    background-color: #f2f2f2; /* Background color for the left side */
+    background-color: #ffffff; /* Background color for the left side */
     padding: 20px; /* Some padding inside the left side */
     /* Add more styling as needed */
 }
