@@ -7,18 +7,6 @@ html {
 	animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 body {
-<<<<<<< HEAD
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
-    height: 100%;
-    overflow: auto;
-    background-color: #f2f2f2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    min-height: 100vh; /* 100% of the viewport height */
-=======
 	font-family: 'Montserrat', sans-serif;
 	font-style: normal;
 	height: 100%;
@@ -29,7 +17,6 @@ body {
 	flex-direction: column;
 	align-items: center;
 	margin: 0;
->>>>>>> b5efcae2e6698b77451417e5ed2904e890cf5c69
 }
 header {
 	/* Set the background color to match the page */
@@ -172,17 +159,12 @@ li {
 	vertical-align: middle;
 	/* Vertically centers the text */
 }
-<<<<<<< HEAD
-
-
-=======
 .center-container {
 	max-width: 800px;
 	margin: 0 auto;
 	padding: 20px;
 	align-items: center;
 }
->>>>>>> b5efcae2e6698b77451417e5ed2904e890cf5c69
 form {
 	font-family: 'Montserrat', sans-serif;
 	font-style: normal;
@@ -704,46 +686,3 @@ p {
 
 
 
-=======
-	margin: 0;
-}
-<<<<<<< HEAD
-.outfit-container {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Adjust the gap between outfits */
-}
-
-.grid-item {
-    /* Adjust the width and other styles as needed */
-    width: 200px; /* Set a fixed width for each outfit */
-    /* Add necessary styling */
-}
-
-
-.drop-area {
-    border: 2px dashed #aaa;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    color: #aaa;
-    font-weight: bold;
-    cursor: pointer;
-    transition: border-color 0.3s;
-}
-
-.drop-area:hover {
-    border-color: #666;
-}
-
-.clear-button {
-    display: none;
-}
-=======
->>>>>>> b5efcae2e6698b77451417e5ed2904e890cf5c69
->>>>>>> 0d515c297db0f3ac1e45c7b5cc92b58e19dc1b78

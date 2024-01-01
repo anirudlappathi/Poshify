@@ -48,16 +48,13 @@
     <title>Poshify</title>
 </head>
 <body>
-<<<<<<< HEAD
     {% include 'header.html' %}
     <div class ="content">
-=======
     <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
     <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer> -->
     <header id="site-header" class="header-hidden">
         {% include 'header.html' %}
     </header>
->>>>>>> b5efcae2e6698b77451417e5ed2904e890cf5c69
     <main>
       <section class="hero-section">
           <h2 id="text">Make yourself <a class="posh">Posh</a></h2>
@@ -82,30 +79,26 @@
         </div>
       </section>
       <section class="getstarted" id="getstarted">
-        <div class="getstartedtitle">
-            <h3>Sign up or Login today!</h3>
-        </div>
         <div class="getstartedcontent">
-          <a class="login action-button" href="login">Login</a>
-          <a class="signup action-button" href="signup">Sign Up</a>
+          {% if session %}
+          <div class="getstartedtitle">
+              <h3>Hop into your dashboard!</h3>
+          </div>
+          <center>
+            <a class="action-button" href="dashboard">Dashboard</a>
+          </center>
+          {% else %}
+          <div class="getstartedtitle">
+              <h3>Sign up or Login today!</h3>
+          </div>
+          <center>
+            <a class="login action-button" href="login">Login</a>
+            <a class="signup action-button" href="signup">Sign Up</a>
+          </center>
+          {% endif %}
         </div>
       </section>
   </main>
-<<<<<<< HEAD
-  <div class="aboutsection" id="aboutsection">
-      <div class="title">
-          <h3>Our Purpose.</h3>
-          <h1>Creating cool fits</h1>
-      </div>
-      <div class="box">
-          <p>
-              test
-          </p>
-      </div>
-  </div>
-</div>
-{% include 'footer.html' %}
-=======
   
 </div>
   <script>
@@ -150,9 +143,9 @@
       const observer = new IntersectionObserver(entries => {
           entries.forEach(entry => {
               if (entry.isIntersecting) {
-                  setTimeout(() => { // Introduce a delay using setTimeout
-                      entry.target.classList.add('show');
-                  }, 200); // Adjust the delay (in milliseconds) as needed
+                setTimeout(() => { // Introduce a delay using setTimeout
+                    entry.target.classList.add('show');
+                }, 200); // Adjust the delay (in milliseconds) as needed
               }
           });
       }, options);
@@ -162,6 +155,5 @@
   });
 </script>
 
->>>>>>> b5efcae2e6698b77451417e5ed2904e890cf5c69
 </body>
 </html>

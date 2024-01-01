@@ -68,7 +68,7 @@ def get_clothing_by_type(user_id, clothing_type):
             clothes.append((names[i][0], hues[i][0], saturation[i][0], value[i][0]))
 
         return clothes
-    except:
+    except Exception as e:
         print(f"Get Clothing Types Error: {e}")
         return None
     

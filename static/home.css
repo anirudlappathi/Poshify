@@ -116,12 +116,12 @@ header {
 	text-decoration: none;
 	border-radius: 5px;
 	margin: 10px;
-	background-color: #0000000; /* Button background color */
+	background-color: #000000; /* Button background color */
 	color: #ffffff; /* Button text color */
   }
   
   .action-button:hover {
-	background-color: #0000000; /* Button background color on hover */
+	background-color: #000000; /* Button background color on hover */
   }
   
 body {
@@ -439,8 +439,7 @@ input[type="text"] {
 p {
 	margin: 0;
 }
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;
-700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 .App {
 	text-align: center;
 }
@@ -499,6 +498,7 @@ p {
 	padding-bottom: 20px;
 	background: #1D1C1C;
 	-webkit-background-clip: text;
+  background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-weight: normal;
 }
