@@ -2,6 +2,8 @@
 <html lang="en">
 <body>
     {% include 'header.html' %}
+
+    <div class ="content">
     <main>
         <center>
             {% if user_id %}
@@ -12,14 +14,103 @@
             </p>
             {% endif %}
         </center>
-        <div class="center-container">
+        <div class="dashboard-container">
+
+            <div class="left-section">
+             <p>left side section</p>
+            </div>
+
+            <div class="right-section">
             {% if user_id %}
             <a href="add_clothing_camera" class="action-button">Add Clothing: Camera</a>
             <a href="add_clothing_manual" class="action-button">Add Clothing: Manual</a>
             <a href="closet" class="action-button">My Closet</a>
             <a href="outfits" class="action-button">My Outfits</a>
+
+            <div class="dashboard-info">
+                <img src="static/clothing_images/c287881b-410d-4e91-b169-91164b8b97b7.jpeg" alt="Descriptive Text" class="dashboard-image">
+                <div class="dashboard-box">
+                    <!-- Your text goes here -->
+                    <p>Stats: </p>
+                </div>
+            </div>
+
+            <div class="dashboard-info">
+                <div class="dashboard-box">
+                    <!-- Your text goes here -->
+                    <p>Stats: </p>
+                </div>
+                <img src="static/clothing_images/c287881b-410d-4e91-b169-91164b8b97b7.jpeg" alt="Descriptive Text" class="dashboard-image">
+            </div>
+            
+            <p> Posh From Head To Toe</p>
+            <div class="hover-image-container">
+                <div class="box">
+                  <div class="imgBx">
+                    <img src="static/clothing_images/d4ed8d31-da99-4132-8b90-1279213a1db1.jpeg">
+                  </div>
+                  <div class="content">
+                    <div>
+                      <h2>Image Title</h2>
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="box">
+                  <div class="imgBx">
+                    <img src="static/clothing_images/d4ed8d31-da99-4132-8b90-1279213a1db1.jpeg">
+                  </div>
+                  <div class="content">
+                    <div>
+                      <h2>Image Title</h2>
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="box">
+                  <div class="imgBx">
+                    <img src="static/clothing_images/dbf1b898-dcf3-450f-9ac4-8c69181edec0.jpeg">
+                  </div>
+                  <div class="content">
+                    <div>
+                      <h2>Image Title</h2>
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="box">
+                  <div class="imgBx">
+                    <img src="static/clothing_images/e1d94ba6-7e33-449e-9a74-cd06f823701d.jpeg">
+                  </div>
+                  <div class="content">
+                    <div>
+                      <h2>Image Title</h2>
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <p>Sample Week: </p>
+            <div class="sample-week">
+                <div class="day">Sunday</div>
+                <div class="day">Monday</div>
+                <div class="day">Tuesday</div>
+                <div class="day">Wednesday</div>
+                <div class="day">Thursday</div>
+                <div class="day">Friday</div>
+                <div class="day">Saturday</div>
+            </div>
+
             {% endif %}
         </div>
+       </div>
     </main>
+</div>
+    {% include 'footer.html' %}
 </body>
 </html>

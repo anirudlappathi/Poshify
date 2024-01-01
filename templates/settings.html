@@ -2,6 +2,7 @@
 <html lang="en">
 <body>
     {% include 'header.html' %}
+    <div class ="content">
     <main>
         <center>
             {% if user_id %}
@@ -18,5 +19,7 @@
             </form>      
         </center>
     </main>
+   </div>
+    {% include 'footer.html' %}
 </body>
 </html>
