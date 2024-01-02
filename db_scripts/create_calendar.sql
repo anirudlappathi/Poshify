@@ -1,7 +1,7 @@
 CREATE TABLE Calendar (
-    user_id INT,
-    colortemp VARCHAR(255),
-    clothing_name VARCHAR(255),
+    user_id VARCHAR(255),
+    dayOfWeek VARCHAR(255),
+    filepath VARCHAR(255),
     outfitType VARCHAR(255),
 );
 

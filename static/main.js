@@ -35,11 +35,11 @@ function loadModel() {
 
   // Define material for the spheres
   const material = new THREE.MeshStandardMaterial({
-    color: 0xCECECE, // Base color
+    color: 0xEFEFEF, // Base color
     metalness: 1, // Set to 1 for a fully metallic appearance
     roughness: 0, // Lower roughness for a smoother surface (0 being completely smooth)
     transparent: true, // Enable transparency
-    opacity: 0.05, // Adjust opacity for transparency effect
+    opacity: 0.1, // Adjust opacity for transparency effect
   });
 
   // Ensure that the material uses reflections by enabling the reflectivity

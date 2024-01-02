@@ -10,8 +10,6 @@ class Calendar(Base):
     filepath = Column(String(255))
     outfitType = Column(String(255))
 
-
-
 def create_entry(user_id, dayOfWeek, imagePaths, outfitType):
     # Check for existing entries for the user on the specified day
     print("DAY OF WEEK ", dayOfWeek)
