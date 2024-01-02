@@ -291,7 +291,6 @@ def add_clothing_manual():
       image_data = request.files['image']
 
       has_name = has_clothing_name_by_id(clothing_name, user_id)
-      print(has_name)
       if has_name:
          return render_template("add_clothing_manual.html", session=user, result="Name already exists for cloth", user_id=user_id)   
       if clothing_name is None or clothing_type is None or is_clean is None or image_data is None:
@@ -310,7 +309,7 @@ def add_clothing_manual():
          image_binary = img_file.read()
 
       encoded_image = base64.b64encode(image_binary)
-      dominant_color = dominant_color_finder_dataurl(encoded_image, filename)
+      dominant_color = dominant_color_finder_dataurl(encoded_image)
 
       hue = dominant_color[0]
       saturation = dominant_color[1]
@@ -359,7 +358,7 @@ def add_clothing_camera():
 
       if image_data:
          filename = str(uuid.uuid4()) + ".jpeg"
-         hue, saturation, value = dominant_color_finder_dataurl(image_data, filename)
+         hue, saturation, value = dominant_color_finder_dataurl(image_data)
          image_binary = base64.b64decode(image_data)
          img = Image.open(BytesIO(image_binary))
          img.save(os.path.join('static/clothing_images', filename), "JPEG")

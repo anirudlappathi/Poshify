@@ -272,6 +272,8 @@ def GetStyleOutfits(style, tops, bots, shoes):
     
     matchingOutfits = []
 
+    if not (tops and bots and shoes):
+        return []
     for top in range(len(tops)):
         for bot in range(len(bots)):
             for shoe in range(len(shoes)):
