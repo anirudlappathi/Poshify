@@ -8,11 +8,21 @@
                 <p>{{ day }}</p>
                 <div class="{{ day.lower() }} action-button" id="{{ day.lower() }}" ondrop="drop(event, '{{ day.lower() }}')" ondragover="allowDrop(event)">
                     {% if calendarInfo and day.lower() in calendarInfo %}
-                        {% for image_path in calendarInfo[day.lower()] %}
-                            <div class="clothing-item">
-                                <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="Clothing Image" draggable="false">
+                        {% for outfitType, imagePaths in calendarInfo[day.lower()].items() %}
+                            <div class="grid" draggable="true" ondragstart="drag(event)">
+                                <div class="grid-item text">
+                                    <h2 class="text">
+                                        {{ outfitType }}
+                                    </h2>
+                                    <div class="clothing-items">
+                                        {% for image_path in imagePaths %}
+                                            <div class="clothing-item">
+                                                <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="Clothing Image" draggable="false">
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
-                            <button class="clear-button" onclick="clearDay('{{ day.lower() }}')">Clear Day</button>
                         {% endfor %}
                     {% else %}
                         <span>Drag outfit here</span>
@@ -22,6 +32,7 @@
             </div>
         {% endfor %}
     </div>
+    
     <main>
         <h1 class="center-container title">Outfits</h1>
         <div class="outfit-container">
@@ -49,11 +60,12 @@
 </div>
     <script>
         function clearDay(dayId) {
-            //add code to remove all clothing associated with file images from Calendar DB to remove outfit when saving data // send post request to flask with file image names in array
             var dayElement = document.getElementById(dayId);
             var outfit = dayElement.querySelector('.grid');
-            
+            console.log(outfit);
+
             if (outfit) {
+                console.log("OUTFIT PRESENT")
                 // Retrieve outfit content
                 var outfitContent = outfit.innerHTML;
 
@@ -81,8 +93,6 @@
                 var clothingItems = document.createElement('div');
                 clothingItems.className = 'clothing-items';
                 //pass these to flask by post request
-                console.log("Clear Day clothing type: ", outfitTitle)
-                console.log("Clear day image paths: ", imagePaths)
                 imagePaths.forEach(imagePath => {
                     var clothingItem = document.createElement('div');
                     clothingItem.className = 'clothing-item';
@@ -104,8 +114,41 @@
                 var dayElement = document.getElementById(dayId);
                 var clearButton = dayElement.querySelector('.clear-button');
                 clearButton.style.display = 'none';
-            }
+                console.log("CLEAR DAY DAYOFWEEK: ", dayId);
+                console.log("CLEAR DAY IMAGEPATHS: ", imagePaths);
+                console.log("CLEAR DAY OUTFIT TITLE: ", outfitTitle);
+                var outfitData = {
+                day_of_week: dayId,
+                image_paths: imagePaths,
+                outfitType: outfitTitle
+                };
+                var newSpan = document.createElement('span');
+                newSpan.textContent = 'Drag outfit here'; // Set the text content;
+                fetch('/delete_outfit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(outfitData)
+                    })
+                .then(response => {
+                        if (response.ok) {
+                            console.log('Outfit data to DELETE sent successfully.');
+                            // Handle any success actions if needed
+                        } else {
+                            throw new Error('Failed to send outfit data.');
+                        }
+                    })
+                .catch(error => {
+                        console.error('Error:', error);
+                        // Handle any error scenarios
+                    });
         }
+            
+            
+            
+            
+    }
 
 
         function allowDrop(event) {
@@ -166,6 +209,7 @@
             } else {
                 console.log("No clothing items found within dayElement.");
             }
+            console.log("AFTER CLEAR DAY")
             var clothing = event.dataTransfer.getData("clothing");
             var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
             console.log("drop clothing: ", clothing);
@@ -213,7 +257,8 @@
             // Create an object with the day and image paths data
             var outfitData = {
                 day_of_week: day,
-                image_paths: imagePaths
+                image_paths: imagePaths,
+                outfitType: clothing
             };
 
             // Send the outfit data to Flask using fetch
@@ -226,7 +271,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('Outfit data sent successfully.');
+                    console.log('Outfit data to SAVE sent successfully.');
                     // Handle any success actions if needed
                 } else {
                     throw new Error('Failed to send outfit data.');

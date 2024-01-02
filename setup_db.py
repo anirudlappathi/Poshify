@@ -139,7 +139,8 @@ def create_databases():
         CREATE TABLE Calendar (
             user_id INT,
             colortemp VARCHAR(255),
-            clothing_name VARCHAR(255)
+            clothing_name VARCHAR(255),
+            outfitType VARCHAR(255)
         );
     """)
 

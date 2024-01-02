@@ -500,14 +500,35 @@ def save_outfit():
         user_id = session.get('userid')
         day_of_week = outfit_data.get('day_of_week')
         image_paths = outfit_data.get('image_paths')
+        outfit_type = outfit_data.get('outfitType')
         print("DAY OF WEEK: ", day_of_week)
         print("IOMAGE PATHS: ", image_paths)
+        print("OUTFIT TYPE: ", outfit_type)
 
-        create_entry(user_id, day_of_week, image_paths)
+        create_entry(user_id, day_of_week, image_paths, outfit_type)
         return 'Outfit data received and saved successfully.', 200
     
    except Exception as e:
         print(f"Error saving outfit data: {str(e)}")
+        return 'Failed to process outfit data.', 500
+
+@app.route('/delete_outfit', methods=['POST'])
+def delete_outfit():
+   try:
+        outfit_data = request.json
+        user_id = session.get('userid')
+        day_of_week = outfit_data.get('day_of_week')
+        image_paths = outfit_data.get('image_paths')
+        outfit_type = outfit_data.get('outfitType')
+        
+
+        delete_entry(user_id, day_of_week, image_paths[0], outfit_type)
+        delete_entry(user_id, day_of_week, image_paths[1], outfit_type)
+        delete_entry(user_id, day_of_week, image_paths[2], outfit_type)
+        return 'Outfit data received and saved successfully.', 200
+    
+   except Exception as e:
+        print(f"Error deleting outfit data: {str(e)}")
         return 'Failed to process outfit data.', 500
 
 
