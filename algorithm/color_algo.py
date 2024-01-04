@@ -96,9 +96,6 @@ def GetTone(values, verbose=False):
     tone_sim.compute()
     tone_output = tone_sim.output['tone']
     tone_membership = GetMembership(tone_fuzzy, tone_range, tone, tone_output)
-    if verbose:
-        print("TONE CRISP VALUE: ", tone_output)
-        print("TONE FUZZY VALUE: ", tone_membership)
     return tone_membership
 
 """
@@ -110,9 +107,6 @@ verbose - prints both crisp value and fuzzy value
 """
 def GetColorTemp(hue_val, verbose=False):
     temp_membership = GetMembership(hue_fuzzy, hue_range, hue, hue_val)
-    if verbose:
-        print("TEMP. CRISP VALUE: ", hue_val)
-        print("TEMP. FUZZY VALUE: ", temp_membership)
     return temp_membership
 
 
@@ -264,21 +258,23 @@ tops - list of all tops
 bots - list of all bots
 sheos - list of all shoes
 """
-def GetStyleOutfits(style, tops, bots, shoes):
+def GetStyleOutfits(tops, bots, shoes):
 
-    rules = {"Basic": BasicMatch, "Neutral": NeutralMatch,
-             "Analogous": AnalogousMatch, "Summer": SummerMatch,
-            "Winter": WinterMatch}
     
     matchingOutfits = []
-
     if not (tops and bots and shoes):
         return []
     for top in range(len(tops)):
+        topdesc = GetColorDesc(tops[top][:3])
         for bot in range(len(bots)):
+            botdesc = GetColorDesc(bots[bot][:3])
             for shoe in range(len(shoes)):
-                if rules[style]((tops[top][1:], bots[bot][1:], shoes[shoe][1:])):
-                    matchingOutfits.append((style ,tops[top][0], bots[bot][0], shoes[shoe][0]))
+                shoedesc = GetColorDesc(shoes[shoe][:3])
+                outfitRules = []
+                for rule in [BasicMatch, NeutralMatch, AnalogousMatch, SummerMatch, WinterMatch]:
+                    if rule((topdesc, botdesc, shoedesc)):
+                        outfitRules.append(str(rule).split()[1])
+                matchingOutfits.append((", ".join(outfitRules), (tops[top][3], tops[top][4]), (bots[bot][3], bots[bot][4]), (shoes[shoe][3], shoes[shoe][4])))
 
     return matchingOutfits
 

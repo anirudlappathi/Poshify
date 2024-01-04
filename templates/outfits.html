@@ -39,13 +39,13 @@
             {% for outfit in outfits %}
                 <div class="grid" draggable="true" ondragstart="drag(event)">
                     <div class="grid-item text">
-                        <h2 class="text">
-                            {{ outfit['OutfitType'] }}
-                        </h2>
                         <div class="clothing-items">
-                            {% for clothing, image_path in outfit['Clothing'].items() %}
-                                <div class="clothing-item">
-                                    <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
+                            <h2 class="text">
+                                {{ outfit[0] }}
+                            </h2>
+                            {% for clothing_name, image_path in outfit[1:] %}
+                                <div class="clothing-item" clothing-name="{{ clothing_name }}">
+                                    <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing_name }} Image" draggable="false">
                                 </div>
                             {% endfor %}
                         </div>

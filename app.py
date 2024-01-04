@@ -4,6 +4,12 @@ from datalayer.calendar_db import *
 from algorithm.color_algo import GetStyleOutfits
 from algorithm.color_detection_camera import dominant_color_finder_dataurl
 
+import logging
+
+# Set the logging level to suppress SQLAlchemy logs (INFO level)
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+
+
 import base64
 from PIL import Image
 from io import BytesIO
@@ -232,25 +238,11 @@ def generate_fit():
    tops = get_clothing_by_type(user_id, "T-Shirt")
    bots = get_clothing_by_type(user_id, "Pants")
    shoes = get_clothing_by_type(user_id, "Shoes")
-   styles = ["Basic", "Neutral", "Analogous", "Summer", "Winter"]
 
-   outfits = []
-   for style in styles:
-      style_outfits = GetStyleOutfits(style, tops, bots, shoes)
-      for outfit in style_outfits:
-         outfit_with_images = {'OutfitType': outfit[0]}
-         clothing_names = outfit[1:]
-         clothing_info = {}
-         for clothing_name in clothing_names:
-               image_path = get_image_paths_by_name(user_id, clothing_name)
-               clothing_info[clothing_name] = image_path
-         outfit_with_images['Clothing'] = clothing_info
-         outfits.append(outfit_with_images)
-   print(outfits)
+   outfits = GetStyleOutfits(tops, bots, shoes)
+   print(len(outfits))
    calendarInfo = get_image_paths_per_day(user_id)
-   print("ALL IMAGE PATHS PER USER ID: ", get_image_paths_per_day(user_id))
    if calendarInfo:
-      print("returning with calendar info")
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo)
    
    else:

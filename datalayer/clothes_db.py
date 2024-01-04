@@ -2,10 +2,10 @@ from algorithm import color_algo
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, func
 from .database import dbsession, Base
 import os
-# import logging
+import logging
 
-# # Set the logging level to suppress SQLAlchemy logs (INFO level)
-# logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+# Set the logging level to suppress SQLAlchemy logs (INFO level)
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 
 class Clothes(Base):
     __tablename__ = 'Clothes'
@@ -59,13 +59,11 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
 
 def get_clothing_by_type(user_id, clothing_type):
     try:
-        names = dbsession.query(Clothes.clothing_name).filter_by(user_id=user_id, clothing_type=clothing_type).all()
-        hues = dbsession.query(Clothes.hue).filter_by(user_id=user_id, clothing_type=clothing_type).all()
-        saturation = dbsession.query(Clothes.saturation).filter_by(user_id=user_id, clothing_type=clothing_type).all()
-        value = dbsession.query(Clothes.value).filter_by(user_id=user_id, clothing_type=clothing_type).all()
-        clothes = []
-        for i in range(len(hues)):
-            clothes.append((names[i][0], hues[i][0], saturation[i][0], value[i][0]))
+
+        data = dbsession.query(Clothes.hue, Clothes.saturation, Clothes.value, Clothes.clothing_name, Clothes.clothingimg_filepath).filter_by(user_id=user_id, clothing_type=clothing_type).all()
+        print(data)
+
+        clothes = [(row.hue, row.saturation, row.value, row.clothing_name, f"clothing_images/{row.clothingimg_filepath}") for row in data]
 
         return clothes
     except Exception as e:

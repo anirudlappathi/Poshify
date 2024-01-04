@@ -18,7 +18,8 @@ def dominant_color_finder_dataurl(image_data):
     # image data is just encoded_jpg
     img_data = base64.b64decode(image_data)
     nparr = np.frombuffer(img_data, np.uint8)
-    frame = adjust_brightness(cv2.imdecode(nparr, cv2.IMREAD_COLOR), 200)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    # frame = adjust_brightness(frame)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     k = 5
     HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -28,8 +29,6 @@ def dominant_color_finder_dataurl(image_data):
     _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
     dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
     dominant_color_hsv = cv2.cvtColor(np.uint8([[dominant_color]]), cv2.COLOR_BGR2HSV)[0][0]
-    print('a',dominant_color_hsv)
-    print(dominant_color_hsv[0])
     return (int(dominant_color_hsv[0]) * 360) // 179, (int(dominant_color_hsv[1]) * 100) // 255, (int(dominant_color_hsv[2]) * 100) // 255
 
 def detect_dominant_color_webcam():
@@ -46,7 +45,6 @@ def detect_dominant_color_webcam():
 
             _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
             dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
-            print(dominant_color)
             time = 0
         cv2.imshow("frame", frame)
         time += 1
@@ -65,7 +63,6 @@ def create_contours_webcam():
         mask = object_detector.apply(frame)
         contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
-        #print(heirarchy)
         for i in contours:
             if cv2.contourArea(i) > 5000:
                 x, y, w, h = cv2.boundingRect(i)
@@ -97,10 +94,8 @@ def brighten_webcam():
 
         if key == ord('o'):
             wanted_brightness -= 5
-            print(wanted_brightness)
         if key == ord('p'):
             wanted_brightness += 5
-            print(wanted_brightness)
 
         cv2.imshow('Adjusted Image', adjusted_image)
 
@@ -124,8 +119,6 @@ def testing_brightness():
         _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
         dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
         dominant_color_hsv = cv2.cvtColor(np.uint8([[dominant_color]]), cv2.COLOR_BGR2HSV)[0][0]
-        print('a',dominant_color_hsv)
-        print(dominant_color_hsv[0])
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()
