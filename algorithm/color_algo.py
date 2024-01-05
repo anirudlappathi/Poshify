@@ -274,7 +274,8 @@ def GetStyleOutfits(tops, bots, shoes):
                 for rule in [BasicMatch, NeutralMatch, AnalogousMatch, SummerMatch, WinterMatch]:
                     if rule((topdesc, botdesc, shoedesc)):
                         outfitRules.append(str(rule).split()[1])
-                matchingOutfits.append((", ".join(outfitRules), (tops[top][3], tops[top][4]), (bots[bot][3], bots[bot][4]), (shoes[shoe][3], shoes[shoe][4])))
+                if len(outfitRules) > 0:
+                    matchingOutfits.append((", ".join(outfitRules), (tops[top][3], tops[top][4]), (bots[bot][3], bots[bot][4]), (shoes[shoe][3], shoes[shoe][4])))
 
     return matchingOutfits
 

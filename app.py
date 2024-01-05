@@ -17,15 +17,16 @@ import json
 import os
 from os import environ as env
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
-from dotenv import find_dotenv, load_dotenv
 import uuid
+
+from dotenv import find_dotenv, load_dotenv
 
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
 
-
-
-
+import configparser
+config = configparser.ConfigParser()
+config.read('config.properties')
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -45,6 +46,11 @@ oauth.register(
       "scope": "openid profile email",
    },
    server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
+)
+
+boto3_session = boto3.Session(
+   aws_access_key_id=env.get("AWS_ACCESS_KEY"),
+   aws_secret_access_key=env.get("AWS_SECRET_KEY")
 )
 
 s3 = boto3.client('s3')
@@ -222,7 +228,7 @@ def closet():
       if 'filters' in session:
          filters = session['filters']
 
-      return render_template("closet.html", session=user, user_id=user_id, clothes=clothes, filters=filters)
+      return render_template("closet.html", session=user, user_id=user_id, clothes=clothes, filters=filters, config=config)
 
 
 
@@ -244,13 +250,11 @@ def generate_fit():
    outfits = GetStyleOutfits(tops, bots, shoes)
    print("outfit count: ", len(outfits))
    calendarInfo = get_image_paths_per_day(user_id)
+   print("ajslka", calendarInfo)
    if calendarInfo:
-      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo)
-   
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config)
    else:
-      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits)
-
-
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, config=config)
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
@@ -294,10 +298,8 @@ def add_clothing_manual():
       if image_data.filename == '':
          return render_template("add_clothing_manual.html", result="No Selected File", session=user, user_id=user_id)   
       
-
       filename = str(uuid.uuid4()) + os.path.splitext(image_data.filename)[1]
-      
-      image_data.save(os.path.join('static/clothing_images', filename))
+
 
       file_path = os.path.join("static/clothing_images", filename)
       with open(file_path, 'rb') as img_file:
@@ -315,6 +317,12 @@ def add_clothing_manual():
          return render_template("add_clothing_manual.html", session=user, result="Empty Field", user_id=user_id)       
 
       result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
+
+      if config.get("DEFAULT", "DEVTYPE") == "local":
+         image_data.save(os.path.join('static/clothing_images', filename))
+      else:
+         s3.put_object(Body=image_data, Bucket=CLOTHING_BUCKET_NAME, Key=f"clothing_images/{filename}")
+
       return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
    
    return render_template("add_clothing_manual.html", session=user, result="", user_id=user_id)               
@@ -356,7 +364,10 @@ def add_clothing_camera():
          hue, saturation, value = dominant_color_finder_dataurl(image_data)
          image_binary = base64.b64decode(image_data)
          img = Image.open(BytesIO(image_binary))
-         img.save(os.path.join('static/clothing_images', filename), "JPEG")
+         if config.get("DEFAULT", "DEVTYPE") == "local":
+            img.save(os.path.join('static/clothing_images', filename), "JPEG")
+         else:
+            s3.put_object(Body=image_binary, Bucket=CLOTHING_BUCKET_NAME, Key=f"clothing_images/{filename}")
       else:
          return render_template("add_clothing_camera.html", result="Camera Data invalid or not working", user_id=user_id)   
 
@@ -434,8 +445,6 @@ def update_cleanliness():
       new_status = data.get('cleanlinessStatus')
 
       update_cleanliness_status(clothid, new_status)
-      print("clothid: ", clothid)
-      print("new status: ", new_status)
       response_data = {
             'clothid': clothid,
             'message': 'Updated successfully'
@@ -457,9 +466,12 @@ def delete_element():
       clothes_id = data.get('clothes_id')
       user_id = session.get('userid')
       url = get_clothing_url_by_id(clothes_id, user_id)
-      file_path = os.path.join("static/clothing_images", url)
-      if os.path.exists(file_path):
-            os.remove(file_path)
+      if config.get("DEFAULT", "DEVTYPE") == "local":
+         filepath = os.path.join("static/clothing_images", url)
+      else:
+         s3.delete_object(Bucket=CLOTHING_BUCKET_NAME, Key=f'clothing_images/{url}')
+      if os.path.exists(filepath):
+            os.remove(filepath)
             delete_clothing_by_id(clothes_id, user_id)
             return jsonify({'message': f'{clothes_id} deleted successfully'}), 200
       else:
@@ -490,46 +502,40 @@ def update_filters():
 @app.route('/save_outfit', methods=['POST'])
 def save_outfit():
    try:
-        outfit_data = request.json
-        user_id = session.get('userid')
-        day_of_week = outfit_data.get('day_of_week')
-        image_paths = outfit_data.get('image_paths')
-        outfit_type = outfit_data.get('outfitType')
-        print("DAY OF WEEK: ", day_of_week)
-        print("IOMAGE PATHS: ", image_paths)
-        print("OUTFIT TYPE: ", outfit_type)
+      outfit_data = request.json
+      user_id = session.get('userid')
+      day_of_week = outfit_data.get('day_of_week')
+      image_paths = outfit_data.get('image_paths')
+      outfit_type = outfit_data.get('outfitType')
+      print("DAY OF WEEK: ", day_of_week)
+      print("IOMAGE PATHS: ", image_paths)
+      print("OUTFIT TYPE: ", outfit_type)
 
-        create_entry(user_id, day_of_week, image_paths, outfit_type)
-        return 'Outfit data received and saved successfully.', 200
-    
+      create_entry(user_id, day_of_week, image_paths, outfit_type)
+      return 'Outfit data received and saved successfully.', 200
+   
    except Exception as e:
-        print(f"Error saving outfit data: {str(e)}")
-        return 'Failed to process outfit data.', 500
+      print(f"Error saving outfit data: {str(e)}")
+      return 'Failed to process outfit data.', 500
 
 @app.route('/delete_outfit', methods=['POST'])
 def delete_outfit():
    try:
-        outfit_data = request.json
-        user_id = session.get('userid')
-        day_of_week = outfit_data.get('day_of_week')
-        image_paths = outfit_data.get('image_paths')
-        outfit_type = outfit_data.get('outfitType')
-        
+      outfit_data = request.json
+      user_id = session.get('userid')
+      day_of_week = outfit_data.get('day_of_week')
+      image_paths = outfit_data.get('image_paths')
+      outfit_type = outfit_data.get('outfitType')
+      
 
-        delete_entry(user_id, day_of_week, image_paths[0], outfit_type)
-        delete_entry(user_id, day_of_week, image_paths[1], outfit_type)
-        delete_entry(user_id, day_of_week, image_paths[2], outfit_type)
-        return 'Outfit data received and saved successfully.', 200
-    
+      delete_entry(user_id, day_of_week, image_paths[0], outfit_type)
+      delete_entry(user_id, day_of_week, image_paths[1], outfit_type)
+      delete_entry(user_id, day_of_week, image_paths[2], outfit_type)
+      return 'Outfit data received and saved successfully.', 200
+   
    except Exception as e:
-        print(f"Error deleting outfit data: {str(e)}")
-        return 'Failed to process outfit data.', 500
-
-
-
-
-
-
+      print(f"Error deleting outfit data: {str(e)}")
+      return 'Failed to process outfit data.', 500
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', port=81)
+   app.run(host='0.0.0.0', port=config.get("DEFAULT", "PORT"))

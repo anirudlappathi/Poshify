@@ -17,7 +17,11 @@
                                     <div class="clothing-items">
                                         {% for image_path in imagePaths %}
                                             <div class="clothing-item">
-                                                <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="Clothing Image" draggable="false">
+                                                {% if config.get("DEFAULT", "DEVTYPE") == "local" %}
+                                                    <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
+                                                {% else %}
+                                                    <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
+                                                {% endif %}
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -45,7 +49,11 @@
                             </h2>
                             {% for clothing_name, image_path in outfit[1:] %}
                                 <div class="clothing-item" clothing-name="{{ clothing_name }}">
-                                    <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing_name }} Image" draggable="false">
+                                    {% if config.get("DEFAULT", "DEVTYPE") == "local" %}
+                                        <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
+                                    {% else %}
+                                        <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         </div>

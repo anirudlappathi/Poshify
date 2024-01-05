@@ -4,6 +4,10 @@ from .database import dbsession, Base
 import os
 import logging
 
+import configparser
+config = configparser.ConfigParser()
+config.read('config.properties')
+
 # Set the logging level to suppress SQLAlchemy logs (INFO level)
 logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 
@@ -49,7 +53,7 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
                 item.hue,
                 item.saturation,
                 item.value,
-                os.path.join("clothing_images", item.clothingimg_filepath),
+                f"{config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH')}{item.clothingimg_filepath}"
             ))
         return clothing_data
     except Exception as e:
@@ -57,13 +61,12 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
         return None
 
 
-def get_clothing_by_type(user_id, clothing_type):
+def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPATH"):
     try:
 
         data = dbsession.query(Clothes.hue, Clothes.saturation, Clothes.value, Clothes.clothing_name, Clothes.clothingimg_filepath).filter_by(user_id=user_id, clothing_type=clothing_type).all()
-        print(data)
 
-        clothes = [(row.hue, row.saturation, row.value, row.clothing_name, f"clothing_images/{row.clothingimg_filepath}") for row in data]
+        clothes = [(row.hue, row.saturation, row.value, row.clothing_name, f"{config.get('DEFAULT', folder)}{row.clothingimg_filepath}") for row in data]
 
         return clothes
     except Exception as e:

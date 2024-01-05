@@ -2,6 +2,10 @@ from .database import dbsession, Base
 from sqlalchemy import Column, Integer, String, delete
 from collections import defaultdict
 
+import configparser
+config = configparser.ConfigParser()
+config.read('config.properties')
+
 class Calendar(Base):
     __tablename__ = 'Calendar'
 
@@ -60,6 +64,7 @@ def get_image_paths_per_day(user_id):
         # Process the retrieved data as needed
         image_paths_dict = defaultdict(lambda: defaultdict(list))
         for day, outfit_type, filepath in image_paths_per_day:
+            filepath = f"{filepath.replace('clothing_images/', config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH'))}"
             image_paths_dict[day][outfit_type].append(filepath)
 
         return image_paths_dict
