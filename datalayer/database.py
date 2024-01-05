@@ -3,11 +3,17 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from dotenv import load_dotenv
 import os
 
+import configparser
+config = configparser.ConfigParser()
+config.read('config.properties')
+
 load_dotenv()
 password = os.getenv("PASSWORD")
 
-DATABASE_URL = f'mysql+mysqlconnector://root:{password}@localhost/Poshify'
-# DATABASE_URL = f'mysql+mysqlconnector://admin:{password}@poshify-db.cioxixeqdhzy.us-east-1.rds.amazonaws.com:3306/Poshify'
+if config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH") == "local":
+    DATABASE_URL = f'mysql+mysqlconnector://root:{password}@localhost/Poshify'
+else:
+    DATABASE_URL = f'mysql+mysqlconnector://admin:{password}@poshify-db.cioxixeqdhzy.us-east-1.rds.amazonaws.com:3306/Poshify'
 
 engine = create_engine(DATABASE_URL, echo=True)
 
