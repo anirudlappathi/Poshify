@@ -5,10 +5,9 @@ from algorithm.color_algo import GetStyleOutfits
 from algorithm.color_detection_camera import dominant_color_finder_dataurl
 
 import logging
-
-# Set the logging level to suppress SQLAlchemy logs (INFO level)
 logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 
+import boto3
 
 import base64
 from PIL import Image
@@ -24,6 +23,10 @@ import uuid
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
 
+
+
+
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
    load_dotenv(ENV_FILE)
@@ -34,7 +37,6 @@ app = Flask(__name__)
 app.secret_key = env.get("APP_SECRET_KEY")
 
 oauth = OAuth(app)
-
 oauth.register(
    "auth0",
    client_id=env.get("AUTH0_CLIENT_ID"),
@@ -44,6 +46,9 @@ oauth.register(
    },
    server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
 )
+
+s3 = boto3.client('s3')
+CLOTHING_BUCKET_NAME = "poshify-clothingimages"
 
 @app.route("/")
 @app.route("/home")
@@ -291,6 +296,7 @@ def add_clothing_manual():
       
 
       filename = str(uuid.uuid4()) + os.path.splitext(image_data.filename)[1]
+      
       image_data.save(os.path.join('static/clothing_images', filename))
 
       file_path = os.path.join("static/clothing_images", filename)
