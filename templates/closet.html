@@ -33,7 +33,7 @@
         {% for clothes_id, clothing_type, clothing_name, is_clean, hue, saturation, value, file_path in clothes %}
             <div class="grid-item center text show" data-clothes-id="{{ clothes_id }}" data-clothing-type="{{ clothing_type }}">
                 <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
-                {% if config.get("DEFAULT", "DEVTYPE") == "local" %}
+                {% if config == "local" %}
                     <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing }} Image" draggable="false">
                 {% else %}
                     <img class="grid-image" src="{{ url_for(file_path) }}" alt="Clothing Image" draggable="false">
