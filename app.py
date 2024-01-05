@@ -7,13 +7,10 @@ from algorithm.color_detection_camera import dominant_color_finder_dataurl
 import logging
 logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 
-import boto3
-
 import base64
 from PIL import Image
 from io import BytesIO
 
-import json
 import os
 from os import environ as env
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
@@ -48,13 +45,10 @@ oauth.register(
    server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
 )
 
-boto3_session = boto3.Session(
-   aws_access_key_id=env.get("AWS_ACCESS_KEY"),
-   aws_secret_access_key=env.get("AWS_SECRET_KEY")
-)
-
-s3 = boto3.client('s3')
-CLOTHING_BUCKET_NAME = "poshify-clothingimages"
+if config.get("DEFAULT", "DEVTYPE") == "aws":
+   import boto3
+   s3 = boto3.client('s3')
+   CLOTHING_BUCKET_NAME = "poshify-clothingimages"
 
 @app.route("/")
 @app.route("/home")
