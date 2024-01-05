@@ -212,10 +212,7 @@ def closet():
          return redirect("/home", code=302)
 
       clothes = get_clothing_name_image_id_by_user_id(user_id)
-      
-      # articles filter
-      # color filter
-      # dirty clean filter
+         
       filters = [[] for i in range(3)]
       if 'filters' in session:
          filters = session['filters']
@@ -240,7 +237,7 @@ def generate_fit():
    shoes = get_clothing_by_type(user_id, "Shoes")
 
    outfits = GetStyleOutfits(tops, bots, shoes)
-   print(len(outfits))
+   print("outfit count: ", len(outfits))
    calendarInfo = get_image_paths_per_day(user_id)
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo)
