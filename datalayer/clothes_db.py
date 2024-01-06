@@ -6,7 +6,7 @@ import logging
 
 import configparser
 config = configparser.ConfigParser()
-config.read('.properties')
+config.read('config.properties')
 
 # Set the logging level to suppress SQLAlchemy logs (INFO level)
 logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)

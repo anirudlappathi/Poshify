@@ -4,7 +4,7 @@ from collections import defaultdict
 
 import configparser
 config = configparser.ConfigParser()
-config.read('.properties')
+config.read('config.properties')
 
 if config.get("DEFAULT", "DEVTYPE") == "aws":
    import boto3
