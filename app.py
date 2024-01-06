@@ -246,7 +246,7 @@ def generate_fit():
    outfits = GetStyleOutfits(tops, bots, shoes)
    print("outfit count: ", len(outfits))
    calendarInfo = get_image_paths_per_day(user_id)
-   print("CALENDAR INFORMATION " + calendarInfo)
+   print("CALENDAR INFORMATION " + str(calendarInfo))
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"))
    else:
