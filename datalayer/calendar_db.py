@@ -6,6 +6,11 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.properties')
 
+if config.get("DEFAULT", "DEVTYPE") == "aws":
+   import boto3
+   s3 = boto3.client('s3')
+   CLOTHING_BUCKET_NAME = "poshify-clothingimages"
+
 class Calendar(Base):
     __tablename__ = 'Calendar'
 
@@ -64,8 +69,11 @@ def get_image_paths_per_day(user_id):
         # Process the retrieved data as needed
         image_paths_dict = defaultdict(lambda: defaultdict(list))
         for day, outfit_type, filepath in image_paths_per_day:
-            filepath = f"{filepath.replace('clothing_images/', config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH'))}"
-            image_paths_dict[day][outfit_type].append(filepath)
+            if config.get("DEFAULT", "DEVTYPE") == "aws":
+                img_path = s3.generate_presigned_url('get_object', Params={'Bucket': config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"), 'Key': f'clothing_images/{filepath}'}, ExpiresIn=3600)
+            else:
+                img_path = f"{filepath.replace('clothing_images/', config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH'))}"
+            image_paths_dict[day][outfit_type].append(img_path)
 
         return image_paths_dict
 

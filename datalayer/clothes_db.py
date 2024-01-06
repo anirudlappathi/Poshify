@@ -11,6 +11,11 @@ config.read('config.properties')
 # Set the logging level to suppress SQLAlchemy logs (INFO level)
 logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 
+if config.get("DEFAULT", "DEVTYPE") == "aws":
+   import boto3
+   s3 = boto3.client('s3')
+   CLOTHING_BUCKET_NAME = "poshify-clothingimages"
+
 class Clothes(Base):
     __tablename__ = 'Clothes'
     
@@ -45,6 +50,10 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
         clothing = dbsession.query(Clothes).filter_by(user_id=user_id).all()
         clothing_data = []
         for item in clothing:
+            if config.get("DEFAULT", "DEVTYPE") == "aws":
+                url = s3.generate_presigned_url('get_object', Params={'Bucket': config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"), 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
+            else:
+                url = f"{config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH')}{item.clothingimg_filepath}"
             clothing_data.append((
                 item.clothes_id,
                 item.clothing_type,
@@ -53,7 +62,7 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
                 item.hue,
                 item.saturation,
                 item.value,
-                f"{config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH')}{item.clothingimg_filepath}"
+                url
             ))
         return clothing_data
     except Exception as e:
@@ -66,7 +75,15 @@ def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPAT
 
         data = dbsession.query(Clothes.hue, Clothes.saturation, Clothes.value, Clothes.clothing_name, Clothes.clothingimg_filepath).filter_by(user_id=user_id, clothing_type=clothing_type).all()
 
-        clothes = [(row.hue, row.saturation, row.value, row.clothing_name, f"{config.get('DEFAULT', folder)}{row.clothingimg_filepath}") for row in data]
+
+        clothes = []
+        for item in data:
+            if config.get("DEFAULT", "DEVTYPE") == "aws":
+                url = s3.generate_presigned_url('get_object', Params={'Bucket': config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"), 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
+            else:
+                url = f"{config.get('DEFAULT', folder)}{item.clothingimg_filepath}"
+            cloth_data = (item.hue, item.saturation, item.value, item.clothing_name, url)
+            clothes.append(cloth_data)
 
         return clothes
     except Exception as e:
