@@ -222,7 +222,7 @@ def closet():
       if 'filters' in session:
          filters = session['filters']
 
-      return render_template("closet.html", session=user, user_id=user_id, clothes=clothes, filters=filters, config=config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"))
+      return render_template("closet.html", session=user, user_id=user_id, clothes=clothes, filters=filters, config=config.get("DEFAULT", "DEVTYPE"))
 
 
 
@@ -247,7 +247,7 @@ def generate_fit():
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"))
    else:
-      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, config=config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"))
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, config=config.get("DEFAULT", "DEVTYPE"))
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():

@@ -10,7 +10,7 @@ config.read('config.properties')
 load_dotenv()
 password = os.getenv("PASSWORD")
 
-if config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH") == "local":
+if config.get("DEFAULT", "DEVTYPE") == "local":
     DATABASE_URL = f'mysql+mysqlconnector://root:{password}@localhost/Poshify'
 else:
     DATABASE_URL = f'mysql+mysqlconnector://admin:{password}@poshify-db.cioxixeqdhzy.us-east-1.rds.amazonaws.com:3306/Poshify'
