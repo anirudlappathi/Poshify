@@ -317,7 +317,7 @@ def add_clothing_manual():
             f.write(image_data)
       else:
          image_file.seek(0)  # Reset file pointer to start of the file
-         s3.upload_fileobj(image_file, CLOTHING_BUCKET_NAME, f'clothing_images/{filename}')
+         #s3.upload_fileobj(image_file, CLOTHING_BUCKET_NAME, f'clothing_images/{filename}')
          s3.upload_fileobj(
             image_file,
             CLOTHING_BUCKET_NAME,
