@@ -316,7 +316,7 @@ def add_clothing_manual():
          with open(os.path.join('static/clothing_images/', filename), 'wb') as f:
             f.write(image_data)
       else:
-         s3.put_object(Body=image_file, Bucket=CLOTHING_BUCKET_NAME, Key=f"clothing_images/{filename}")
+         s3.upload_fileobj(image_file, CLOTHING_BUCKET_NAME, f'clothing_images/{filename}')
 
       return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
    
