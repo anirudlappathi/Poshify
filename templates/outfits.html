@@ -132,25 +132,30 @@
                 };
                 var newSpan = document.createElement('span');
                 newSpan.textContent = 'Drag outfit here'; // Set the text content;
-                fetch('/delete_outfit', {
+                return new Promise((resolve) => {
+                    // ... Your existing logic for clearing the day
+                    
+                    // Perform asynchronous operations inside the promise
+                    fetch('/delete_outfit', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(outfitData)
                     })
-                .then(response => {
+                    .then(response => {
                         if (response.ok) {
                             console.log('Outfit data to DELETE sent successfully.');
-                            // Handle any success actions if needed
+                            resolve(); // Resolve the promise when deletion is successful
                         } else {
-                            throw new Error('Failed to send outfit data.');
+                            throw new Error('Failed to delete outfit data.');
                         }
                     })
-                .catch(error => {
-                        console.error('Error:', error);
-                        // Handle any error scenarios
+                    .catch(error => {
+                        console.error('Error while deleting outfit data:', error);
+                        // Handle any error scenarios for deletion
                     });
+                });
         }
             
             
@@ -205,22 +210,16 @@
             toggleClearButton('sunday', false);
         });
 
-        function drop(event, day) {
+        async function drop(event, day) {
             event.preventDefault();
             var dayElement = document.getElementById(day);
             var clothingItemsExist = dayElement.querySelector('.clothing-items');
             //this code handles the replacement for the outfits if another outfit is dragged on top
-            if (clothingItemsExist) {
-                console.log("Clothing items exist within dayElement.");
-                clearDay(day)
-
-            } else {
-                console.log("No clothing items found within dayElement.");
-            }
-            console.log("AFTER CLEAR DAY")
+            
             var clothing = event.dataTransfer.getData("clothing");
-            var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
             console.log("drop clothing: ", clothing);
+            var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
+            
             console.log("drop imagePaths: ", imagePaths);
 
             
@@ -268,6 +267,15 @@
                 image_paths: imagePaths,
                 outfitType: clothing
             };
+            if (clothingItemsExist) {
+                console.log("Clothing items exist within dayElement.");
+                await clearDay(day);
+                console.log("PLEASE PLEASLEP ASLEASLELASPEL PASLEP ASLPE LAS")
+            } else {
+                console.log("No clothing items found within dayElement.");
+                // Rest of your drop function logic here
+            }
+            console.log("AFTER CLEAR DAY")
 
             // Send the outfit data to Flask using fetch
             fetch('/save_outfit', {

@@ -14,7 +14,8 @@ if config.get("DEFAULT", "DEVTYPE") == "aws":
 class Calendar(Base):
     __tablename__ = 'Calendar'
 
-    user_id = Column(String(255), primary_key=True)
+    outfit_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(String(255))
     dayOfWeek = Column(String(255))
     filepath = Column(String(255))
     outfitType = Column(String(255))
@@ -52,11 +53,12 @@ def delete_entry(user_id, dayOfWeek, filepath, outfitType):
         Calendar.outfitType == outfitType
     )
     )
-    print("DELTE ENTRY FUNCTION RAN")
+    
 
 
     result = dbsession.execute(delete_query)
     dbsession.commit()
+    print("DELETE ENTRY FUNCTION RAN")
 
 
 def get_image_paths_per_day(user_id):

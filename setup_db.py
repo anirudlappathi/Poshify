@@ -137,6 +137,7 @@ def create_databases():
     """)
     cursor.execute(f"""
         CREATE TABLE Calendar (
+            outfit_id INT AUTO_INCREMENT PRIMARY KEY,
             user_id VARCHAR(255),
             dayOfWeek VARCHAR(255),
             filepath VARCHAR(255),

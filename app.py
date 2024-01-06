@@ -502,9 +502,9 @@ def save_outfit():
       day_of_week = outfit_data.get('day_of_week')
       image_paths = outfit_data.get('image_paths')
       outfit_type = outfit_data.get('outfitType')
-      print("DAY OF WEEK: ", day_of_week)
-      print("IOMAGE PATHS: ", image_paths)
-      print("OUTFIT TYPE: ", outfit_type)
+      #print("DAY OF WEEK: ", day_of_week)
+      #print("IOMAGE PATHS: ", image_paths)
+      #print("OUTFIT TYPE: ", outfit_type)
 
       create_entry(user_id, day_of_week, image_paths, outfit_type)
       return 'Outfit data received and saved successfully.', 200
