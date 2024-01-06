@@ -217,6 +217,8 @@ def closet():
          return redirect("/home", code=302)
 
       clothes = get_clothing_name_image_id_by_user_id(user_id)
+      for cloth in clothes:
+         print(cloth[-1])
          
       filters = [[] for i in range(3)]
       if 'filters' in session:
@@ -245,7 +247,7 @@ def generate_fit():
    print("outfit count: ", len(outfits))
    calendarInfo = get_image_paths_per_day(user_id)
    if calendarInfo:
-      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"))
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"))
    else:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, config=config.get("DEFAULT", "DEVTYPE"))
 
@@ -279,23 +281,26 @@ def add_clothing_manual():
       clothing_type = request.form['clothes_type']
       is_clean = request.form['is_clean'] == "y"
       
-      image_data = request.files['image']
+      image_file = request.files['image']
 
       has_name = has_clothing_name_by_id(clothing_name, user_id)
       if has_name:
          return render_template("add_clothing_manual.html", session=user, result="Name already exists for cloth", user_id=user_id)   
-      if clothing_name is None or clothing_type is None or is_clean is None or image_data is None:
+      if clothing_name is None or clothing_type is None or is_clean is None or image_file is None:
          return render_template("add_clothing_manual.html", session=user, result="All data fields not entered", user_id=user_id)   
 
 
-      if image_data.filename == '':
+      if image_file.filename == '':
          return render_template("add_clothing_manual.html", result="No Selected File", session=user, user_id=user_id)   
       
-      filename = str(uuid.uuid4()) + os.path.splitext(image_data.filename)[1]
-      image_binary = Image.open(BytesIO(image_data))
+      filename = str(uuid.uuid4()) + os.path.splitext(image_file.filename)[1]
+      print("FILE NAME = ", filename)
 
-      encoded_image = base64.b64encode(image_binary)
+      image_data = image_file.read()
+      encoded_image = base64.b64encode(image_data).decode('utf-8')
+
       dominant_color = dominant_color_finder_dataurl(encoded_image)
+
 
       hue = dominant_color[0]
       saturation = dominant_color[1]
@@ -308,9 +313,10 @@ def add_clothing_manual():
       result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
 
       if config.get("DEFAULT", "DEVTYPE") == "local":
-         image_data.save(os.path.join('static/clothing_images', filename))
+         with open(os.path.join('static/clothing_images/', filename), 'wb') as f:
+            f.write(image_data)
       else:
-         s3.put_object(Body=image_data, Bucket=CLOTHING_BUCKET_NAME, Key=f"clothing_images/{filename}")
+         s3.put_object(Body=image_file, Bucket=CLOTHING_BUCKET_NAME, Key=f"clothing_images/{filename}")
 
       return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
    
