@@ -4,7 +4,7 @@ from collections import defaultdict
 
 import configparser
 config = configparser.ConfigParser()
-config.read('config.properties')
+config.read('.properties')
 
 if config.get("DEFAULT", "DEVTYPE") == "aws":
    import boto3
@@ -70,7 +70,7 @@ def get_image_paths_per_day(user_id):
         image_paths_dict = defaultdict(lambda: defaultdict(list))
         for day, outfit_type, filepath in image_paths_per_day:
             if config.get("DEFAULT", "DEVTYPE") == "aws":
-                img_path = s3.generate_presigned_url('get_object', Params={'Bucket': config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"), 'Key': f'clothing_images/{filepath}'}, ExpiresIn=3600)
+                img_path = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'clothing_images/{filepath}'}, ExpiresIn=3600)
             else:
                 img_path = f"{filepath.replace('clothing_images/', config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH'))}"
             image_paths_dict[day][outfit_type].append(img_path)

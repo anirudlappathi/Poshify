@@ -6,7 +6,7 @@ import logging
 
 import configparser
 config = configparser.ConfigParser()
-config.read('config.properties')
+config.read('.properties')
 
 # Set the logging level to suppress SQLAlchemy logs (INFO level)
 logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
@@ -51,7 +51,7 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
         clothing_data = []
         for item in clothing:
             if config.get("DEFAULT", "DEVTYPE") == "aws":
-                url = s3.generate_presigned_url('get_object', Params={'Bucket': config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"), 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
+                url = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
             else:
                 url = f"{config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH')}{item.clothingimg_filepath}"
             clothing_data.append((
@@ -79,7 +79,7 @@ def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPAT
         clothes = []
         for item in data:
             if config.get("DEFAULT", "DEVTYPE") == "aws":
-                url = s3.generate_presigned_url('get_object', Params={'Bucket': config.get("DEFAULT", "CLOTHING_IMAGES_FILEPATH"), 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
+                url = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
             else:
                 url = f"{config.get('DEFAULT', folder)}{item.clothingimg_filepath}"
             cloth_data = (item.hue, item.saturation, item.value, item.clothing_name, url)

@@ -1,5 +1,5 @@
 .env
-config.properties
+.properties
 .aws
-credentials
+.credentials
 .gitattributes

@@ -23,7 +23,7 @@ from urllib.parse import quote_plus, urlencode
 
 import configparser
 config = configparser.ConfigParser()
-config.read('config.properties')
+config.read('.properties')
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
