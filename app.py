@@ -292,11 +292,7 @@ def add_clothing_manual():
          return render_template("add_clothing_manual.html", result="No Selected File", session=user, user_id=user_id)   
       
       filename = str(uuid.uuid4()) + os.path.splitext(image_data.filename)[1]
-
-
-      file_path = os.path.join("static/clothing_images", filename)
-      with open(file_path, 'rb') as img_file:
-         image_binary = img_file.read()
+      image_binary = Image.open(BytesIO(image_data))
 
       encoded_image = base64.b64encode(image_binary)
       dominant_color = dominant_color_finder_dataurl(encoded_image)
