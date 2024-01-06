@@ -35,14 +35,13 @@ def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturatio
     try:
         tone = color_algo.GetTone((int(saturation), int(value)))
         colortemp = color_algo.GetColorTemp(hue)
-
         new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp, clothingimg_filepath = clothingimg_filepath)
-
         dbsession.add(new_cloth)
         dbsession.commit()
         return "Cloth created successfully"
     except Exception as e:
         print(f"Create Cloth Error: {e}")
+        dbsession.rollback()
         return f"ERROR: {e}"
 
 def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file as well
@@ -53,7 +52,7 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
             if config.get("DEFAULT", "DEVTYPE") == "aws":
                 url = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
             else:
-                url = f"{config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH')}{item.clothingimg_filepath}"
+                url = f"clothing_images/{item.clothingimg_filepath}"
             clothing_data.append((
                 item.clothes_id,
                 item.clothing_type,
@@ -67,6 +66,7 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
         return clothing_data
     except Exception as e:
         print(f"Get Clothing Data Error: {e}")
+        dbsession.rollback()
         return None
 
 
@@ -89,6 +89,7 @@ def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPAT
         return clothes
     except Exception as e:
         print(f"Get Clothing Types Error: {e}")
+        dbsession.rollback()
         return None
     
 def update_clothing_name_by_clothing_name(clothing_name, updated_text, user_id):
@@ -103,6 +104,7 @@ def update_clothing_name_by_clothing_name(clothing_name, updated_text, user_id):
             return "Clothing item not found or doesn't belong to the user"
     except Exception as e:
         print(f"Update Clothing Name Error: {e}")
+        dbsession.rollback()
         return f"ERROR: {e}"
 
 def delete_clothing_by_id(clothes_id, user_id):
@@ -117,6 +119,7 @@ def delete_clothing_by_id(clothes_id, user_id):
             return "Clothing item not found or doesn't belong to the user"
     except Exception as e:
         print(f"Delete Clothing Error: {e}")
+        dbsession.rollback()
         return f"ERROR: {e}"
     
 def get_clothing_url_by_id(clothes_id, user_id):
@@ -126,6 +129,7 @@ def get_clothing_url_by_id(clothes_id, user_id):
         return clothing_url.clothingimg_filepath
     except Exception as e:
         print(f"GET CLOTHING URL BY ID Clothing Error: {e}")
+        dbsession.rollback()
         return f"ERROR: {e}"
     
 def has_clothing_name_by_id(clothes_name, user_id):
@@ -136,6 +140,7 @@ def has_clothing_name_by_id(clothes_name, user_id):
         return bool(name_exists)
     except Exception as e:
         print(f"CHECK CLOTHING NAME AND ID ERROR: {e}")
+        dbsession.rollback()
         return f"ERROR: {e}"
 
 def update_cleanliness_status(clothid, new_status):
@@ -157,6 +162,8 @@ def update_cleanliness_status(clothid, new_status):
         else:
             return f"Clothing item with ID {clothid} not found"
     except Exception as e:
+        print(f"update_cleanliness_status: {e}")
+        dbsession.rollback()
         return f"Error: {e}"
 
 def get_image_paths_by_name(user_id, clothing_name):
@@ -170,5 +177,6 @@ def get_image_paths_by_name(user_id, clothing_name):
             return None  # Or handle the case where the clothing item is not found
     except Exception as e:
         print(f"Error fetching image path: {e}")
+        dbsession.rollback()
         return None  # Handle exceptions gracefully
     

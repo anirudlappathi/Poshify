@@ -21,54 +21,48 @@ class Calendar(Base):
     outfitType = Column(String(255))
 
 def create_entry(user_id, dayOfWeek, imagePaths, outfitType):
-    # Check for existing entries for the user on the specified day
-    print("DAY OF WEEK ", dayOfWeek)
+    try:
+        for image_path in imagePaths:
+            image_path_modified = image_path.replace('/static/', '')
 
-    # Create new entries
-    for image_path in imagePaths:
-        # Remove '/static/' from the image path
-        image_path_modified = image_path.replace('/static/', '')
-
-        new_entry = Calendar(
-            user_id=user_id,
-            dayOfWeek=dayOfWeek,
-            filepath=image_path_modified,
-            outfitType=outfitType
-        )
-        dbsession.add(new_entry)
-    dbsession.commit()
-
-    print("CREATE_ENTRY FOR CALENDAR RAN")
+            new_entry = Calendar(
+                user_id=user_id,
+                dayOfWeek=dayOfWeek,
+                filepath=image_path_modified,
+                outfitType=outfitType
+            )
+            dbsession.add(new_entry)
+        dbsession.commit()
+    except Exception as e:
+        print(f"create_entry ERROR: {e}")
+        dbsession.rollback()
+        return f"create_entry ERROR: {e}"
 
 def delete_entry(user_id, dayOfWeek, filepath, outfitType):
-    # Construct a list of filepaths to match against
-    filepath = filepath.replace('/static/', '')
-
-    delete_query = (
-    delete(Calendar)
-    .where(
-        Calendar.user_id == user_id,
-        Calendar.dayOfWeek == dayOfWeek,
-        Calendar.filepath == filepath,
-        Calendar.outfitType == outfitType
-    )
-    )
-    
-
-
-    result = dbsession.execute(delete_query)
-    dbsession.commit()
-    print("DELETE ENTRY FUNCTION RAN")
+    try:
+        filepath = filepath.replace('/static/', '')
+        delete_query = (
+        delete(Calendar)
+        .where(
+            Calendar.user_id == user_id,
+            Calendar.dayOfWeek == dayOfWeek,
+            Calendar.filepath == filepath,
+            Calendar.outfitType == outfitType
+        )
+        )
+        dbsession.execute(delete_query)
+        dbsession.commit()
+    except Exception as e:
+        print(f"delete_entry ERROR: {e}")
+        dbsession.rollback()
+        return f"delete_entry ERROR: {e}"
 
 
 def get_image_paths_per_day(user_id):
     try:
-        # Query to retrieve image file paths and outfit types per day for the given user ID
         image_paths_per_day = dbsession.query(Calendar.dayOfWeek, Calendar.outfitType, Calendar.filepath) \
             .filter(Calendar.user_id == user_id) \
             .all()
-
-        # Process the retrieved data as needed
         image_paths_dict = defaultdict(lambda: defaultdict(list))
         for day, outfit_type, filepath in image_paths_per_day:
             print(filepath)
@@ -84,5 +78,6 @@ def get_image_paths_per_day(user_id):
         return image_paths_dict
 
     except Exception as e:
-        print(f"Error retrieving image paths: {str(e)}")
-        return None
+        print(f"get_image_paths_per_day ERROR: {e}")
+        dbsession.rollback()
+        return f"get_image_paths_per_day ERROR: {e}"

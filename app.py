@@ -215,7 +215,7 @@ def closet():
       if not user_id:
          print("ERROR: NO ID_TOKEN FOUND")
          return redirect("/home", code=302)
-
+      print('asklmda')
       clothes = get_clothing_name_image_id_by_user_id(user_id)
       for cloth in clothes:
          print(cloth[-1])
