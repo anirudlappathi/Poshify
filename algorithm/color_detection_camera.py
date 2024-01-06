@@ -22,10 +22,14 @@ def dominant_color_finder_dataurl(image_data):
     # frame = adjust_brightness(frame)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     k = 5
-    HSVframe = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    # only capture the center 1/4 - 3/4
+    h, w, _ = frame.shape
+    h_start, h_end = h // 4, h // 4 * 3
+    w_start, w_end = w // 4, w // 4 * 3
+    cropped_frame = frame[h_start:h_end, w_start:w_end]
+    HSVframe = cv2.cvtColor(cropped_frame, cv2.COLOR_BGR2HSV)
     HSVframe = HSVframe.reshape((-1, 3))
     HSVframe = np.float32(HSVframe)
-
     _, labels, centers = cv2.kmeans(HSVframe, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
     dominant_color = centers[np.argmax(np.bincount(labels.flatten()))]
     dominant_color_hsv = cv2.cvtColor(np.uint8([[dominant_color]]), cv2.COLOR_BGR2HSV)[0][0]
@@ -123,7 +127,17 @@ def testing_brightness():
             break
     cv2.destroyAllWindows()
 
+def test_crop_image():
+    pinkshirt = cv2.imread('static/clothing_images/4c96091e-7913-4892-bea3-551a86fb388c.jpeg')
+    cv2.imshow("casd", pinkshirt)
+    h, w, _ = pinkshirt.shape
+    h_start, h_end = h // 4, h // 4 * 3
+    w_start, w_end = w // 4, w // 4 * 3
 
+    cropped_img = pinkshirt[h_start:h_end, w_start:w_end]
+    cv2.imshow("cv2", cropped_img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    testing_brightness()
+    test_crop_image()

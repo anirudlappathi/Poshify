@@ -73,7 +73,7 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
 def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPATH"):
     try:
 
-        data = dbsession.query(Clothes.hue, Clothes.saturation, Clothes.value, Clothes.clothing_name, Clothes.clothingimg_filepath).filter_by(user_id=user_id, clothing_type=clothing_type).all()
+        data = dbsession.query(Clothes.clothes_id, Clothes.hue, Clothes.saturation, Clothes.value, Clothes.clothing_name, Clothes.is_clean, Clothes.clothingimg_filepath).filter_by(user_id=user_id, clothing_type=clothing_type).all()
 
 
         clothes = []
@@ -83,7 +83,7 @@ def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPAT
                 url = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
             else:
                 url = f"{config.get('DEFAULT', folder)}{item.clothingimg_filepath}"
-            cloth_data = (item.hue, item.saturation, item.value, item.clothing_name, url)
+            cloth_data = {"id":item.clothes_id, "hue": item.hue, "saturation": item.saturation, "value": item.value, "clothing_name": item.clothing_name, "is_clean": item.is_clean, "url":url}
             clothes.append(cloth_data)
 
         return clothes

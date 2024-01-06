@@ -20,7 +20,7 @@ body {
 }
 header {
 	background-color: transparent;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(25px);
 	width: 100%;
 }
 .spacer {
@@ -40,7 +40,7 @@ header {
 }
 nav {
     background-color: transparent;
-    backdrop-filter: blur(5px); /* Creates a blurred effect for the background */
+    backdrop-filter: blur(25px); /* Creates a blurred effect for the background */
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

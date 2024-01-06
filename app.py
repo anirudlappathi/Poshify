@@ -244,9 +244,7 @@ def generate_fit():
    shoes = get_clothing_by_type(user_id, "Shoes")
 
    outfits = GetStyleOutfits(tops, bots, shoes)
-   print("outfit count: ", len(outfits))
    calendarInfo = get_image_paths_per_day(user_id)
-   print("CALENDAR INFORMATION " + str(calendarInfo))
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"))
    else:
@@ -293,37 +291,29 @@ def add_clothing_manual():
 
       if image_file.filename == '':
          return render_template("add_clothing_manual.html", result="No Selected File", session=user, user_id=user_id)   
-      
-      filename = str(uuid.uuid4()) + os.path.splitext(image_file.filename)[1]
-      print("FILE NAME = ", filename)
-
-      image_data = image_file.read()
-      encoded_image = base64.b64encode(image_data).decode('utf-8')
-
-      dominant_color = dominant_color_finder_dataurl(encoded_image)
-
-
-      hue = dominant_color[0]
-      saturation = dominant_color[1]
-      value = dominant_color[2]
-      
-
-      if clothing_name is None or clothing_type is None or is_clean is None or hue is None or saturation is None or value is None:
-         return render_template("add_clothing_manual.html", session=user, result="Empty Field", user_id=user_id)       
-
-      result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
-
-      if config.get("DEFAULT", "DEVTYPE") == "local":
-         with open(os.path.join('static/clothing_images/', filename), 'wb') as f:
-            f.write(image_data)
-      else:
-         image_file.seek(0)
-         s3.upload_fileobj(
-            image_file,
-            CLOTHING_BUCKET_NAME,
-            f'clothing_images/{filename}',
-            ExtraArgs={'ContentType': 'image/jpeg'}  
-         )
+      try:
+         filename = str(uuid.uuid4()) + os.path.splitext(image_file.filename)[1]
+         image_data = image_file.read()
+         encoded_image = base64.b64encode(image_data).decode('utf-8')
+         dominant_color = dominant_color_finder_dataurl(encoded_image)
+         hue = dominant_color[0]
+         saturation = dominant_color[1]
+         value = dominant_color[2]
+         result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
+         if config.get("DEFAULT", "DEVTYPE") == "local":
+            with open(os.path.join('static/clothing_images/', filename), 'wb') as f:
+               f.write(image_data)
+         else:
+            image_file.seek(0)
+            s3.upload_fileobj(
+               image_file,
+               CLOTHING_BUCKET_NAME,
+               f'clothing_images/{filename}',
+               ExtraArgs={'ContentType': 'image/jpeg'}  
+            )
+      except Exception as e:
+         print(f"add_clothing_manual ERROR: {e}")
+         return render_template("add_clothing_manual.html", result="Add clothing error", session=user, user_id=user_id)
 
       return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
    
@@ -346,22 +336,19 @@ def add_clothing_camera():
       clothing_type = request.form['clothes_type']
       is_clean = request.form['is_clean']
       image_data = request.form['imageData']
-
-      has_name = has_clothing_name_by_id(clothing_name, user_id)
-      print(has_name)
-      if has_name:
-         return render_template("add_clothing_camera.html", session=user, result="Name already exists for cloth", user_id=user_id)   
-      if clothing_name is None or clothing_type is None or is_clean is None or image_data is None:
-         return render_template("add_clothing_camera.html", session=user, result="All data fields not entered", user_id=user_id)   
-
       if (is_clean == "y"):
          is_clean = True
       else:
          is_clean = False
 
-      # 360 100 100
-
-      if image_data:
+      has_name = has_clothing_name_by_id(clothing_name, user_id)
+      if has_name:
+         return render_template("add_clothing_camera.html", session=user, result="Name already exists for cloth", user_id=user_id)   
+      if clothing_name is None or clothing_type is None or is_clean is None or image_data is None:
+         return render_template("add_clothing_camera.html", session=user, result="All data fields not entered", user_id=user_id)   
+      if not image_data:
+         return render_template("add_clothing_camera.html", result="Camera Data invalid or not working", user_id=user_id)
+      try:
          filename = str(uuid.uuid4()) + ".jpeg"
          hue, saturation, value = dominant_color_finder_dataurl(image_data)
          image_binary = base64.b64decode(image_data)
@@ -370,12 +357,11 @@ def add_clothing_camera():
             img.save(os.path.join('static/clothing_images', filename), "JPEG")
          else:
             s3.put_object(Body=image_binary, Bucket=CLOTHING_BUCKET_NAME, Key=f"clothing_images/{filename}")
-      else:
-         return render_template("add_clothing_camera.html", result="Camera Data invalid or not working", user_id=user_id)   
-
-      result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
-
-      return render_template("add_clothing_camera.html", session=user, result=result, user_id=user_id)   
+         result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
+         return render_template("add_clothing_camera.html", session=user, result=f"Added {clothing_name}", user_id=user_id) 
+      except Exception as e:
+         print(f"add_clothing_camera ERROR: {e}")
+         return render_template("add_clothing_camera.html", session=user, result="ERROR: Could not add clothign", user_id=user_id) 
    
    return render_template("add_clothing_camera.html", session=user, user_id=user_id)               
 

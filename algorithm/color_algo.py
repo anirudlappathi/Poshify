@@ -264,18 +264,24 @@ def GetStyleOutfits(tops, bots, shoes):
     matchingOutfits = []
     if not (tops and bots and shoes):
         return []
-    for top in range(len(tops)):
-        topdesc = GetColorDesc(tops[top][:3])
-        for bot in range(len(bots)):
-            botdesc = GetColorDesc(bots[bot][:3])
-            for shoe in range(len(shoes)):
-                shoedesc = GetColorDesc(shoes[shoe][:3])
+    for top in tops:
+        if not top["is_clean"]:
+            continue
+        topdesc = GetColorDesc((top["hue"], top["saturation"], top["value"]))
+        for bot in bots:
+            if not bot["is_clean"]:
+                continue
+            botdesc = GetColorDesc((bot["hue"], bot["saturation"], bot["value"]))
+            for shoe in shoes:
+                if not shoe["is_clean"]:
+                    continue
+                shoedesc = GetColorDesc((shoe["hue"], shoe["saturation"], shoe["value"]))
                 outfitRules = []
                 for rule in [BasicMatch, NeutralMatch, AnalogousMatch, SummerMatch, WinterMatch]:
                     if rule((topdesc, botdesc, shoedesc)):
                         outfitRules.append(str(rule).split()[1])
                 if len(outfitRules) > 0:
-                    matchingOutfits.append((", ".join(outfitRules), (tops[top][3], tops[top][4]), (bots[bot][3], bots[bot][4]), (shoes[shoe][3], shoes[shoe][4])))
+                    matchingOutfits.append((", ".join(outfitRules), (top["clothing_name"], top["url"]), (bot["clothing_name"], bot["url"]), (shoe["clothing_name"], shoe["url"])))
 
     return matchingOutfits
 
