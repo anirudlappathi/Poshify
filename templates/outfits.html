@@ -20,7 +20,7 @@
                                                 {% if config == "local" %}
                                                     <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
                                                 {% else %}
-                                                    <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
+                                                    <img class="grid-image" src="{{ image_path }}" alt="Clothing Image" draggable="false">
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
@@ -52,7 +52,7 @@
                                     {% if config == "local" %}
                                         <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
                                     {% else %}
-                                        <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
+                                        <img class="grid-image" src="{{ image_path }}" alt="Clothing Image" draggable="false">
                                     {% endif %}
                                 </div>
                             {% endfor %}
