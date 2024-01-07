@@ -277,6 +277,7 @@ def generate_fit():
 
    weekday = (today.isoweekday() - 1) % 7
    day = WEEKDAYS_NUM2DAY[weekday]
+   print(calendarInfo)
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
    else:
@@ -537,6 +538,8 @@ def save_outfit():
       month = int(today.strftime("%m"))
       year = int(today.strftime("%y"))
       daysInMonth = DAYS_IN_MONTH[month]
+      if month == 2 and year % 4 == 0:
+         daysInMonth += 1
 
       newDay = day + daysForward
       if newDay > daysInMonth:

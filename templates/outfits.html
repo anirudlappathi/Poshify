@@ -13,9 +13,8 @@
                 <p class="not-today-calendar"></p>
                 {% endif %}
                 <div class="{{ dates[(weekday + isoweekday) % 7] }} action-button" id="{{ dates[(weekday + isoweekday) % 7] }}" ondrop="drop(event, '{{ dates[(weekday + isoweekday) % 7] }}')" ondragover="allowDrop(event)">
-                    {% if calendarInfo and day.lower() in calendarInfo %}
-                        <h1>TESTTINGISNGI</h1>
-                        {% for outfitType, imagePaths in calendarInfo[day.lower()].items() %}
+                    {% if calendarInfo and dates[(weekday + isoweekday) % 7] in calendarInfo %}
+                        {% for outfitType, imagePaths in calendarInfo[dates[(weekday + isoweekday) % 7]].items() %}
                             <div class="grid" draggable="true" ondragstart="drag(event)">
                                 <div class="grid-item text">
                                     <h2 class="text">
