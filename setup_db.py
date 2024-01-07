@@ -144,7 +144,8 @@ def create_databases():
             FOREIGN KEY (clothes_id) REFERENCES Clothes(clothes_id),
             dayOfWeek VARCHAR(255),
             filepath VARCHAR(255),
-            outfitType VARCHAR(255)
+            outfitType VARCHAR(255),
+            date VARCHAR(6)
         );
     """)
 

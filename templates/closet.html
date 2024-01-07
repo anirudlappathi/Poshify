@@ -10,25 +10,32 @@
         <a href="add_clothing_manual" class="action-button">Add Clothing: Manual</a>
     </center>
     </br>
-    <div class="dropdown">
-        <button class="action-button" onclick="toggleDropdown()">Article Filter</button>
-        <div id="article-filter" class="dropdown-content">
-            <label>Jacket<input type="checkbox" class="filterCheckbox" value="Jacket"></label>
-            <label>T-Shirt<input type="checkbox" class="filterCheckbox" value="T-Shirt"></label>
-            <label>Sweatshirt<input type="checkbox" class="filterCheckbox" value="Sweatshirt"></label>
-            <label>Pants<input type="checkbox" class="filterCheckbox" value="Pants"></label>
-            <label>Shorts<input type="checkbox" class="filterCheckbox" value="Shorts"></label>
-            <label>Shoes<input type="checkbox" class="filterCheckbox" value="Shoes"></label>
-            <label>Hat<input type="checkbox" class="filterCheckbox" value="Hat"></label>
-            <button class="action-button show" onclick="applyFilters()">Apply</button>
-            <button class="action-button" onclick="clearFilters()">Clear Filters</button>
-            <div class="custom-alert" id="customAlert">
-                <span class="closebtn" onclick="closeCustomAlert()">&times;</span>
-                <strong>Alert!</strong> No clothing of the selected type found.
-            </div>
+    {% if clothes != [] %}
+        <div class="dropdown">
+            <button class="action-button" onclick="toggleDropdown()">Article Filter</button>
+            <div id="article-filter" class="dropdown-content">
+                <label>Jacket<input type="checkbox" class="filterCheckbox" value="Jacket"></label>
+                <label>T-Shirt<input type="checkbox" class="filterCheckbox" value="T-Shirt"></label>
+                <label>Sweatshirt<input type="checkbox" class="filterCheckbox" value="Sweatshirt"></label>
+                <label>Pants<input type="checkbox" class="filterCheckbox" value="Pants"></label>
+                <label>Shorts<input type="checkbox" class="filterCheckbox" value="Shorts"></label>
+                <label>Shoes<input type="checkbox" class="filterCheckbox" value="Shoes"></label>
+                <label>Hat<input type="checkbox" class="filterCheckbox" value="Hat"></label>
+                <button class="action-button show" onclick="applyFilters()">Apply</button>
+                <button class="action-button" onclick="clearFilters()">Clear Filters</button>
+                <div class="custom-alert" id="customAlert">
+                    <span class="closebtn" onclick="closeCustomAlert()">&times;</span>
+                    <strong>Alert!</strong> No clothing of the selected type found.
+                </div>
 
+            </div>
         </div>
-    </div>
+    {% else %}
+    <center>
+        <br><br><br><br>
+        <p>Looks empty. Add some clothes today!</p>
+    </center>
+    {% endif %}
     <div class="grid">
         {% for clothes_id, clothing_type, clothing_name, is_clean, hue, saturation, value, file_path in clothes %}
             <div class="grid-item center text show" data-clothes-id="{{ clothes_id }}" data-clothing-type="{{ clothing_type }}">

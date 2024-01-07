@@ -384,7 +384,6 @@ input::-webkit-file-upload-button {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .day {
@@ -392,17 +391,13 @@ input::-webkit-file-upload-button {
     margin: 10px;
     padding: 5px;
     text-align: center;
-    background-color: #f9f9f9;
     border-radius: 6px;
     box-sizing: border-box;
     max-height: 300px; 
-    overflow: auto; 
-}
-
-.day p {
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
+    overflow: auto;
+    flex: 1;
+    border: 1px solid black;
+    height: 150px;
 }
 
 .action-button:hover {
@@ -410,13 +405,13 @@ input::-webkit-file-upload-button {
 }
 
 .clear-button {
+    font-family: 'Montserrat', sans-serif;
     display: block;
     margin-top: 10px;
     padding: 6px 12px;
     border: none;
-    background-color: #ddd;
-    color: #333;
-    border-radius: 4px;
+    color: black;
+    border-radius: 6px;
     cursor: pointer;
 }
 
@@ -514,7 +509,7 @@ p {
 .right-section {
     margin: 0 auto;
     align-items: center;
-    width: 90%;
+    width: 100%;
     height: 15vh;
     padding: 10px;
     text-align: center;
@@ -556,8 +551,18 @@ p {
     margin-left: 10px;
 }
 
-.day {
-    flex: 1;
-    border-left: 1px solid black;
-    height: 150px;
+.weekday-calendar {
+    font-size: medium;
+    font-style: normal;
+}
+
+.today-calendar {
+    font-size: 10px;
+    font-style: normal;
+    margin-bottom: 1.3vh;
+}
+
+.not-today-calendar {
+    margin-top: 3vh;
+    margin-bottom: 3vh;
 }

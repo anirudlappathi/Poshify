@@ -13,6 +13,7 @@ scikit-fuzzy==0.4.2
 SQLAlchemy==2.0.21
 urllib3==1.25.10
 uuid==1.30
+datetime==5.4
 
 # pip install git+https://github.com/facebookresearch/segment-anything.git
 # !pip install torch torchvision opencv-python numpy

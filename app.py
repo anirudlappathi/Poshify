@@ -16,12 +16,16 @@ from os import environ as env
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 import uuid
 
+from datetime import datetime
+today = datetime.now()
+
 from dotenv import find_dotenv, load_dotenv
 
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
 
 import configparser
+
 config = configparser.ConfigParser()
 config.read('config.properties')
 
@@ -217,8 +221,6 @@ def closet():
          return redirect("/home", code=302)
       print('asklmda')
       clothes = get_clothing_name_image_id_by_user_id(user_id)
-      for cloth in clothes:
-         print(cloth[-1])
          
       filters = [[] for i in range(3)]
       if 'filters' in session:
@@ -263,12 +265,15 @@ def generate_fit():
    tops = jackets + tshirts + sweatshirts
    bots = pants + shorts
 
-   outfits = GetStyleOutfits(tops, bots, shoes)
    calendarInfo = get_image_paths_per_day(user_id)
+   outfits = GetStyleOutfits(tops, bots, shoes)
+   weekday = (today.isoweekday() - 1) % 7
+   weekdays = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
+   day = weekdays[weekday]
    if calendarInfo:
-      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"))
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
    else:
-      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, config=config.get("DEFAULT", "DEVTYPE"))
+      return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
 
 @app.route("/settings", methods=["POST", "GET"])
 def settings():
@@ -510,14 +515,17 @@ def update_filters():
 @app.route('/save_outfit', methods=['POST'])
 def save_outfit():
    try:
+
       outfit_data = request.json
       user_id = session.get('userid')
       clothes_id = outfit_data.get('clothes_id')
       day_of_week = outfit_data.get('day_of_week')
       image_paths = outfit_data.get('image_paths')
       outfit_type = outfit_data.get('outfitType')
-      print(clothes_id)
-      create_entry(user_id, clothes_id, day_of_week, image_paths, outfit_type)
+      date = today.strftime("%d%m%y")
+
+
+      create_entry(user_id, clothes_id, day_of_week, image_paths, outfit_type, date)
       return 'Outfit data received and saved successfully.', 200
    
    except Exception as e:

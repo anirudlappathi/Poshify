@@ -20,9 +20,10 @@ class Calendar(Base):
     dayOfWeek = Column(String(255))
     filepath = Column(String(255))
     outfitType = Column(String(255))
+    date = Column(String(6))
 
-
-def create_entry(user_id, clothes_id, dayOfWeek, imagePaths, outfitType):
+# DOOOO THISSS
+def create_entry(user_id, clothes_id, dayOfWeek, imagePaths, outfitType, date):
     try:
         for i, image_path in enumerate(imagePaths):
             image_path_modified = image_path.replace('/static/', '')
@@ -32,7 +33,8 @@ def create_entry(user_id, clothes_id, dayOfWeek, imagePaths, outfitType):
                 clothes_id=clothes_id[i],
                 dayOfWeek=dayOfWeek,
                 filepath=image_path_modified,
-                outfitType=outfitType
+                outfitType=outfitType,
+                date=date
             )
             dbsession.add(new_entry)
         dbsession.commit()

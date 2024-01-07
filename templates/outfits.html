@@ -3,9 +3,15 @@
 <body>
     {% include 'header.html' %}
     <div class="calendar-box">
-        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+        {% set dates = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+        {% for isoweekday in range(7) %}
             <div class="day">
-                <p>{{ day }}</p>
+                <p class="weekday-calendar">{{ dates[(weekday + isoweekday) % 7] }}</p>
+                {% if (weekday + isoweekday) % 7 == weekday %}
+                    <p class="today-calendar">Today</p>
+                {% else %}
+                <p class="not-today-calendar"></p>
+                {% endif %}
                 <div class="{{ day.lower() }} action-button" id="{{ day.lower() }}" ondrop="drop(event, '{{ day.lower() }}')" ondragover="allowDrop(event)">
                     {% if calendarInfo and day.lower() in calendarInfo %}
                         {% for outfitType, imagePaths in calendarInfo[day.lower()].items() %}
@@ -31,7 +37,9 @@
                     {% else %}
                         <span>Drag outfit here</span>
                     {% endif %}
-                    <button class="clear-button" onclick="clearDay('{{ day.lower() }}')">Clear Day</button>
+                    <center>
+                        <button class="clear-button" onclick="clearDay('{{ day.lower() }}')">Clear Day</button>
+                    </center>
                 </div>
             </div>
         {% endfor %}
