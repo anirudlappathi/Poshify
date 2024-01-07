@@ -212,76 +212,25 @@ def WinterMatch(outfit):
     
     return True
 
-
-
-"""
-Iterate outfit over all color schemes and get all valid matches
-INPUT:
-outfit - tuple(top, bot, shoes)
-    top - hsv
-    bot - hsv
-    shoes - hsv
-OUTPUT:
-    All names of valid outfit matches
-"""
-def GetOutfitMatches(outfit):
-    top = GetColorDesc(outfit[0])
-    bot = GetColorDesc(outfit[1])
-    shoes = GetColorDesc(outfit[2])
-    outfit_desc = (top, bot, shoes)
-    
-    rules = {"Basic": BasicMatch, "Neutral": NeutralMatch,
-             "Analogous": AnalogousMatch, "Summer": SummerMatch,
-            "Winter": WinterMatch}
-    valid_matches = []
-    for key in rules:
-        if rules[key](outfit_desc):
-            valid_matches.append(key)
-    return valid_matches
-
-
-
-##Steps for algo
-'''
-Create every possible clothing combo of top bottom shoes
-run getValidMatches
-Based on what category user wants, if that category is returned from getValidMatches, then store outfit data in array
-After running all combinations display the clothing data for each stored outfit,
-Let user choose, 
-the outfitrs that the user doesn't choose can be used later in the week
-'''
-
-
-"""
-style - which style to choose
-tops - list of all tops
-bots - list of all bots
-sheos - list of all shoes
-"""
 def GetStyleOutfits(tops, bots, shoes):
-
     
     matchingOutfits = []
-    if not (tops and bots and shoes):
-        return []
+    if not (tops and bots and shoes): return matchingOutfits
     for top in tops:
-        if not top["is_clean"]:
-            continue
+        if not top["is_clean"]: continue
         topdesc = GetColorDesc((top["hue"], top["saturation"], top["value"]))
         for bot in bots:
-            if not bot["is_clean"]:
-                continue
+            if not bot["is_clean"]: continue
             botdesc = GetColorDesc((bot["hue"], bot["saturation"], bot["value"]))
             for shoe in shoes:
-                if not shoe["is_clean"]:
-                    continue
+                if not shoe["is_clean"]: continue
                 shoedesc = GetColorDesc((shoe["hue"], shoe["saturation"], shoe["value"]))
                 outfitRules = []
                 for rule in [BasicMatch, NeutralMatch, AnalogousMatch, SummerMatch, WinterMatch]:
                     if rule((topdesc, botdesc, shoedesc)):
                         outfitRules.append(str(rule).split()[1])
                 if len(outfitRules) > 0:
-                    matchingOutfits.append((", ".join(outfitRules), (top["clothing_name"], top["url"]), (bot["clothing_name"], bot["url"]), (shoe["clothing_name"], shoe["url"])))
+                    matchingOutfits.append((", ".join(outfitRules), (top["clothing_name"], top["url"], top["id"]), (bot["clothing_name"], bot["url"], bot["id"]), (shoe["clothing_name"], shoe["url"], shoe["id"])))
 
     return matchingOutfits
 

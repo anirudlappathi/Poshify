@@ -239,9 +239,29 @@ def generate_fit():
       print("ERROR: NO ID_TOKEN FOUND")
       return redirect("/home", code=302)
 
-   tops = get_clothing_by_type(user_id, "T-Shirt")
-   bots = get_clothing_by_type(user_id, "Pants")
-   shoes = get_clothing_by_type(user_id, "Shoes")
+   # sunny
+   hats = get_clothing_by_type(user_id, "Hat")
+
+   # cold
+   jackets = get_clothing_by_type(user_id, "Jacket")
+   # hot
+   tshirts = get_clothing_by_type(user_id, "T-Shirt")
+   # mid - cold
+   sweatshirts = get_clothing_by_type(user_id, "Sweatshirt")
+
+   
+   # mid - cold
+   pants = get_clothing_by_type(user_id, "Pant")
+   # hot
+   shorts = get_clothing_by_type(user_id, "Short")
+
+
+   # cold - hot
+   shoes = get_clothing_by_type(user_id, "Shoe")
+
+
+   tops = jackets + tshirts + sweatshirts
+   bots = pants + shorts
 
    outfits = GetStyleOutfits(tops, bots, shoes)
    calendarInfo = get_image_paths_per_day(user_id)
@@ -492,14 +512,12 @@ def save_outfit():
    try:
       outfit_data = request.json
       user_id = session.get('userid')
+      clothes_id = outfit_data.get('clothes_id')
       day_of_week = outfit_data.get('day_of_week')
       image_paths = outfit_data.get('image_paths')
       outfit_type = outfit_data.get('outfitType')
-      #print("DAY OF WEEK: ", day_of_week)
-      #print("IOMAGE PATHS: ", image_paths)
-      #print("OUTFIT TYPE: ", outfit_type)
-
-      create_entry(user_id, day_of_week, image_paths, outfit_type)
+      print(clothes_id)
+      create_entry(user_id, clothes_id, day_of_week, image_paths, outfit_type)
       return 'Outfit data received and saved successfully.', 200
    
    except Exception as e:

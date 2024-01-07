@@ -1,5 +1,5 @@
 from .database import dbsession, Base
-from sqlalchemy import Column, Integer, String, delete
+from sqlalchemy import Column, Integer, String, delete, ForeignKey
 from collections import defaultdict
 
 import configparser
@@ -15,18 +15,21 @@ class Calendar(Base):
     __tablename__ = 'Calendar'
 
     outfit_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(String(255))
+    user_id = Column(String(255), ForeignKey('Users.user_id'))
+    clothes_id = Column(Integer, ForeignKey('Clothes.clothes_id'))
     dayOfWeek = Column(String(255))
     filepath = Column(String(255))
     outfitType = Column(String(255))
 
-def create_entry(user_id, dayOfWeek, imagePaths, outfitType):
+
+def create_entry(user_id, clothes_id, dayOfWeek, imagePaths, outfitType):
     try:
-        for image_path in imagePaths:
+        for i, image_path in enumerate(imagePaths):
             image_path_modified = image_path.replace('/static/', '')
 
             new_entry = Calendar(
                 user_id=user_id,
+                clothes_id=clothes_id[i],
                 dayOfWeek=dayOfWeek,
                 filepath=image_path_modified,
                 outfitType=outfitType
@@ -42,13 +45,13 @@ def delete_entry(user_id, dayOfWeek, filepath, outfitType):
     try:
         filepath = filepath.replace('/static/', '')
         delete_query = (
-        delete(Calendar)
-        .where(
-            Calendar.user_id == user_id,
-            Calendar.dayOfWeek == dayOfWeek,
-            Calendar.filepath == filepath,
-            Calendar.outfitType == outfitType
-        )
+            delete(Calendar)
+            .where(
+                Calendar.user_id == user_id,
+                Calendar.dayOfWeek == dayOfWeek,
+                Calendar.filepath == filepath,
+                Calendar.outfitType == outfitType
+            )
         )
         dbsession.execute(delete_query)
         dbsession.commit()

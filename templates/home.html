@@ -20,111 +20,146 @@
 </head>
 <body>
     <div class ="main-body-content">
-    <!-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"></script>
-    <spline-viewer url="https://prod.spline.design/QV2ncq0n7ZhFdo8k/scene.splinecode"></spline-viewer> -->
-    <header id="site-header" class="header-hidden">
-        {% include 'header.html' %}
-    </header>
-    <main>
-      <section class="hero-section">
-          <h2 id="text">Make yourself <a class="posh">Posh</a></h2>
-          <a href="#aboutsection" class="action-button" id="btn">Learn More</a>
-      </section>
-      <section class="testsection" id="testsection">
-        <div class="placeholder">
-          <br><br><br><br><br><br><br>
-        </div>
-      </section>
-      <section class="aboutsection" id="aboutsection">
-        <div class="title">
-          <h3>Our Purpose.</h3>
-        </div>
-        <div class="content">
-          <p>
-            At Poshify, we revolutionize how you dress by harnessing computer vision and AI. Our platform generates bespoke outfit suggestions based on your provided clothing items. With an intuitive calendar system, we streamline your wardrobe, ensuring stress-free outfit choices for every occasion. More than just simplifying fashion decisions, Poshify aims to reduce clothing waste. By empowering users to explore diverse styling options from their existing wardrobe, we promote sustainability and encourage a modern, conscious approach to dressing.
-          </p>
-        <div class="homeimage">
-          <!-- <img src="static/cartimeme.jpeg"> -->
-      </div>  
-        </div>
-      </section>
-      <section class="getstarted" id="getstarted">
-        <div class="getstartedcontent">
-          {% if session %}
-          <div class="getstartedtitle">
-              <h3>Hop into your dashboard!</h3>
+      <header id="site-header" class="header-hidden">
+          {% include 'header.html' %}
+      </header>
+      <main>
+        <section class="hero-section">
+            <h2 id="text">Make yourself <a class="posh">Posh</a></h2>
+            <a href="#aboutsection" class="action-button" id="btn">Learn More</a>
+        </section>
+        
+        <br><br><br><br><br><br><br>
+
+        <section class="aboutsection" id="aboutsection">
+          <div class="title">
+            <h3>Our Purpose.</h3>
           </div>
-          <center>
-            <a class="action-button" href="dashboard">Dashboard</a>
-          </center>
-          {% else %}
-          <div class="getstartedtitle">
-              <h3>Sign up or Login today!</h3>
+          <div class="content">
+            <p>
+              At Poshify, we revolutionize how you dress by harnessing computer vision and AI. 
+              Our platform generates bespoke outfit suggestions based on your provided clothing 
+              items. With an intuitive calendar system, we streamline your wardrobe, ensuring 
+              stress-free outfit choices for every occasion. More than just simplifying 
+              fashion decisions, Poshify aims to reduce clothing waste. By empowering users
+              to explore diverse styling options from their existing wardrobe, we promote 
+              sustainability and encourage a modern, conscious approach to dressing.
+            </p> 
           </div>
-          <center>
-            <a class="login action-button" href="login">Login</a>
-            <a class="signup action-button" href="signup">Sign Up</a>
-          </center>
-          {% endif %}
-          <br><br><br><br><br><br><br><br><br><br><br>
-        </div>
-      </section>
-  </main>
-  
-</div>
+        </section>
+
+        <section class="technical" id="technical">
+          <div class="title">
+            <h3>How it works.</h3>
+          </div>
+          <div class="content">
+            <p>
+              Poshify is your personalized fashion companion leveraging cutting-edge technology! 
+              Our platform combines the power of computer vision, statistical analysis, 
+              and advanced algorithms to curate bespoke outfits tailored uniquely for you. 
+              By integrating external data, such as real-time weather insights, we ensure 
+              that our outfit recommendations perfectly align with your current environment 
+              and needs.
+            </p> 
+          </div>
+        </section>
+
+        <section class="adapt" id="adapt">
+          <div class="title">
+            <h3>How it learns</h3>
+          </div>
+          <div class="content">
+            <p>
+              One of the most remarkable features of Poshify is its ability to effortlessly learn 
+              your style preferences. Simply by uploading a picture of your outfit, our intelligent 
+              software comprehends your tastes, enabling it to suggest outfits that resonate with your
+              individual fashion sense.
+
+              Experience the convenience and sophistication of effortless styling - let Poshify 
+              revolutionize the way you approach fashion choices, effortlessly adapting to your lifestyle 
+              and environment."
+            </p> 
+          </div>
+        </section>
+
+        <section class="getstarted" id="getstarted">
+          <div class="getstartedcontent">
+            {% if session %}
+            <div class="getstartedtitle">
+                <h3>Hop into your dashboard!</h3>
+            </div>
+            <center>
+              <a class="action-button" href="dashboard">Dashboard</a>
+            </center>
+            {% else %}
+            <div class="getstartedtitle">
+                <h3>Sign up or Login today!</h3>
+            </div>
+            <center>
+              <a class="login action-button" href="login">Login</a>
+              <a class="signup action-button" href="signup">Sign Up</a>
+            </center>
+            {% endif %}
+            <br><br><br><br><br><br><br><br><br><br><br>
+          </div>
+        </section>
+    </main>
+    
+  </div>
   <script>
 
     document.addEventListener('DOMContentLoaded', function() {
       const header = document.getElementById('site-header');
+      function slideInHeader() {
+          header.classList.remove('header-hidden');
+          header.classList.add('slide-in-top'); 
+      }
+      setTimeout(slideInHeader, 1000);
+    });
 
-    // Function to slide in the header after a delay
-    function slideInHeader() {
-        header.classList.remove('header-hidden'); // Ensure the header is not hidden
-        // header.classList.add('slide-in-top'); // Apply the sliding animation class
+    function scrollToSection(element) {
+      document.querySelector(element).scrollIntoView({
+        behavior: 'smooth'
+      });
     }
 
-    // Set a timeout to slide in the header after 2 seconds (2000 milliseconds)
-    setTimeout(slideInHeader, 1000);
-  });
-
-
-  // Function to handle smooth scrolling
-  function scrollToSection(element) {
-    document.querySelector(element).scrollIntoView({
-      behavior: 'smooth'
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('btn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        scrollToSection('#aboutsection'); // Replace with the ID of the section you want to scroll to
+        window.scrollBy({
+          top: -100,
+          behavior: "smooth"
+        })
+      });
     });
-  }
 
-  // Find the Learn More button and add an event listener for smooth scrolling
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('btn').addEventListener('click', function(event) {
-      event.preventDefault(); // Prevent default link behavior
-      scrollToSection('#testsection'); // Replace with the ID of the section you want to scroll to
-    });
-  });
+    document.addEventListener('DOMContentLoaded', function() {
+      // Intersection Observer to trigger animation when about section is in view
+      const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.3 // Adjust threshold as needed
+      };
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Intersection Observer to trigger animation when about section is in view
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.3 // Adjust threshold as needed
-    };
-
-    const observer = new IntersectionObserver(entries => {
+      const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-              setTimeout(() => { // Introduce a delay using setTimeout
-                  entry.target.classList.add('show');
-              }, 200); // Adjust the delay (in milliseconds) as needed
+                entry.target.classList.add('show');
+            } else {
+              entry.target.classList.remove('show');
             }
-        });
-    }, options);
+          });
+      }, options);
 
-    const aboutSection = document.querySelector('.aboutsection');
-    observer.observe(aboutSection);
-});
-</script>
+      const aboutSection = document.querySelector('.aboutsection');
+      const techincal = document.querySelector('.technical');
+      const adapt = document.querySelector('.adapt');
+      observer.observe(aboutSection);
+      observer.observe(techincal);
+      observer.observe(adapt);
+    });
+  </script>
 {% include 'footer.html' %}
 </body>
 </html>

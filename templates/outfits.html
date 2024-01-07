@@ -20,7 +20,7 @@
                                                 {% if config == "local" %}
                                                     <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
                                                 {% else %}
-                                                    <img class="grid-image" src="{{ image_path }}" alt="Clothing Image" draggable="false">
+                                                    <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
@@ -47,12 +47,12 @@
                             <h2 class="text">
                                 {{ outfit[0] }}
                             </h2>
-                            {% for clothing_name, image_path in outfit[1:] %}
-                                <div class="clothing-item" clothing-name="{{ clothing_name }}">
+                            {% for clothing_name, image_path, clothes_id in outfit[1:] %}
+                                <div class="clothing-item" clothing-name="{{ clothing_name }}" clothing-id="{{ clothes_id }}">
                                     {% if config == "local" %}
                                         <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
                                     {% else %}
-                                        <img class="grid-image" src="{{ image_path }}" alt="Clothing Image" draggable="false">
+                                        <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
                                     {% endif %}
                                 </div>
                             {% endfor %}
@@ -123,44 +123,33 @@
                 console.log("CLEAR DAY IMAGEPATHS: ", imagePaths);
                 console.log("CLEAR DAY OUTFIT TITLE: ", outfitTitle);
                 var outfitData = {
-                day_of_week: dayId,
-                image_paths: imagePaths,
-                outfitType: outfitTitle
+                    day_of_week: dayId,
+                    image_paths: imagePaths,
+                    outfitType: outfitTitle
                 };
                 var newSpan = document.createElement('span');
                 newSpan.textContent = 'Drag outfit here'; // Set the text content;
-                return new Promise((resolve) => {
-                    // ... Your existing logic for clearing the day
-                    
-                    // Perform asynchronous operations inside the promise
-                    fetch('/delete_outfit', {
+                fetch('/delete_outfit', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(outfitData)
                     })
-                    .then(response => {
+                .then(response => {
                         if (response.ok) {
                             console.log('Outfit data to DELETE sent successfully.');
-                            resolve(); // Resolve the promise when deletion is successful
+                            // Handle any success actions if needed
                         } else {
-                            throw new Error('Failed to delete outfit data.');
+                            throw new Error('Failed to send outfit data.');
                         }
                     })
-                    .catch(error => {
-                        console.error('Error while deleting outfit data:', error);
-                        // Handle any error scenarios for deletion
+                .catch(error => {
+                        console.error('Error:', error);
+                        // Handle any error scenarios
                     });
-                });
         }
-            
-            
-            
-            
     }
-
-
         function allowDrop(event) {
             event.preventDefault();
         }
@@ -180,9 +169,13 @@
             var imagePaths = Array.from(imageElements).map(img => img.getAttribute('src'));
             console.log(imagePaths);
 
+            var clothingDivs = outfit.querySelectorAll('.clothing-items .clothing-item');
+            var clothingIds = Array.from(clothingDivs).map(div => div.getAttribute('clothing-id'));
+
             // Set custom data attributes for the dragged outfit
             event.dataTransfer.setData("clothing", clothing);
             event.dataTransfer.setData("imagePaths", JSON.stringify(imagePaths));
+            event.dataTransfer.setData("clothesIds", JSON.stringify(clothingIds));
 
             draggedOutfit = event.target;
         }
@@ -207,19 +200,23 @@
             toggleClearButton('sunday', false);
         });
 
-        async function drop(event, day) {
+        function drop(event, day) {
             event.preventDefault();
             var dayElement = document.getElementById(day);
             var clothingItemsExist = dayElement.querySelector('.clothing-items');
-            //this code handles the replacement for the outfits if another outfit is dragged on top
-            
+            // this code handles the replacement for the outfits if another outfit is dragged on top
+            if (clothingItemsExist) {
+                console.log("Clothing items exist within dayElement.");
+                clearDay(day)
+
+            } else {
+                console.log("No clothing items found within dayElement.");
+            }
             var clothing = event.dataTransfer.getData("clothing");
-            console.log("drop clothing: ", clothing);
             var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
-            
+            console.log("drop clothing: ", clothing);
             console.log("drop imagePaths: ", imagePaths);
 
-            
             var outfit = document.createElement('div');
             outfit.className = 'grid';
 
@@ -251,28 +248,21 @@
 
             dayElement.appendChild(outfit);
 
-            // Hide the dragged outfit after successful drop
             draggedOutfit.style.display = 'none';
             toggleClearButton(day, true);
 
             var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
             console.log("drop imagePaths: ", imagePaths);
 
+            var clothes_ids = JSON.parse(event.dataTransfer.getData("clothesIds"))
+
             // Create an object with the day and image paths data
             var outfitData = {
                 day_of_week: day,
+                clothes_id: clothes_ids,
                 image_paths: imagePaths,
                 outfitType: clothing
             };
-            if (clothingItemsExist) {
-                console.log("Clothing items exist within dayElement.");
-                await clearDay(day);
-                console.log("PLEASE PLEASLEP ASLEASLELASPEL PASLEP ASLPE LAS")
-            } else {
-                console.log("No clothing items found within dayElement.");
-                // Rest of your drop function logic here
-            }
-            console.log("AFTER CLEAR DAY")
 
             // Send the outfit data to Flask using fetch
             fetch('/save_outfit', {
