@@ -12,8 +12,9 @@
                 {% else %}
                 <p class="not-today-calendar"></p>
                 {% endif %}
-                <div class="{{ day.lower() }} action-button" id="{{ day.lower() }}" ondrop="drop(event, '{{ day.lower() }}')" ondragover="allowDrop(event)">
+                <div class="{{ dates[(weekday + isoweekday) % 7] }} action-button" id="{{ dates[(weekday + isoweekday) % 7] }}" ondrop="drop(event, '{{ dates[(weekday + isoweekday) % 7] }}')" ondragover="allowDrop(event)">
                     {% if calendarInfo and day.lower() in calendarInfo %}
+                        <h1>TESTTINGISNGI</h1>
                         {% for outfitType, imagePaths in calendarInfo[day.lower()].items() %}
                             <div class="grid" draggable="true" ondragstart="drag(event)">
                                 <div class="grid-item text">
@@ -138,26 +139,27 @@
                 var newSpan = document.createElement('span');
                 newSpan.textContent = 'Drag outfit here'; // Set the text content;
                 fetch('/delete_outfit', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(outfitData)
-                    })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(outfitData)
+                })
                 .then(response => {
-                        if (response.ok) {
-                            console.log('Outfit data to DELETE sent successfully.');
-                            // Handle any success actions if needed
-                        } else {
-                            throw new Error('Failed to send outfit data.');
-                        }
-                    })
+                    if (response.ok) {
+                        console.log('Outfit data to DELETE sent successfully.');
+                        // Handle any success actions if needed
+                    } else {
+                        throw new Error('Failed to send outfit data.');
+                    }
+                })
                 .catch(error => {
-                        console.error('Error:', error);
-                        // Handle any error scenarios
-                    });
+                    console.error('Error:', error);
+                    // Handle any error scenarios
+                });
+            }
         }
-    }
+
         function allowDrop(event) {
             event.preventDefault();
         }
@@ -170,12 +172,10 @@
             // Get the clothing associated with the dragged outfit
             var outfit = event.target.closest('.grid');
             var clothing = outfit.querySelector('.text h2').innerText.trim();
-            console.log(clothing);
 
             // Get all the image paths associated with the dragged outfit
             var imageElements = outfit.querySelectorAll('.clothing-item img');
             var imagePaths = Array.from(imageElements).map(img => img.getAttribute('src'));
-            console.log(imagePaths);
 
             var clothingDivs = outfit.querySelectorAll('.clothing-items .clothing-item');
             var clothingIds = Array.from(clothingDivs).map(div => div.getAttribute('clothing-id'));
@@ -184,9 +184,12 @@
             event.dataTransfer.setData("clothing", clothing);
             event.dataTransfer.setData("imagePaths", JSON.stringify(imagePaths));
             event.dataTransfer.setData("clothesIds", JSON.stringify(clothingIds));
-
+            console.log(clothing)
+            console.log(imagePaths)
+            console.log(clothingIds)
             draggedOutfit = event.target;
         }
+
         function toggleClearButton(dayId, show) {
             var dayElement = document.getElementById(dayId);
             var clearButton = dayElement.querySelector('.clear-button');
@@ -197,6 +200,7 @@
             // Show the clear button if clothing items exist, else show based on the provided argument 'show'
             clearButton.style.display = clothingItemsExist ? 'block' : show ? 'block' : 'none';
         }
+
         // Call this function after the DOM is loaded to initially hide the buttons
         document.addEventListener('DOMContentLoaded', function () {
             toggleClearButton('monday', false);
@@ -271,6 +275,7 @@
                 image_paths: imagePaths,
                 outfitType: clothing
             };
+
 
             // Send the outfit data to Flask using fetch
             fetch('/save_outfit', {

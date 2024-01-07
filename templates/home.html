@@ -19,100 +19,102 @@
     <title>Poshify</title>
 </head>
 <body>
-    <div class ="main-body-content">
-      <header id="site-header" class="header-hidden">
-          {% include 'header.html' %}
-      </header>
-      <main>
-        <section class="hero-section">
-            <h2 id="text">Make yourself <a class="posh">Posh</a></h2>
-            <a href="#aboutsection" class="action-button" id="btn">Learn More</a>
-        </section>
-        
-        <br><br><br><br><br><br><br>
+  <div class ="main-body-content">
+    <header id="site-header" class="header-hidden">
+        {% include 'header.html' %}
+    </header>
+    <main>
+    <div class="header-hidden" id="hero-section">
+      <section class="hero-section">
+          <h2 id="text">Make yourself <a class="posh">Posh</a></h2>
+          <a href="#aboutsection" class="action-button" id="btn">Learn More</a>
+      </section>
+    </div>
+    <br><br><br><br><br><br><br>
 
-        <section class="aboutsection" id="aboutsection">
-          <div class="title">
-            <h3>Our Purpose.</h3>
-          </div>
-          <div class="content">
-            <p>
-              At Poshify, we revolutionize how you dress by harnessing computer vision and AI. 
-              Our platform generates bespoke outfit suggestions based on your provided clothing 
-              items. With an intuitive calendar system, we streamline your wardrobe, ensuring 
-              stress-free outfit choices for every occasion. More than just simplifying 
-              fashion decisions, Poshify aims to reduce clothing waste. By empowering users
-              to explore diverse styling options from their existing wardrobe, we promote 
-              sustainability and encourage a modern, conscious approach to dressing.
-            </p> 
-          </div>
-        </section>
+    <section class="aboutsection" id="aboutsection">
+      <div class="title">
+        <h3>Our Purpose.</h3>
+      </div>
+      <div class="content">
+        <p>
+          At Poshify, we revolutionize how you dress by harnessing computer vision and AI. 
+          Our platform generates bespoke outfit suggestions based on your provided clothing 
+          items. With an intuitive calendar system, we streamline your wardrobe, ensuring 
+          stress-free outfit choices for every occasion. More than just simplifying 
+          fashion decisions, Poshify aims to reduce clothing waste. By empowering users
+          to explore diverse styling options from their existing wardrobe, we promote 
+          sustainability and encourage a modern, conscious approach to dressing.
+        </p> 
+      </div>
+    </section>
 
-        <section class="technical" id="technical">
-          <div class="title">
-            <h3>How it works.</h3>
-          </div>
-          <div class="content">
-            <p>
-              Poshify is your personalized fashion companion leveraging cutting-edge technology! 
-              Our platform combines the power of computer vision, statistical analysis, 
-              and advanced algorithms to curate bespoke outfits tailored uniquely for you. 
-              By integrating external data, such as real-time weather insights, we ensure 
-              that our outfit recommendations perfectly align with your current environment 
-              and needs.
-            </p> 
-          </div>
-        </section>
+    <section class="technical" id="technical">
+      <div class="title">
+        <h3>How it works.</h3>
+      </div>
+      <div class="content">
+        <p>
+          Poshify is your personalized fashion companion leveraging cutting-edge technology! 
+          Our platform combines the power of computer vision, statistical analysis, 
+          and advanced algorithms to curate bespoke outfits tailored uniquely for you. 
+          By integrating external data, such as real-time weather insights, we ensure 
+          that our outfit recommendations perfectly align with your current environment 
+          and needs.
+        </p> 
+      </div>
+    </section>
 
-        <section class="adapt" id="adapt">
-          <div class="title">
-            <h3>How it learns</h3>
-          </div>
-          <div class="content">
-            <p>
-              One of the most remarkable features of Poshify is its ability to effortlessly learn 
-              your style preferences. Simply by uploading a picture of your outfit, our intelligent 
-              software comprehends your tastes, enabling it to suggest outfits that resonate with your
-              individual fashion sense.
+    <section class="adapt" id="adapt">
+      <div class="title">
+        <h3>How it learns</h3>
+      </div>
+      <div class="content">
+        <p>
+          One of the most remarkable features of Poshify is its ability to effortlessly learn 
+          your style preferences. Simply by uploading a picture of your outfit, our intelligent 
+          software comprehends your tastes, enabling it to suggest outfits that resonate with your
+          individual fashion sense.
 
-              Experience the convenience and sophistication of effortless styling - let Poshify 
-              revolutionize the way you approach fashion choices, effortlessly adapting to your lifestyle 
-              and environment."
-            </p> 
-          </div>
-        </section>
+          Experience the convenience and sophistication of effortless styling - let Poshify 
+          revolutionize the way you approach fashion choices, effortlessly adapting to your lifestyle 
+          and environment."
+        </p> 
+      </div>
+    </section>
 
-        <section class="getstarted" id="getstarted">
-          <div class="getstartedcontent">
-            {% if session %}
-            <div class="getstartedtitle">
-                <h3>Hop into your dashboard!</h3>
-            </div>
-            <center>
-              <a class="action-button" href="dashboard">Dashboard</a>
-            </center>
-            {% else %}
-            <div class="getstartedtitle">
-                <h3>Sign up or Login today!</h3>
-            </div>
-            <center>
-              <a class="login action-button" href="login">Login</a>
-              <a class="signup action-button" href="signup">Sign Up</a>
-            </center>
-            {% endif %}
-            <br><br><br><br><br><br><br><br><br><br><br>
-          </div>
-        </section>
+    <section class="getstarted" id="getstarted">
+      <div class="getstartedcontent">
+        {% if session %}
+        <div class="getstartedtitle">
+            <h3>Hop into your dashboard!</h3>
+        </div>
+        <center>
+          <a class="action-button" href="dashboard">Dashboard</a>
+        </center>
+        {% else %}
+        <div class="getstartedtitle">
+            <h3>Sign up or Login today!</h3>
+        </div>
+        <center>
+          <a class="login action-button" href="login">Login</a>
+          <a class="signup action-button" href="signup">Sign Up</a>
+        </center>
+        {% endif %}
+        <br><br><br><br><br><br><br><br><br><br><br>
+      </div>
+    </section>
     </main>
-    
   </div>
   <script>
 
     document.addEventListener('DOMContentLoaded', function() {
       const header = document.getElementById('site-header');
+      const hero = document.getElementById('hero-section');
+      hero.classList.remove('header-hidden');
       function slideInHeader() {
-          header.classList.remove('header-hidden');
-          header.classList.add('slide-in-top'); 
+        header.classList.remove('header-hidden');
+        header.classList.add('slide-in-top'); 
       }
       setTimeout(slideInHeader, 1000);
     });

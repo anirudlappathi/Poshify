@@ -52,7 +52,13 @@ oauth.register(
 if config.get("DEFAULT", "DEVTYPE") == "aws":
    import boto3
    s3 = boto3.client('s3')
-   CLOTHING_BUCKET_NAME = "poshify-clothingimages"
+   
+CLOTHING_BUCKET_NAME = "poshify-clothingimages"
+WEEKDAYS_NUM2DAY = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
+WEEKDAYS_DAY2NUM = {"Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6}
+DAYS_IN_MONTH = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31, }
+
+
 
 @app.route("/")
 @app.route("/home")
@@ -266,10 +272,11 @@ def generate_fit():
    bots = pants + shorts
 
    calendarInfo = get_image_paths_per_day(user_id)
+   print(calendarInfo)
    outfits = GetStyleOutfits(tops, bots, shoes)
+
    weekday = (today.isoweekday() - 1) % 7
-   weekdays = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
-   day = weekdays[weekday]
+   day = WEEKDAYS_NUM2DAY[weekday]
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
    else:
@@ -514,7 +521,7 @@ def update_filters():
 
 @app.route('/save_outfit', methods=['POST'])
 def save_outfit():
-   try:
+   # try:
 
       outfit_data = request.json
       user_id = session.get('userid')
@@ -522,15 +529,41 @@ def save_outfit():
       day_of_week = outfit_data.get('day_of_week')
       image_paths = outfit_data.get('image_paths')
       outfit_type = outfit_data.get('outfitType')
-      date = today.strftime("%d%m%y")
 
+      todayDayNum = today.isoweekday() # eg. if sunday its 7
+      insertedDayNum = WEEKDAYS_DAY2NUM[day_of_week] + 1 # eg. if wednesday this gives 3
+      daysForward = (todayDayNum + insertedDayNum) % 7
+      day = int(today.strftime("%d"))
+      month = int(today.strftime("%m"))
+      year = int(today.strftime("%y"))
+      daysInMonth = DAYS_IN_MONTH[month]
+
+      newDay = day + daysForward
+      if newDay > daysInMonth:
+         newDay %= daysInMonth
+         month += 1
+      if month > 12:
+         month %= 12
+         year += 1
+
+      newDay = str(newDay)
+      if len(newDay) <= 1:
+         newDay = "0" + newDay
+      month = str(month)
+      if len(month) <= 1:
+         month = "0" + month
+      year = str(year)
+      if len(year) <= 1:
+         year = "0" + year
+
+      date = f"{newDay}{month}{year}"
 
       create_entry(user_id, clothes_id, day_of_week, image_paths, outfit_type, date)
       return 'Outfit data received and saved successfully.', 200
    
-   except Exception as e:
-      print(f"Error saving outfit data: {str(e)}")
-      return 'Failed to process outfit data.', 500
+   # except Exception as e:
+   #    print(f"Error saving outfit data: {str(e)}")
+   #    return 'Failed to process outfit data.', 500
 
 @app.route('/delete_outfit', methods=['POST'])
 def delete_outfit():
