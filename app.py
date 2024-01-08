@@ -271,13 +271,11 @@ def generate_fit():
    tops = jackets + tshirts + sweatshirts
    bots = pants + shorts
 
-   calendarInfo = get_image_paths_per_day(user_id)
-   print(calendarInfo)
-   outfits = GetStyleOutfits(tops, bots, shoes)
+   calendarInfo, cloth_ids = get_image_paths_per_day(user_id)
+   outfits = GetStyleOutfits(tops, bots, shoes, cloth_ids)
 
    weekday = (today.isoweekday() - 1) % 7
    day = WEEKDAYS_NUM2DAY[weekday]
-   print(calendarInfo)
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
    else:

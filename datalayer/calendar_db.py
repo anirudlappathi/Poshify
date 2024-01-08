@@ -2,6 +2,9 @@ from .database import dbsession, Base
 from sqlalchemy import Column, Integer, String, delete, ForeignKey
 from collections import defaultdict
 
+import logging
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+
 import configparser
 config = configparser.ConfigParser()
 config.read('config.properties')
@@ -65,23 +68,28 @@ def delete_entry(user_id, dayOfWeek, filepath, outfitType):
 
 def get_image_paths_per_day(user_id):
     try:
-        image_paths_per_day = dbsession.query(Calendar.dayOfWeek, Calendar.outfitType, Calendar.filepath) \
+        image_paths_per_day = dbsession.query(Calendar.dayOfWeek, Calendar.outfitType, Calendar.filepath, Calendar.clothes_id) \
             .filter(Calendar.user_id == user_id) \
             .all()
         image_paths_dict = defaultdict(lambda: defaultdict(list))
-        for day, outfit_type, filepath in image_paths_per_day:
-            print(filepath)
+        all_clothes_id = {}
+        set_clothes_ids = set()
+        for day, outfit_type, filepath, clothes_id in image_paths_per_day:
             if config.get("DEFAULT", "DEVTYPE") == "aws":
-                #url = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
-                #img_path = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'{filepath}'}, ExpiresIn=3600)
-                #print("FILE PATH IN GET IMAGE PATHS PER DAY: ", filepath)
                 img_path = filepath
             else:
                 img_path = f"{filepath.replace('clothing_images/', config.get('DEFAULT', 'CLOTHING_IMAGES_FILEPATH'))}"
             image_paths_dict[day][outfit_type].append(img_path)
+            if day not in all_clothes_id:
+                all_clothes_id[day] = []
+            all_clothes_id[day].append(clothes_id)
+        for value in all_clothes_id.values():
+            outfit_id = ""
+            for id in value:
+                outfit_id += str(id) + ","
+            set_clothes_ids.add(outfit_id[:len(outfit_id) - 1])
 
-        return image_paths_dict
-
+        return image_paths_dict, set_clothes_ids
     except Exception as e:
         print(f"get_image_paths_per_day ERROR: {e}")
         dbsession.rollback()

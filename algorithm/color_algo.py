@@ -212,7 +212,7 @@ def WinterMatch(outfit):
     
     return True
 
-def GetStyleOutfits(tops, bots, shoes):
+def GetStyleOutfits(tops, bots, shoes, cloth_ids):
     
     matchingOutfits = []
     if not (tops and bots and shoes): return matchingOutfits
@@ -223,6 +223,8 @@ def GetStyleOutfits(tops, bots, shoes):
             if not bot["is_clean"]: continue
             botdesc = GetColorDesc((bot["hue"], bot["saturation"], bot["value"]))
             for shoe in shoes:
+                if f"{top['id']},{bot['id']},{shoe['id']}" in cloth_ids:
+                    continue
                 if not shoe["is_clean"]: continue
                 shoedesc = GetColorDesc((shoe["hue"], shoe["saturation"], shoe["value"]))
                 outfitRules = []
