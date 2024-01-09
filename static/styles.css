@@ -6,6 +6,11 @@ html {
 	-webkit-animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 	animation: text-focus-in 0.1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
+.profile-picture {
+    max-width: 300px;
+    height: auto;
+    margin-right: 3000px;
+}
 body {
 	font-family: 'Montserrat', sans-serif;
 	font-style: normal;
@@ -387,6 +392,7 @@ input::-webkit-file-upload-button {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
+    
 }
 
 .day {
@@ -400,7 +406,6 @@ input::-webkit-file-upload-button {
     text-align: center;
     border-radius: 6px;
     box-sizing: border-box;
-    max-height: 50vh; 
     overflow: auto;
     flex: 1;
     border: 1px solid black;

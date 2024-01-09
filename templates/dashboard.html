@@ -5,6 +5,7 @@
 
     <div class ="content">
     <main>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
         <center>
             {% if user_id %}
             <a href="#sec"></a>
@@ -16,98 +17,16 @@
         </center>
         <div class="dashboard-container">
 
-            <!-- <div class="left-section">
-             <p>left side section</p>
-            </div> -->
-
             <div class="right-section">
             {% if user_id %}
+            <img class="profile-picture" src="{{ session['userinfo']['picture'] }}" alt="Profile Picture">
             <a href="add_clothing_camera" class="action-button">Add Clothing: Camera</a>
             <a href="add_clothing_manual" class="action-button">Add Clothing: Manual</a>
             <a href="closet" class="action-button">My Closet</a>
             <a href="outfits" class="action-button">My Outfits</a>
 
-            <!-- <div class="dashboard-info">
-                <img src="https://poshify-clothingimages.s3.amazonaws.com/clothing_images/c287881b-410d-4e91-b169-91164b8b97b7.jpeg" alt="Descriptive Text" class="dashboard-image">
-                <div class="dashboard-box">
-                   Your text goes here -->
-                    <!-- <p>Stats: </p> -->
-                <!-- </div>
-            </div>
-
-            <div class="dashboard-info">
-                <div class="dashboard-box">
-                    Your text goes here
-                    <p>Stats: </p>
-                </div>
-                <img src="https://poshify-clothingimages.s3.amazonaws.com/clothing_images/destroylonley.jpeg" alt="Descriptive Text" class="dashboard-image">
-            </div>
-
-            <p> Posh From Head To Toe</p>
-            <div class="hover-image-container">
-                <div class="box">
-                  <div class="imgBx">
-                    <img src="https://poshify-clothingimages.s3.amazonaws.com/clothing_images/destroylonley.jpeg">
-                  </div>
-                  <div class="content">
-                    <div>
-                      <h2>Image Title</h2>
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="box">
-                  <div class="imgBx">
-                    <img src="https://poshify-clothingimages.s3.amazonaws.com/clothing_images/destroylonley.jpeg">
-                  </div>
-                  <div class="content">
-                    <div>
-                      <h2>Image Title</h2>
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="box">
-                  <div class="imgBx">
-                    <img src="https://poshify-clothingimages.s3.amazonaws.com/clothing_images/destroylonley.jpeg">
-                  </div>
-                  <div class="content">
-                    <div>
-                      <h2>Image Title</h2>
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="box">
-                  <div class="imgBx">
-                    <img src="https://poshify-clothingimages.s3.amazonaws.com/clothing_images/destroylonley.jpeg">
-                  </div>
-                  <div class="content">
-                    <div>
-                      <h2>Image Title</h2>
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi accusamus molestias quidem iusto.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            <p>Sample Week: </p>
-            <div class="sample-week">
-                <div class="day">Sunday</div>
-                <div class="day">Monday</div>
-                <div class="day">Tuesday</div>
-                <div class="day">Wednesday</div>
-                <div class="day">Thursday</div>
-                <div class="day">Friday</div>
-                <div class="day">Saturday</div>
-            </div> -->
-
             {% endif %}
-        </div>
+            </div>
        </div>
     </main>
 </div>

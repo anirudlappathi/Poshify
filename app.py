@@ -272,6 +272,9 @@ def generate_fit():
    bots = pants + shorts
 
    calendarInfo, cloth_ids = get_image_paths_per_day(user_id)
+   
+
+
    outfits = GetStyleOutfits(tops, bots, shoes, cloth_ids)
 
    weekday = (today.isoweekday() - 1) % 7
