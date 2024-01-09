@@ -208,13 +208,13 @@
 
         // Call this function after the DOM is loaded to initially hide the buttons
         document.addEventListener('DOMContentLoaded', function () {
-            toggleClearButton('monday', false);
-            toggleClearButton('tuesday', false);
-            toggleClearButton('wednesday', false);
-            toggleClearButton('thursday', false);
-            toggleClearButton('friday', false);
-            toggleClearButton('saturday', false);
-            toggleClearButton('sunday', false);
+            toggleClearButton('Monday', false);
+            toggleClearButton('Tuesday', false);
+            toggleClearButton('Wednesday', false);
+            toggleClearButton('Thursday', false);
+            toggleClearButton('Friday', false);
+            toggleClearButton('Saturday', false);
+            toggleClearButton('Sunday', false);
         });
 
         async function drop(event, day) {
@@ -313,6 +313,12 @@
                 // Handle any error scenarios
             });
                 }
+                
+            //Function to allow scrolling while dragging
+            document.addEventListener('dragover', function(event) {
+                event.preventDefault(); 
+                
+            });
     </script>
     {% include 'footer.html' %}
 </body>
