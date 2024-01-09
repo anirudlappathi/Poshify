@@ -54,7 +54,7 @@ if config.get("DEFAULT", "DEVTYPE") == "aws":
    s3 = boto3.client('s3')
    
 CLOTHING_BUCKET_NAME = "poshify-clothingimages"
-WEEKDAYS_NUM2DAY = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
+WEEKDAYS_NUM2DAY = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 WEEKDAYS_DAY2NUM = {"Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6}
 DAYS_IN_MONTH = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31, }
 
@@ -279,6 +279,7 @@ def generate_fit():
 
    weekday = (today.isoweekday() - 1) % 7
    day = WEEKDAYS_NUM2DAY[weekday]
+
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
    else:

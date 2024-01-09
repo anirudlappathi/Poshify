@@ -232,7 +232,7 @@ def GetStyleOutfits(tops, bots, shoes, cloth_ids):
                     if rule((topdesc, botdesc, shoedesc)):
                         outfitRules.append(str(rule).split()[1])
                 if len(outfitRules) > 0:
-                    matchingOutfits.append((", ".join(outfitRules), (top["clothing_name"], top["url"], top["id"]), (bot["clothing_name"], bot["url"], bot["id"]), (shoe["clothing_name"], shoe["url"], shoe["id"])))
+                    matchingOutfits.append((",\n".join(outfitRules), (top["clothing_name"], top["url"], top["id"]), (bot["clothing_name"], bot["url"], bot["id"]), (shoe["clothing_name"], shoe["url"], shoe["id"])))
 
     return matchingOutfits
 

@@ -6,13 +6,12 @@
         {% set dates = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
         {% for isoweekday in range(7) %}
             <div class="day">
-                <p class="weekday-calendar">{{ dates[(weekday + isoweekday) % 7] }}</p>
                 {% if (weekday + isoweekday) % 7 == weekday %}
-                    <p class="today-calendar">Today</p>
+                    <p class="weekday-calendar">{{ dates[(weekday + isoweekday) % 7] }} (Today)</p>
                 {% else %}
-                <p class="not-today-calendar"></p>
+                    <p class="weekday-calendar">{{ dates[(weekday + isoweekday) % 7] }}</p>
                 {% endif %}
-                <div class="{{ dates[(weekday + isoweekday) % 7] }} action-button" id="{{ dates[(weekday + isoweekday) % 7] }}" ondrop="drop(event, '{{ dates[(weekday + isoweekday) % 7] }}')" ondragover="allowDrop(event)">
+                <div class="{{ dates[(weekday + isoweekday) % 7] }} outfit-action-button" id="{{ dates[(weekday + isoweekday) % 7] }}" ondrop="drop(event, '{{ dates[(weekday + isoweekday) % 7] }}')" ondragover="allowDrop(event)">
                     {% if calendarInfo and dates[(weekday + isoweekday) % 7] in calendarInfo %}
                         {% for outfitType, imagePaths in calendarInfo[dates[(weekday + isoweekday) % 7]].items() %}
                             <div class="grid" draggable="true" ondragstart="drag(event)">
@@ -24,12 +23,13 @@
                                         {% for image_path in imagePaths %}
                                             <div class="clothing-item">
                                                 {% if config == "local" %}
-                                                    <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
+                                                    <img class="outfit-grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
                                                 {% else %}
-                                                    <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
+                                                    <img class="outfit-grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
+                                        <br>
                                     </div>
                                 </div>
                             </div>
@@ -52,15 +52,15 @@
                 <div class="grid" draggable="true" ondragstart="drag(event)">
                     <div class="grid-item text">
                         <div class="clothing-items">
-                            <h2 class="text">
+                            <h2 class="title-text">
                                 {{ outfit[0] }}
                             </h2>
                             {% for clothing_name, image_path, clothes_id in outfit[1:] %}
                                 <div class="clothing-item" clothing-name="{{ clothing_name }}" clothing-id="{{ clothes_id }}">
                                     {% if config == "local" %}
-                                        <img class="grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
+                                        <img class="outfit-grid-image" src="{{ url_for('static', filename=image_path) }}" alt="{{ clothing }} Image" draggable="false">
                                     {% else %}
-                                        <img class="grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
+                                        <img class="outfit-grid-image" src="{{ url_for(image_path) }}" alt="Clothing Image" draggable="false">
                                     {% endif %}
                                 </div>
                             {% endfor %}
@@ -109,7 +109,7 @@
                     var clothingItem = document.createElement('div');
                     clothingItem.className = 'clothing-item';
                     var image = document.createElement('img');
-                    image.className = 'grid-image';
+                    image.className = 'outfit-grid-image';
                     image.src = imagePath;
                     image.draggable = false; // Disable dragging for images
                     clothingItem.appendChild(image);
@@ -245,7 +245,7 @@
                 var clothingItem = document.createElement('div');
                 clothingItem.className = 'clothing-item';
                 var image = document.createElement('img');
-                image.className = 'grid-image';
+                image.className = 'outfit-grid-image';
                 image.src = imagePath;
                 clothingItem.appendChild(image);
                 clothingItems.appendChild(clothingItem);
