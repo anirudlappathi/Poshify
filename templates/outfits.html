@@ -218,6 +218,12 @@
         });
 
         async function drop(event, day) {
+            var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
+            console.log("drop imagePaths: ", imagePaths);
+
+            var clothes_ids = JSON.parse(event.dataTransfer.getData("clothesIds"))
+            console.log(clothes_ids)
+
             event.preventDefault();
             console.log("in drop", day);
             var dayElement = document.getElementById(day);
@@ -241,9 +247,12 @@
             var clothingItems = document.createElement('div');
             clothingItems.className = 'clothing-items';
 
+            let i = 0;
             imagePaths.forEach(imagePath => {
                 var clothingItem = document.createElement('div');
                 clothingItem.className = 'clothing-item';
+                clothingItem.setAttribute('clothing-id', clothes_ids[i]);
+                i++;
                 var image = document.createElement('img');
                 image.className = 'outfit-grid-image';
                 image.src = imagePath;
@@ -262,10 +271,7 @@
             draggedOutfit.style.display = 'none';
             toggleClearButton(day, true);
 
-            var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
-            console.log("drop imagePaths: ", imagePaths);
 
-            var clothes_ids = JSON.parse(event.dataTransfer.getData("clothesIds"))
 
             // Create an object with the day and image paths data
             var outfitData = {

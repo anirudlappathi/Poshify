@@ -234,8 +234,6 @@ def closet():
 
       return render_template("closet.html", session=user, user_id=user_id, clothes=clothes, filters=filters, config=config.get("DEFAULT", "DEVTYPE"))
 
-
-
 @app.route("/outfits", methods=["POST", "GET"])
 def generate_fit():
    user = session.get("user")
