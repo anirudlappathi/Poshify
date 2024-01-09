@@ -38,7 +38,7 @@
                         <span>Drag outfit here</span>
                     {% endif %}
                     <center>
-                        <button class="clear-button" onclick="clearDay('{{ day.lower() }}')">Clear Day</button>
+                        <button class="clear-button" onclick="clearDay('{{ dates[(weekday + isoweekday) % 7] }}')">Clear Day</button>
                     </center>
                 </div>
             </div>
