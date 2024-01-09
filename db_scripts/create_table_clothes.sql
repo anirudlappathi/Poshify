@@ -11,6 +11,8 @@ CREATE TABLE Clothes (
     tone VARCHAR(255),
     colortemp VARCHAR(255),
     clothing_name VARCHAR(255),
+    until_dirty INT,
+    worn_count INT,
 );
 
 -- mysql -u root -p

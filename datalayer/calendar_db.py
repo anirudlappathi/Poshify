@@ -26,10 +26,11 @@ class Calendar(Base):
     date = Column(String(6))
 
 # DOOOO THISSS
-def create_entry(user_id, clothes_id, dayOfWeek, imagePaths, outfitType, date):
+def create_calendar_entry(user_id, clothes_id, dayOfWeek, imagePaths, outfitType, date):
     try:
         for i, image_path in enumerate(imagePaths):
             image_path_modified = image_path.replace('/static/', '')
+
 
             new_entry = Calendar(
                 user_id=user_id,

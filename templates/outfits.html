@@ -35,7 +35,7 @@
                             </div>
                         {% endfor %}
                     {% else %}
-                        <span>Drag outfit here</span>
+                        <span class="title-text">Drag outfit here</span>
                     {% endif %}
                     <center>
                         <button class="clear-button" onclick="clearDay('{{ dates[(weekday + isoweekday) % 7] }}')">Clear Day</button>
@@ -53,7 +53,7 @@
                     <div class="grid-item text">
                         <div class="clothing-items">
                             <h2 class="title-text">
-                                {{ outfit[0] }}
+                                {{ "\n".join(outfit[0]) }}
                             </h2>
                             {% for clothing_name, image_path, clothes_id in outfit[1:] %}
                                 <div class="clothing-item" clothing-name="{{ clothing_name }}" clothing-id="{{ clothes_id }}">
@@ -78,70 +78,66 @@
             var outfit = dayElement.querySelector('.grid');
             console.log(outfit);
             console.log("OUTFIT PRESENT")
-                // Retrieve outfit content
-                var outfitContent = outfit.innerHTML;
+            // Retrieve outfit content
+            var outfitContent = outfit.innerHTML;
 
-                // Remove outfit from the day grid
-                dayElement.removeChild(outfit);
+            // Remove outfit from the day grid
+            dayElement.removeChild(outfit);
 
-                // Parse the HTML content to extract necessary information
-                var tempDiv = document.createElement('div');
-                tempDiv.innerHTML = outfitContent;
+            // Parse the HTML content to extract necessary information
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = outfitContent;
+            var outfitTitle = tempDiv.querySelector('.text h2').innerText.trim();
+            var imageElements = tempDiv.querySelectorAll('.clothing-item img');
+            var imagePaths = Array.from(imageElements).map(img => img.getAttribute('src'));
 
-                var outfitTitle = tempDiv.querySelector('.text h2').innerText.trim();
-                var imageElements = tempDiv.querySelectorAll('.clothing-item img');
-                var imagePaths = Array.from(imageElements).map(img => img.getAttribute('src'));
+            // Construct HTML structure for the outfit
+            var reconstructedOutfit = document.createElement('div');
+            reconstructedOutfit.className = 'grid';
+            reconstructedOutfit.draggable = true; // Make the entire grid draggable
+            reconstructedOutfit.ondragstart = drag; // Assign the drag event
+            var outfitItem = document.createElement('div');
+            outfitItem.className = 'grid-item text';
+            var outfitHeader = document.createElement('h2');
+            outfitHeader.className = 'title-text';
+            outfitHeader.textContent = outfitTitle;
+            var clothingItems = document.createElement('div');
+            clothingItems.className = 'clothing-items';
+            //pass these to flask by post request
+            imagePaths.forEach(imagePath => {
+                var clothingItem = document.createElement('div');
+                clothingItem.className = 'clothing-item';
+                var image = document.createElement('img');
+                image.className = 'outfit-grid-image';
+                image.src = imagePath;
+                image.draggable = false;
+                clothingItem.appendChild(image);
+                clothingItems.appendChild(clothingItem);
+            });
 
-                // Construct HTML structure for the outfit
-                var reconstructedOutfit = document.createElement('div');
-                reconstructedOutfit.className = 'grid';
-                reconstructedOutfit.draggable = true; // Make the entire grid draggable
-                reconstructedOutfit.ondragstart = drag; // Assign the drag event
-                var outfitItem = document.createElement('div');
-                outfitItem.className = 'grid-item text';
-                var outfitHeader = document.createElement('h2');
-                outfitHeader.className = 'text';
-                outfitHeader.textContent = outfitTitle;
-                var clothingItems = document.createElement('div');
-                clothingItems.className = 'clothing-items';
-                //pass these to flask by post request
-                imagePaths.forEach(imagePath => {
-                    var clothingItem = document.createElement('div');
-                    clothingItem.className = 'clothing-item';
-                    var image = document.createElement('img');
-                    image.className = 'outfit-grid-image';
-                    image.src = imagePath;
-                    image.draggable = false; // Disable dragging for images
-                    clothingItem.appendChild(image);
-                    clothingItems.appendChild(clothingItem);
-                });
+            outfitItem.appendChild(outfitHeader);
+            outfitItem.appendChild(clothingItems);
+            reconstructedOutfit.appendChild(outfitItem);
 
-                outfitItem.appendChild(outfitHeader);
-                outfitItem.appendChild(clothingItems);
-                reconstructedOutfit.appendChild(outfitItem);
-
-                // Append reconstructed outfit to the outfit-container
-                var outfitContainer = document.querySelector('.outfit-container');
-                outfitContainer.appendChild(reconstructedOutfit);
-                var dayElement = document.getElementById(dayId);
-                var clearButton = dayElement.querySelector('.clear-button');
-                clearButton.style.display = 'none';
-                console.log("CLEAR DAY DAYOFWEEK: ", dayId);
-                console.log("CLEAR DAY IMAGEPATHS: ", imagePaths);
-                console.log("CLEAR DAY OUTFIT TITLE: ", outfitTitle);
-                var outfitData = {
-                    day_of_week: dayId,
-                    image_paths: imagePaths,
-                    outfitType: outfitTitle
-                };
-                var newSpan = document.createElement('span');
-                newSpan.textContent = 'Drag outfit here'; // Set the text content;
+            // Append reconstructed outfit to the outfit-container
+            var outfitContainer = document.querySelector('.outfit-container');
+            outfitContainer.appendChild(reconstructedOutfit);
+            var dayElement = document.getElementById(dayId);
+            var clearButton = dayElement.querySelector('.clear-button');
+            clearButton.style.display = 'none';
+            console.log("CLEAR DAY DAYOFWEEK: ", dayId);
+            console.log("CLEAR DAY IMAGEPATHS: ", imagePaths);
+            console.log("CLEAR DAY OUTFIT TITLE: ", outfitTitle);
+            var outfitData = {
+                day_of_week: dayId,
+                image_paths: imagePaths,
+                outfitType: outfitTitle
+            };
+            var newSpan = document.createElement('span');
+            newSpan.textContent = 'Drag outfit here';
+            dayElement.appendChild(newSpan)
             if (outfit) {
-                
                 return new Promise((resolve) => {
-                    
-
-                    // Perform asynchronous operations inside the promise
                     fetch('/delete_outfit', {
                         method: 'POST',
                         headers: {
@@ -241,7 +237,7 @@
             outfitContent.className = 'grid-item text';
 
             var outfitTitle = document.createElement('h2');
-            outfitTitle.className = 'text';
+            outfitTitle.className = 'title-text';
             outfitTitle.textContent = clothing;
 
             var clothingItems = document.createElement('div');
@@ -260,6 +256,7 @@
                 clothingItems.appendChild(clothingItem);
             });
 
+
             outfitContent.appendChild(outfitTitle);
             outfitContent.appendChild(clothingItems);
             outfit.appendChild(outfitContent);
@@ -271,9 +268,6 @@
             draggedOutfit.style.display = 'none';
             toggleClearButton(day, true);
 
-
-
-            // Create an object with the day and image paths data
             var outfitData = {
                 day_of_week: day,
                 clothes_id: clothes_ids,
@@ -281,7 +275,6 @@
                 outfitType: clothing
             };
 
-            // this code handles the replacement for the outfits if another outfit is dragged on top
             if (clothingItemsExist) {
                 console.log("Clothing items exist within dayElement.");
                 await clearDay(day)
@@ -291,9 +284,7 @@
                 console.log("No clothing items found within dayElement.");
             }
             
-
-            // Send the outfit data to Flask using fetch
-            fetch('/save_outfit', {
+            fetch('/save_calendar_outfit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

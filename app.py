@@ -254,7 +254,6 @@ def generate_fit():
    tshirts = get_clothing_by_type(user_id, "T-Shirt")
    # mid - cold
    sweatshirts = get_clothing_by_type(user_id, "Sweatshirt")
-
    
    # mid - cold
    pants = get_clothing_by_type(user_id, "Pant")
@@ -270,14 +269,11 @@ def generate_fit():
    bots = pants + shorts
 
    calendarInfo, cloth_ids = get_image_paths_per_day(user_id)
-   
-
-
-   outfits = GetStyleOutfits(tops, bots, shoes, cloth_ids)
+   outfits = GetStyleOutfits(tops, bots, shoes, calendarInfo, cloth_ids)
 
    weekday = (today.isoweekday() - 1) % 7
    day = WEEKDAYS_NUM2DAY[weekday]
-
+   print('lkasd', calendarInfo)
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
    else:
@@ -472,7 +468,7 @@ def update_cleanliness():
       }
       return jsonify(response_data), 200
 
-@app.route('/delete', methods=['DELETE'])
+@app.route('/closet_delete_cloth', methods=['DELETE'])
 def delete_element():
    user = session.get("user")
    if not user:
@@ -486,7 +482,7 @@ def delete_element():
       data = request.get_json()
       clothes_id = data.get('clothes_id')
       user_id = session.get('userid')
-      url = get_clothing_url_by_id(clothes_id, user_id)
+      url = delete_clothing_by_id(clothes_id, user_id)
       if config.get("DEFAULT", "DEVTYPE") == "local":
          filepath = os.path.join("static/clothing_images", url)
       else:
@@ -496,7 +492,7 @@ def delete_element():
             delete_clothing_by_id(clothes_id, user_id)
             return jsonify({'message': f'{clothes_id} deleted successfully'}), 200
       else:
-            return jsonify({'message': 'File not found'}), 404
+            return jsonify({'message': 'File not found'}), 200
    else:
       return jsonify({'message': 'Method not allowed'}), 405
    
@@ -520,7 +516,7 @@ def update_filters():
       return ({'message': f'{articles_data} filter added successfully'}), 200
 
 
-@app.route('/save_outfit', methods=['POST'])
+@app.route('/save_calendar_outfit', methods=['POST'])
 def save_outfit():
    # try:
 
@@ -561,7 +557,7 @@ def save_outfit():
 
       date = f"{newDay}{month}{year}"
 
-      create_entry(user_id, clothes_id, day_of_week, image_paths, outfit_type, date)
+      create_calendar_entry(user_id, clothes_id, day_of_week, image_paths, outfit_type, date)
       return 'Outfit data received and saved successfully.', 200
    
    # except Exception as e:

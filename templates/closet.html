@@ -119,7 +119,8 @@
             }
             
             function deleteClothing(clothes_id) {
-                fetch('/delete', {
+                console.log("DELETING CLOTH")
+                fetch('/closet_delete_cloth', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

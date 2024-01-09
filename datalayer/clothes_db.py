@@ -30,12 +30,31 @@ class Clothes(Base):
     tone = Column(Integer)
     colortemp = Column(Integer)
     clothingimg_filepath = Column(String(255))
+    until_dirty = Column(Integer)
+    worn_count = Column(Integer)
 
-def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, clothingimg_filepath):
+TIMES_CAN_WEAR_BY_TYPE = {
+    "Jacket": 5,
+    "T-Shirt": 1,
+    "Sweatshirt": 5,
+    "Pant": 4,
+    "Short": 2,
+    "Shoe": 5096, #infinite
+    "Hat": 5096 #infinite too
+}
+
+def create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, clothingimg_filepath, until_dirty=None, worn_count=None):
     try:
         tone = color_algo.GetTone((int(saturation), int(value)))
         colortemp = color_algo.GetColorTemp(hue)
-        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean, hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp, clothingimg_filepath = clothingimg_filepath)
+
+        if not until_dirty:
+            until_dirty = TIMES_CAN_WEAR_BY_TYPE[clothing_type]
+        if not worn_count:
+            worn_count = 0
+        new_cloth = Clothes(user_id=user_id, clothing_name=clothing_name, clothing_type=clothing_type, is_clean=is_clean,
+                            hue=hue, saturation=saturation, value=value, tone=tone, colortemp=colortemp, 
+                            clothingimg_filepath=clothingimg_filepath, until_dirty=until_dirty, worn_count=worn_count)
         dbsession.add(new_cloth)
         dbsession.commit()
         return "Cloth created successfully"
@@ -73,8 +92,10 @@ def get_clothing_name_image_id_by_user_id(user_id):  # returns clothing img file
 def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPATH"):
     try:
 
-        data = dbsession.query(Clothes.clothes_id, Clothes.hue, Clothes.saturation, Clothes.value, Clothes.clothing_name, Clothes.is_clean, Clothes.clothingimg_filepath).filter_by(user_id=user_id, clothing_type=clothing_type).all()
-
+        data = dbsession.query(Clothes.clothes_id, Clothes.hue, Clothes.saturation, 
+                               Clothes.value, Clothes.clothing_name, Clothes.is_clean, 
+                               Clothes.clothingimg_filepath, Clothes.until_dirty,
+                               Clothes.worn_count).filter_by(user_id=user_id, clothing_type=clothing_type).all()
 
         clothes = []
         for item in data:

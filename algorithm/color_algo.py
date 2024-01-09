@@ -212,9 +212,11 @@ def WinterMatch(outfit):
     
     return True
 
-def GetStyleOutfits(tops, bots, shoes, cloth_ids):
+def GetStyleOutfits(tops, bots, shoes, calendarInfo, cloth_ids):
     
     matchingOutfits = []
+
+
     if not (tops and bots and shoes): return matchingOutfits
     for top in tops:
         if not top["is_clean"]: continue
@@ -223,16 +225,20 @@ def GetStyleOutfits(tops, bots, shoes, cloth_ids):
             if not bot["is_clean"]: continue
             botdesc = GetColorDesc((bot["hue"], bot["saturation"], bot["value"]))
             for shoe in shoes:
-                if f"{top['id']},{bot['id']},{shoe['id']}" in cloth_ids:
-                    continue
+
+                if f"{top['id']},{bot['id']},{shoe['id']}" in cloth_ids: continue
                 if not shoe["is_clean"]: continue
-                shoedesc = GetColorDesc((shoe["hue"], shoe["saturation"], shoe["value"]))
+
                 outfitRules = []
+
+                shoedesc = GetColorDesc((shoe["hue"], shoe["saturation"], shoe["value"]))
                 for rule in [BasicMatch, NeutralMatch, AnalogousMatch, SummerMatch, WinterMatch]:
                     if rule((topdesc, botdesc, shoedesc)):
-                        outfitRules.append(str(rule).split()[1])
+                        outfitMatch = str(rule).split()[1][:-5]
+                        outfitRules.append(outfitMatch)
+
                 if len(outfitRules) > 0:
-                    matchingOutfits.append((",\n".join(outfitRules), (top["clothing_name"], top["url"], top["id"]), (bot["clothing_name"], bot["url"], bot["id"]), (shoe["clothing_name"], shoe["url"], shoe["id"])))
+                    matchingOutfits.append((outfitRules, (top["clothing_name"], top["url"], top["id"]), (bot["clothing_name"], bot["url"], bot["id"]), (shoe["clothing_name"], shoe["url"], shoe["id"])))
 
     return matchingOutfits
 
