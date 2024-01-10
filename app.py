@@ -273,7 +273,6 @@ def generate_fit():
 
    weekday = (today.isoweekday() - 1) % 7
    day = WEEKDAYS_NUM2DAY[weekday]
-   print('lkasd', calendarInfo)
    if calendarInfo:
       return render_template("outfits.html", session=user, user_id=user_id, outfits=outfits, calendarInfo = calendarInfo, config=config.get("DEFAULT", "DEVTYPE"), weekday=weekday, day=day)
    else:
@@ -308,6 +307,7 @@ def add_clothing_manual():
       clothing_name = request.form['clothing_name']
       clothing_type = request.form['clothes_type']
       is_clean = request.form['is_clean'] == "y"
+      until_dirty = None if is_clean else 0
       
       image_file = request.files['image']
 
@@ -328,7 +328,7 @@ def add_clothing_manual():
          hue = dominant_color[0]
          saturation = dominant_color[1]
          value = dominant_color[2]
-         result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename)
+         result = create_cloth(user_id, clothing_name, clothing_type, is_clean, hue, saturation, value, filename, until_dirty=until_dirty)
          if config.get("DEFAULT", "DEVTYPE") == "local":
             with open(os.path.join('static/clothing_images/', filename), 'wb') as f:
                f.write(image_data)
@@ -340,11 +340,11 @@ def add_clothing_manual():
                f'clothing_images/{filename}',
                ExtraArgs={'ContentType': 'image/jpeg'}  
             )
+         return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
       except Exception as e:
          print(f"add_clothing_manual ERROR: {e}")
          return render_template("add_clothing_manual.html", result="Add clothing error", session=user, user_id=user_id)
 
-      return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
    
    return render_template("add_clothing_manual.html", session=user, result="", user_id=user_id)               
 

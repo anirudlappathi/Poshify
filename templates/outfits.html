@@ -14,7 +14,7 @@
                 <div class="{{ dates[(weekday + isoweekday) % 7] }} outfit-action-button" id="{{ dates[(weekday + isoweekday) % 7] }}" ondrop="drop(event, '{{ dates[(weekday + isoweekday) % 7] }}')" ondragover="allowDrop(event)">
                     {% if calendarInfo and dates[(weekday + isoweekday) % 7] in calendarInfo %}
                         {% for outfitType, imagePaths in calendarInfo[dates[(weekday + isoweekday) % 7]].items() %}
-                            <div class="grid" draggable="true" ondragstart="drag(event)">
+                            <div class="grid" id="grid" outfitType="{{ outfitType }}" draggable="true" ondragstart="drag(event)">
                                 <div class="grid-item text">
                                     <h2 class="title-text">
                                         {{ outfitType }}
@@ -34,12 +34,13 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        <center id="center-element">
+                            <button class="clear-button" id="clear-button" onclick="clearDay('{{ dates[(weekday + isoweekday) % 7] }}')">Clear Day</button>
+                        </center>
                     {% else %}
-                        <span class="title-text">Drag outfit here</span>
+                        <span class="title-text" id="drag-outfit-here">Drag outfit here</span>
                     {% endif %}
-                    <center>
-                        <button class="clear-button" onclick="clearDay('{{ dates[(weekday + isoweekday) % 7] }}')">Clear Day</button>
-                    </center>
+
                 </div>
             </div>
         {% endfor %}
@@ -72,26 +73,38 @@
     </main>
 </div>
     <script>
+        var dates = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
         function clearDay(dayId) {
-            var dayElement = document.getElementById(dayId);
             console.log(dayId);
+            var dayElement = document.getElementById(dayId);
             var outfit = dayElement.querySelector('.grid');
-            console.log(outfit);
-            console.log("OUTFIT PRESENT")
-            // Retrieve outfit content
+            var clearButton = dayElement.querySelector('.clear-button')
             var outfitContent = outfit.innerHTML;
 
-            // Remove outfit from the day grid
-            dayElement.removeChild(outfit);
+            console.log(clearButton.parentNode)
+            console.log(clearButton.parentElement)
 
-            // Parse the HTML content to extract necessary information
+            dayElement.removeChild(outfit);
+            
+            if (outfit) {
+                console.log('Outfit found:', outfit);
+                if (clearButton) {
+                    console.log('Clear button exists:', clearButton);
+                    clearButton.parentNode.removeChild(clearButton);
+                } else {
+                    console.log('Clear button not found within dayElement');
+                }
+            } else {
+                console.log('Outfit not found within dayElement');
+            }
+
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = outfitContent;
             var outfitTitle = tempDiv.querySelector('.text h2').innerText.trim();
             var imageElements = tempDiv.querySelectorAll('.clothing-item img');
             var imagePaths = Array.from(imageElements).map(img => img.getAttribute('src'));
 
-            // Construct HTML structure for the outfit
             var reconstructedOutfit = document.createElement('div');
             reconstructedOutfit.className = 'grid';
             reconstructedOutfit.draggable = true; // Make the entire grid draggable
@@ -123,11 +136,6 @@
             var outfitContainer = document.querySelector('.outfit-container');
             outfitContainer.appendChild(reconstructedOutfit);
             var dayElement = document.getElementById(dayId);
-            var clearButton = dayElement.querySelector('.clear-button');
-            clearButton.style.display = 'none';
-            console.log("CLEAR DAY DAYOFWEEK: ", dayId);
-            console.log("CLEAR DAY IMAGEPATHS: ", imagePaths);
-            console.log("CLEAR DAY OUTFIT TITLE: ", outfitTitle);
             var outfitData = {
                 day_of_week: dayId,
                 image_paths: imagePaths,
@@ -135,6 +143,8 @@
             };
             var newSpan = document.createElement('span');
             newSpan.textContent = 'Drag outfit here';
+            newSpan.className = 'title-text';
+            newSpan.id = 'drag-outfit-here';
             dayElement.appendChild(newSpan)
             if (outfit) {
                 return new Promise((resolve) => {
@@ -185,53 +195,34 @@
             event.dataTransfer.setData("clothing", clothing);
             event.dataTransfer.setData("imagePaths", JSON.stringify(imagePaths));
             event.dataTransfer.setData("clothesIds", JSON.stringify(clothingIds));
-            console.log(clothing)
-            console.log(imagePaths)
-            console.log(clothingIds)
             draggedOutfit = event.target;
         }
 
-        function toggleClearButton(dayId, show) {
-            var dayElement = document.getElementById(dayId);
-            var clearButton = dayElement.querySelector('.clear-button');
-
-            // Check if clothing items exist within the day element
-            var clothingItemsExist = dayElement.querySelector('.clothing-items');
-
-            // Show the clear button if clothing items exist, else show based on the provided argument 'show'
-            clearButton.style.display = clothingItemsExist ? 'block' : show ? 'block' : 'none';
-        }
-
-        // Call this function after the DOM is loaded to initially hide the buttons
-        document.addEventListener('DOMContentLoaded', function () {
-            toggleClearButton('Monday', false);
-            toggleClearButton('Tuesday', false);
-            toggleClearButton('Wednesday', false);
-            toggleClearButton('Thursday', false);
-            toggleClearButton('Friday', false);
-            toggleClearButton('Saturday', false);
-            toggleClearButton('Sunday', false);
-        });
-
         async function drop(event, day) {
+
+            console.log(day);
             var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
             console.log("drop imagePaths: ", imagePaths);
-
+            
             var clothes_ids = JSON.parse(event.dataTransfer.getData("clothesIds"))
             console.log(clothes_ids)
-
+            
             event.preventDefault();
-            console.log("in drop", day);
             var dayElement = document.getElementById(day);
             var clothingItemsExist = dayElement.querySelector('.clothing-items');
             var clothing = event.dataTransfer.getData("clothing");
             var imagePaths = JSON.parse(event.dataTransfer.getData("imagePaths"));
-            
-            console.log("drop clothing: ", clothing);
-            console.log("drop imagePaths: ", imagePaths);
 
             var outfit = document.createElement('div');
             outfit.className = 'grid';
+
+            outfit.onmouseover = function() {
+                outfit.style.backgroundColor = '#e9e9e9'; 
+            };
+    
+            outfit.onmouseout = function() {
+                outfit.style.backgroundColor = '#f9f9f9'; 
+            };
 
             var outfitContent = document.createElement('div');
             outfitContent.className = 'grid-item text';
@@ -256,17 +247,32 @@
                 clothingItems.appendChild(clothingItem);
             });
 
+            const clearOutfitButtonCenterTag = document.createElement('center');
+            clearOutfitButtonCenterTag.id = 'center-element';
+            const clearOutfitButton = document.createElement('button');
+            clearOutfitButton.setAttribute('class', 'clear-button');
+            clearOutfitButton.setAttribute('id', 'clear-button');
+            clearOutfitButton.textContent = 'Clear Day'
+            clearOutfitButton.addEventListener('click', function() {
+                clearDay(day)
+            });
+
 
             outfitContent.appendChild(outfitTitle);
             outfitContent.appendChild(clothingItems);
             outfit.appendChild(outfitContent);
-            outfitContent.style.backgroundColor = 'white';
-            outfit.style.backgroundColor = 'white';
 
+            clearOutfitButtonCenterTag.appendChild(clearOutfitButton)
+            
             dayElement.appendChild(outfit);
+            dayElement.appendChild(clearOutfitButtonCenterTag)
 
             draggedOutfit.style.display = 'none';
-            toggleClearButton(day, true);
+
+            var dragOutfitHereText = dayElement.querySelector('#drag-outfit-here')
+            if (dragOutfitHereText) {
+                dragOutfitHereText.parentNode.removeChild(dragOutfitHereText);
+            }
 
             var outfitData = {
                 day_of_week: day,
@@ -303,13 +309,12 @@
                 console.error('Error:', error);
                 // Handle any error scenarios
             });
-                }
+        }
                 
-            //Function to allow scrolling while dragging
-            document.addEventListener('dragover', function(event) {
-                event.preventDefault(); 
-                
-            });
+        //Function to allow scrolling while dragging
+        document.addEventListener('dragover', function(event) {
+            event.preventDefault(); 
+        });
     </script>
     {% include 'footer.html' %}
 </body>

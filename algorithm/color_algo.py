@@ -216,7 +216,6 @@ def GetStyleOutfits(tops, bots, shoes, calendarInfo, cloth_ids):
     
     matchingOutfits = []
 
-
     if not (tops and bots and shoes): return matchingOutfits
     for top in tops:
         if not top["is_clean"]: continue

@@ -36,22 +36,62 @@
         <p>Looks empty. Add some clothes today!</p>
     </center>
     {% endif %}
-    <div class="grid">
+    <div class="closet-grid">
         {% for clothes_id, clothing_type, clothing_name, is_clean, hue, saturation, value, file_path in clothes %}
-            <div class="grid-item center text show" data-clothes-id="{{ clothes_id }}" data-clothing-type="{{ clothing_type }}">
+            <div class="closet-grid-item center text show" data-clothes-id="{{ clothes_id }}" data-clothing-type="{{ clothing_type }}" color="{{hue}},{{saturation}},{{value}}">
                 <p class="text-over-image" onclick="makeEditable(this)">{{ clothing_name }}</p>
                 {% if config == "local" %}
-                    <img class="grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing }} Image" draggable="false">
+                    <img class="closet-grid-image" src="{{ url_for('static', filename=file_path) }}" alt="{{ clothing }} Image" draggable="false">
                 {% else %}
-                    <img class="grid-image" src="{{ file_path }}" alt="Clothing Image" draggable="false">
+                    <img class="closet-grid-image" src="{{ file_path }}" alt="Clothing Image" draggable="false">
                 {% endif %}
-                <button class="delete-button" onclick="deleteClothing('{{ clothes_id }}')">Delete Clothing</button>
+                <button class="delete-button" onclick="deleteClothing('{{ clothes_id }}')">Delete</button>
                 <button class="cleanliness-button" onclick="toggleCleanliness('{{ clothes_id }}', this)">{{ 'Clean' if is_clean else 'Dirty' }}</button>
                 <p>{{ hue, saturation, value }}</p>
             </div>
         {% endfor %}
     
         <script>
+
+            function HSVtoRGB(h, s, v) {
+                var r, g, b, i, f, p, q, t;
+                if (arguments.length === 1) {
+                    s = h.s, v = h.v, h = h.h;
+                }
+                i = Math.floor(h * 6);
+                f = h * 6 - i;
+                p = v * (1 - s);
+                q = v * (1 - f * s);
+                t = v * (1 - (1 - f) * s);
+                switch (i % 6) {
+                    case 0: r = v, g = t, b = p; break;
+                    case 1: r = q, g = v, b = p; break;
+                    case 2: r = p, g = v, b = t; break;
+                    case 3: r = p, g = q, b = v; break;
+                    case 4: r = t, g = p, b = v; break;
+                    case 5: r = v, g = p, b = q; break;
+                }
+                return {
+                    r: Math.round(r * 255),
+                    g: Math.round(g * 255),
+                    b: Math.round(b * 255)
+                };
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const allClosetItems = document.getElementsByClassName('closet-grid-item');
+
+                for (let i = 0; i < allClosetItems.length; i++) {
+                    const itemHSVColor = allClosetItems[i].getAttribute('color');
+                    const hsvInList = itemHSVColor.split(",");
+                    var hue = parseFloat(hsvInList[0]) / 360;
+                    var saturation = parseFloat(hsvInList[1]) / 100;
+                    var value = parseFloat(hsvInList[2]) / 100;
+                    const rgbValueDict = HSVtoRGB(hue, saturation, value);
+                    allClosetItems[i].style.backgroundColor = `rgb(${rgbValueDict['r']}, ${rgbValueDict['g']}, ${rgbValueDict['b']})`;
+                }
+            });
+
             function toggleCleanliness(clothesId, button) {
                 var currentStatus = button.innerText.trim();
                 var newStatus = currentStatus === 'Clean' ? 'Dirty' : 'Clean';
