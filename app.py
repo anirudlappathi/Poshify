@@ -473,14 +473,12 @@ def delete_element():
       url = delete_clothing_by_id(clothes_id, user_id)
       if config.get("DEFAULT", "DEVTYPE") == "local":
          filepath = os.path.join("static/clothing_images", url)
+         if os.path.exists(filepath):
+            os.remove(filepath)
       else:
          s3.delete_object(Bucket=CLOTHING_BUCKET_NAME, Key=f'clothing_images/{url}')
-      if os.path.exists(filepath):
-            os.remove(filepath)
-            delete_clothing_by_id(clothes_id, user_id)
-            return jsonify({'message': f'{clothes_id} deleted successfully'}), 200
-      else:
-            return jsonify({'message': 'File not found'}), 200
+      delete_clothing_by_id(clothes_id, user_id)
+      return jsonify({'message': f'{clothes_id} deleted successfully'}), 200
    else:
       return jsonify({'message': 'Method not allowed'}), 405
    

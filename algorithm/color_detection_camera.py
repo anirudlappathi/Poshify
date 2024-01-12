@@ -19,7 +19,7 @@ def dominant_color_finder_dataurl(image_data):
     img_data = base64.b64decode(image_data)
     nparr = np.frombuffer(img_data, np.uint8)
     frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    # frame = adjust_brightness(frame)
+    frame = adjust_brightness(frame, 150)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     k = 5
     # only capture the center 1/4 - 3/4

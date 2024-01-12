@@ -266,6 +266,7 @@ input::-webkit-file-upload-button {
 
 .closebtn:hover {
     color: black;
+    cursor: pointer;
 }
 
 
@@ -290,7 +291,7 @@ input::-webkit-file-upload-button {
 	}
 }
 .delete-button {
-	font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 	font-style: normal;
 	padding: 5px 10px;
 	background-color: #000000;
@@ -298,6 +299,9 @@ input::-webkit-file-upload-button {
 	border-radius: 5px;
 	font-size: 12px;
     border: none;
+}
+.delete-button:hover {
+    cursor: pointer;
 }
 .cleanliness-button {
 	font-family: 'Montserrat', sans-serif;
@@ -310,6 +314,9 @@ input::-webkit-file-upload-button {
 	font-size: 12px;
 	margin-top: 0px;
     border: none;
+}
+.cleanliness-button:hover {
+    cursor: pointer;
 }
 .file_submit {
 	display: inline-block;
@@ -373,6 +380,7 @@ input::-webkit-file-upload-button {
 .grid:hover {
     background-color: #e9e9e9;
     border-radius: 5px;
+    cursor: pointer;
 }
 .closet-grid-item {
     border-radius: 5px;
@@ -489,6 +497,7 @@ input::-webkit-file-upload-button {
 
 .clear-button:hover {
     background-color: #ccc;
+    cursor: pointer;
 }
 
 p {
