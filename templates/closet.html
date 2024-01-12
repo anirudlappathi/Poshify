@@ -170,7 +170,7 @@
                 .then(response => {
                     if (response.ok) {
                         console.log('Clothing deleted successfully');
-                        const gridItems = document.querySelectorAll('.grid-item');
+                        const gridItems = document.querySelectorAll('.closet-grid-item');
                         gridItems.forEach(gridItem => {
                             const dataClothesId = gridItem.getAttribute('data-clothes-id');
                             if (dataClothesId === clothes_id) {
@@ -194,9 +194,6 @@
                     dropdownContent.style.display = 'block';
                 }
             }
-
-
-
 
             function applyFilters() {
                 var checkboxes = document.querySelectorAll('.filterCheckbox');

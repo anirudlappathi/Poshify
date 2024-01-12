@@ -104,7 +104,9 @@ def get_clothing_by_type(user_id, clothing_type, folder="CLOTHING_IMAGES_FILEPAT
                 url = s3.generate_presigned_url('get_object', Params={'Bucket': CLOTHING_BUCKET_NAME, 'Key': f'clothing_images/{item.clothingimg_filepath}'}, ExpiresIn=3600)
             else:
                 url = f"{config.get('DEFAULT', folder)}{item.clothingimg_filepath}"
-            cloth_data = {"id":item.clothes_id, "hue": item.hue, "saturation": item.saturation, "value": item.value, "clothing_name": item.clothing_name, "is_clean": item.is_clean, "url":url}
+            cloth_data = {"id":item.clothes_id, "hue": item.hue, "saturation": item.saturation, 
+                          "value": item.value, "clothing_name": item.clothing_name, "is_clean": item.is_clean, 
+                          "url":url, "until_dirty": item.until_dirty, "worn_count":item.worn_count}
             clothes.append(cloth_data)
 
         return clothes

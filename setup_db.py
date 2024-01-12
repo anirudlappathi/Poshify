@@ -132,7 +132,9 @@ def create_databases():
             value INT,
             tone VARCHAR(255),
             colortemp VARCHAR(255),
-            clothingimg_filepath VARCHAR(255)
+            clothingimg_filepath VARCHAR(255),
+            until_dirty INT,
+            worn_count INT
         );
     """)
     cursor.execute(f"""

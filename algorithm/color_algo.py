@@ -109,26 +109,11 @@ def GetColorTemp(hue_val, verbose=False):
     temp_membership = GetMembership(hue_fuzzy, hue_range, hue, hue_val)
     return temp_membership
 
-
-"""
-Given Hue, Saturation, and Value, returns a String describing
-the specified color. The output is composed of both the tone of
-the color, and the temperature of the color.
-INPUT:
-hsv - tuple(hue, sat, val)
-    + hue - value from 0-360
-    + sat - value from 0-100
-    + val - value from 0-100
-OUTPUT: (TONE, TEMP) ex. (DARK, WARM)
-"""
 def GetColorDesc(hsv):
     tone = GetTone((hsv[1], hsv[2]))
     temp = GetColorTemp(hsv[0])
     if temp == "WARM_": temp = "WARM"
     return (tone, temp)
-
-
-
 
 def BasicMatch(outfit):
     top = outfit[0]
@@ -215,6 +200,16 @@ def WinterMatch(outfit):
 def GetStyleOutfits(tops, bots, shoes, calendarInfo, cloth_ids):
     
     matchingOutfits = []
+
+    amtCanWear = {}
+    for ids in cloth_ids:
+        for id in ids.split(","):
+            if id in amtCanWear:
+                amtCanWear[id] = amtCanWear[id] - 1
+            else:
+                amtCanWear[id] = -1
+
+        
 
     if not (tops and bots and shoes): return matchingOutfits
     for top in tops:

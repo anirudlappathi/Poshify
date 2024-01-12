@@ -225,7 +225,6 @@ def closet():
       if not user_id:
          print("ERROR: NO ID_TOKEN FOUND")
          return redirect("/home", code=302)
-      print('asklmda')
       clothes = get_clothing_name_image_id_by_user_id(user_id)
          
       filters = [[] for i in range(3)]
@@ -342,7 +341,6 @@ def add_clothing_manual():
             )
          return render_template("add_clothing_manual.html", result=result, session=user, user_id=user_id)   
       except Exception as e:
-         print(f"add_clothing_manual ERROR: {e}")
          return render_template("add_clothing_manual.html", result="Add clothing error", session=user, user_id=user_id)
 
    
@@ -411,9 +409,7 @@ def update_element():
       updated_text = data.get('updatedText')
       has_name = has_clothing_name_by_id(updated_text, user_id)
       clothing_name = data.get('identifier')
-      print(clothing_name, updated_text)
       if updated_text.lower() == clothing_name.lower():
-         print('same name')
          response_data = {
             'identifier': updated_text,
             'message': 'Same name'
@@ -421,23 +417,15 @@ def update_element():
          update_clothing_name_by_clothing_name(clothing_name, updated_text, user_id)
          return jsonify(response_data), 200
       elif has_name:
-         print('has name')
          response_data = {
             'identifier': clothing_name,
             'message': 'Name exists'
          }
          return jsonify(response_data), 200
-      print('gangangn')
       user = session.get("user")
       user_id = session.get('userid')
-      print("USER ID: " + user_id)
 
       update_clothing_name_by_clothing_name(clothing_name, updated_text, user_id)
-
-      print("Updated Text:", updated_text)
-      print("Identifier:", clothing_name)
-
-      # Return a response with the identifier and a success message
       response_data = {
             'identifier': updated_text,
             'message': 'Updated successfully'
@@ -509,17 +497,13 @@ def update_filters():
    if request.method == 'POST':
       filter_data = request.get_json()
       articles_data = filter_data.get('articles')
-      # color_data = filter_data.get('color_data')
-      # is_clean_data = filter_data.get('is_clean_data')
       session['filters'] = [articles_data]
 
       return ({'message': f'{articles_data} filter added successfully'}), 200
 
-
 @app.route('/save_calendar_outfit', methods=['POST'])
 def save_outfit():
-   # try:
-
+   try:
       outfit_data = request.json
       user_id = session.get('userid')
       clothes_id = outfit_data.get('clothes_id')
@@ -559,10 +543,9 @@ def save_outfit():
 
       create_calendar_entry(user_id, clothes_id, day_of_week, image_paths, outfit_type, date)
       return 'Outfit data received and saved successfully.', 200
-   
-   # except Exception as e:
-   #    print(f"Error saving outfit data: {str(e)}")
-   #    return 'Failed to process outfit data.', 500
+   except Exception as e:
+      print(f"Error saving outfit data: {str(e)}")
+      return 'Failed to process outfit data.', 500
 
 @app.route('/delete_outfit', methods=['POST'])
 def delete_outfit():
@@ -580,7 +563,6 @@ def delete_outfit():
       return 'Outfit data received and saved successfully.', 200
    
    except Exception as e:
-      print(f"Error deleting outfit data: {str(e)}")
       return 'Failed to process outfit data.', 500
 
 if __name__ == '__main__':

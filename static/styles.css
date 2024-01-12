@@ -23,6 +23,9 @@ body {
 	align-items: center;
 	margin: 0;
 }
+a {
+    color: black;
+}
 header {
 	background-color: transparent;
     backdrop-filter: blur(25px);
@@ -467,10 +470,6 @@ input::-webkit-file-upload-button {
     overflow: auto;
     flex: 1;
     border: 1px solid #d9d9d9;
-}
-
-.action-button:hover {
-    border-color: #999;
 }
 
 .clear-button {
